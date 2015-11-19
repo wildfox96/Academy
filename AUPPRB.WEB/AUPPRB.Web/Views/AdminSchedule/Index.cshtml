@@ -1,0 +1,267 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Администрирование расписания для учащихся с ППС";
+}
+
+<style>
+    .margin {
+        margin: 1%;
+    }
+</style>
+
+
+<h3>
+   @ViewBag.Title 
+</h3>
+<div class="ui-widget">
+    <div class="ui-widget-header">
+        <h4 class="margin">Начальные параметры</h4>
+    </div>
+    @using (Html.BeginForm("SetUpScheduleForADay", "AdminSchedule", FormMethod.Post))
+    {
+         <div class="ui-widget-content">
+        <div id="extensionConfiguration">
+            <label for="schedualFor">Построить расписание:</label>
+            <select class="form-control" id="schedualFor">
+                <option value="self">-- Выберете объект --</option>
+                <option value="forPrepod">Для преподователя</option>
+                <option value="forGroup">Для групп</option>
+            </select>
+        </div>
+
+        <div id="configurationData">
+            <div style="display: none" id="configurationforPrepod">
+                <label for="selectPrepod">Построить расписание:</label>
+                <select class="form-control" name="prepodId" id="selectPrepod"></select>
+            </div>
+            <div style="display: none" id="configurationforGroup">
+                <label class="selectSpecialnost" for="selectPrepod">Выберите специальность</label>
+                <select class="form-control selectSpecialnost" name="spezialnostId" id="selectSpecialnost"></select>
+                
+                <label style="display: none" class="selectFormOfStudy" for="selectGod">Выберите форму обучения</label>
+                <select style="display: none" class="form-control selectFormOfStudy" name="formOfStudyId" id="selectFormOfStudy"></select>
+
+                <label style="display: none" class="selectGod" for="selectGod">Выберите год поступления</label>
+                <select style="display: none" class="form-control selectGod" name="yearId" id="selectGod"></select>
+  
+                <label style="display: none" class="selectPotok" for="selectPotok">Выберите поток</label>
+                <select style="display: none" class="form-control selectPotok" name="potokId" id="selectPotok"></select>
+            </div>
+            <div id="sendBtn"> </div>
+        </div>
+
+    </div>
+    }
+   
+</div>
+
+
+<script>
+    
+    $(function () {
+
+        $('#sendBtn').on('click', function () {
+        
+            var spezialnostId = $('#selectSpecialnost').val();
+            var yearId = $('#selectGod').val();
+            var groupId = $('#selectGroup').val();
+
+        });
+
+        $("#schedualFor").change(function () {
+            $("#sendBtn").empty();
+            var currentList = this;
+            var selectedItem = $(currentList).val();
+            VisibilityControl();
+            if (selectedItem == "forPrepod") {
+                SetPrepodsForSelet(selectedItem);
+            }
+            else if (selectedItem == "forGroup") {
+                SetSpecialnostiForSelet(selectedItem);
+            }
+        });
+
+        //Для отображения формы обучения
+        $("#selectSpecialnost").change(function () {
+            $("#sendBtn").empty();
+            $.ajax({
+                url: '@Url.Action("GetFormsOfStudyForConfiguration", "AdminSchedule")',
+                type: "POST",
+                async: true,
+                data: { specialostId: $(this).val() },
+                success: function (data) {
+                    var items = "";
+                    items += "<option value='-1' selected='selected'>---Выберите форму обучения ---</option>";
+                    $.each(data.FormsOfStudy, function (i, item) {
+                        items += "<option value=\"" + item.Id + "\">" + item.Name + "</option>";
+                    });
+                    $("#selectFormOfStudy").html(items);
+                    VisibilityControl();
+                },
+            });
+
+        });
+
+        //для отображения годов поступления
+        $("#selectFormOfStudy").change(function () {
+            $("#sendBtn").empty();
+            var spezId = $('#selectSpecialnost option:selected').val();
+            var formOfStudyId = $(this).val();
+            $.ajax({
+                url: '@Url.Action("GetGodiPostupForConfiguration", "AdminSchedule")',
+                type: "POST",
+                async: true,
+                data: { formOfStudyId: formOfStudyId, spezialnostId: spezId },
+                success: function (data) {
+                    var items = "";
+                    items += "<option value='-1' selected='selected'>---Выберите год поступления ---</option>";
+                    $.each(data.Godi, function (i, item) {
+                        items += "<option value=\"" + item + "\">" + item + "</option>";
+                    });
+                    $("#selectGod").html(items);
+                    VisibilityControl();
+                },
+            });
+
+        });
+
+
+        //Для отображения потоков
+        $("#selectGod").change(function () {
+            $("#sendBtn").empty();
+            $.ajax({
+                url: '@Url.Action("GetPotokiForConfiguration", "AdminSchedule")',
+                type: "POST",
+                async: true,
+                data: { specialostId: $("#selectSpecialnost").val(), god: $(this).val() },
+                success: function (data) {
+                    var items = "";
+                    items += "<option value='-1' selected='selected'>---Выберите поток ---</option>";
+                    $.each(data.Potoki, function (i, item) {
+                        items += "<option value=\"" + item.Id + "\">" + item.Data + "</option>";
+                    });
+                    $("#selectPotok").html(items);
+                    $("#sendBtn").append("<input type='submit' class='btn btn-default' value='Показать'/>");
+                    VisibilityControl();
+                },
+            });
+
+        });
+
+        $('.date').datepicker()({
+            isRTL: false,
+            format: 'dd.mm.yyyy hh:ii',
+            autoclose: true,
+            language: 'ru'
+        });
+    });
+
+    function SetPrepodsForSelet(selectedItem) {
+        $("#sendBtn").empty();
+        $.ajax({
+            url: '@Url.Action("GetPrepodsForSchedualConfiguration", "AdminSchedule")',
+            type: "POST",
+            async: true,
+            success: function (data) {
+                var items = "";
+                items += "<option value='-1' selected='selected'>---Выберите преподавателя ---</option>";
+                $.each(data.Prepods, function (i, item) {
+                    items += "<option value=\"" + item.Id + "\">" + item.FIO + "</option>";
+                });
+                $("#sendBtn").append("<input type='submit' class='btn btn-default' value='Показать'/>");
+                $("#selectPrepod").html(items);
+                VisibilityControl();
+            },
+
+        });
+    }
+
+    function SetSpecialnostiForSelet(selectedItem) {
+        $.ajax({
+            url: '@Url.Action("GetSpezialnostiForConfiguration", "AdminSchedule")',
+            type: "POST",
+            async: true,
+            success: function (data) {
+                var items = "";
+                items += "<option value='-1' selected='selected'>---Выберите специальность ---</option>";
+                $.each(data.Spezialnosti, function (i, item) {
+                    items += "<option value=\"" + item.Id + "\">" + item.Name + "</option>";
+                });
+                $("#selectSpecialnost").html(items);
+                VisibilityControl();
+            },
+
+        });
+    }
+
+    function VisibilityControl() {
+        if ($("#schedualFor").val() == "self") {
+            $("#configurationforPrepod").hide();
+
+
+            $("#configurationforGroup").hide();
+            $(".selectSpecialnost").hide();
+            $('.selectFormOfStudy').hide();
+            $(".selectGod").hide();
+            $(".selectGroup").hide();
+            $(".selectPotok").hide();
+        }
+        if ($("#schedualFor").val() == "forPrepod") {
+            $("#configurationforPrepod").show();
+
+            $("#configurationforGroup").hide();
+            $(".selectSpecialnost").hide();
+            $('.selectFormOfStudy').hide();
+            $(".selectGod").hide();
+            $(".selectGroup").hide();
+            $(".selectPotok").hide();
+        }
+        if ($("#schedualFor").val() == "forGroup") {
+            $("#configurationforPrepod").hide();
+
+            $("#configurationforGroup").show();
+            $(".selectSpecialnost").show();
+
+            if ($("#selectSpecialnost").val() == -1) {
+                $("#selectGod").val(-1);
+                $("#selectGroup").val(-1);
+                $("#selectPotok").val(-1);
+                $('#selectFormOfStudy').val(-1);
+                $(".selectGod").hide();
+                $(".selectGroup").hide();
+                $(".selectPotok").hide();
+                $(".selectFormOfStudy").hide();
+            } else {
+                $('.selectFormOfStudy').show();
+            }
+
+            if ($("#selectFormOfStudy").val() == -1 || $("#selectFormOfStudy").val() == null) {
+                $("#selectGod").val(-1);
+                $("#selectGroup").val(-1);
+                $("#selectPotok").val(-1);
+
+                $(".selectGod").hide();
+                $(".selectGroup").hide();
+                $(".selectPotok").hide();
+
+            } else {
+                $(".selectGod").show();
+            }
+
+            if ($("#selectGod").val() == -1 || $("#selectGod").val() == null) {
+                $("#selectGroup").val(-1);
+                $("#selectPotok").val(-1);
+
+                $(".selectGroup").hide();
+                $(".selectPotok").hide();
+            } else {
+                $(".selectGroup").show();
+                $(".selectPotok").show();
+            }
+
+
+        }
+    }
+
+</script>

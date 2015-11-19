@@ -1,0 +1,504 @@
+﻿<style>
+    .hide {
+        display: none;
+    }
+    .schedule-head {
+        background-color: beige;
+    }
+    .schedule-date-column {
+        background-color: GHOSTWHITE;
+    }
+
+    .subjectBtn {
+        width: 80%;
+    }
+
+</style>
+
+<script>
+
+
+    function GenerateScheduleForUser(configuration) {
+        var url = "";
+        if (configuration.DateFrom == null || configuration.DateTo == null) {
+            alertify.log("Укажите дату", "alert");
+            return 
+        }
+        debugger;
+        var postData = {
+            DateFrom: configuration.DateFrom.toUTCString(),
+            DateTo: configuration.DateTo.toUTCString()
+        }
+
+        switch (configuration.SchedualFor) {
+        case "CurrentUser":
+            url = '@Url.Action("GetScheduleForUser", "ScheduleRender")';
+            break;
+        case "User":
+            url = '@Url.Action("GetScheduleForUser", "ScheduleRender")';
+            postData["UserId"] = configuration.UserId;
+            if (configuration.UserId == -1 || configuration.UserId == null) {
+                alertify.log("Выберите преподавателя из списка", "alert");
+                return;
+            }
+            break;
+        case "UserGroup":
+            url = '@Url.Action("GetScheduleForUser", "ScheduleRender")';
+            postData["GroupId"] = configuration.UserGroupId;
+            if (configuration.UserGroupId == -1 || configuration.UserGroupId==null) {
+                alertify.log("Выберите группу", "alert");
+                return;
+            }
+            break;
+
+        }
+
+
+        $("#scheduleTable").html("");
+
+
+      
+      
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: postData,
+            async: true,
+            beforeSend: ShowLoader(),
+            error: function(data) {
+                alertify.log("Ошибка построения расписания", "error");
+                HideLoader();
+            },
+            success: function (data) {
+                if (data == null || data.Schedule == null) {
+                    alertify.log("Ошибка построения расписания", "error");
+                    HideLoader();
+                    return;
+                }
+                if (data.Schedule.Weeks == 0) {
+
+                    alertify.log("В указынные даты занятий нет", "alert");
+                    HideLoader();
+                    return;
+
+                }
+
+                if (data.Schedule.DaysCount == 1) {
+                    generateOneDaySchedule(data.Schedule);
+                }
+                else if (data.Schedule.Weeks.length==1) {
+                    generateOneWeekSchedule(data.Schedule);
+                } else {
+                    generateFullSchedule(data.Schedule);
+                }
+                $('.poper').popover({
+                    html: true,
+                    title: function () {
+                        //alert($("#popover-head",this).html());
+                        return $("#popover-head", this).html();
+                    },
+                    content: function () {
+                        return $("#popover-content", this).html();
+                    }
+                });
+
+
+                // для плавности
+                HideLoader();
+            },
+            
+            
+        });
+    }
+
+ 
+    //отрисовка расписания состоящего из одного дня
+    function generateOneDaySchedule(schedule) {
+        var headOfTable = GetTableHeadForSchedule(1, schedule.MaxLessonsInSimilarTime);
+        InsertRowInScheduleTable(headOfTable);
+
+        var dayIndex = getStartIndexForOneWeekSchedule(schedule.Weeks[0]);
+
+        if (dayIndex == null) {
+            return;
+        }
+        var scheduleDay = getDayByIndex(schedule.Weeks[0], dayIndex);
+        var dateOfDay = Date.parse(scheduleDay.DateOfDay);
+
+        RenderDays(schedule.LessonsTime, scheduleDay, dateOfDay, schedule.MaxLessonsInSimilarTime);
+    }
+    //отрисовка расписания состоящего из недели
+    function generateOneWeekSchedule(schedule) {
+
+        var headOfTable = GetTableHeadForSchedule(1, schedule.MaxLessonsInSimilarTime);
+        InsertRowInScheduleTable(headOfTable);
+       
+        //индекс первого дня для отрисовки
+        var renderDayIndex = getStartIndexForOneWeekSchedule(schedule.Weeks[0]);
+        if (renderDayIndex == null) {
+            return;
+        }
+
+        var dayForRender = getDayByIndex(schedule.Weeks[0], renderDayIndex);
+        var dateOfDay = Date.parse(dayForRender.DateOfDay);
+
+        for (var dateIndex = 0; dateIndex < schedule.DaysCount; dateIndex++) {
+            RenderDays(schedule.LessonsTime, dayForRender, dateOfDay, schedule.MaxLessonsInSimilarTime);
+            dateOfDay = dateOfDay.add(1).days();
+            renderDayIndex++;
+            dayForRender = getDayByIndex(schedule.Weeks[0], renderDayIndex);
+        }
+    }
+    //отрисовка полного расписания
+    function generateFullSchedule(schedule) {
+        var countOfWeeks = schedule.Weeks.length;
+        var countColumns =2;
+        var baseRenderDate = Date.parse(schedule.DateFrom);
+        //начинаем с понедельника
+        if (!baseRenderDate.is().monday()) {
+            baseRenderDate = baseRenderDate.moveToDayOfWeek(1, -1);
+        }
+        var daysForRender = new Array();
+        var weekRows = Math.ceil(countOfWeeks / 2);
+        var weekRowIndex = 0;
+        var renderDate;
+       
+        //инкремент по строкам разных недель
+        for (var weekRowIncement = 0; weekRowIncement < weekRows; weekRowIncement++) {
+         
+            var headOfTable = GetTableHeadForSchedule(2, schedule.MaxLessonsInSimilarTime);
+            InsertRowInScheduleTable(headOfTable,1);
+
+            weekRowIndex = weekRowIncement * 2;
+            renderDate = Date.parse(baseRenderDate.toGMTString());
+            //инкремент по дням
+            for (var dayIndex = 0; dayIndex < 6; dayIndex++) {
+                
+                //собираем массив дней
+                for (var columnIndex = 0; columnIndex < countColumns; columnIndex++) {
+                    daysForRender.push(getDayByIndex(schedule.Weeks[weekRowIndex + columnIndex], dayIndex));
+                }
+                RenderDays(schedule.LessonsTime, daysForRender, renderDate, schedule.MaxLessonsInSimilarTime);
+                //очищаем массив
+                daysForRender.length=0;
+                renderDate.addDays(1);
+            }
+            baseRenderDate.addDays(14);
+        }
+
+
+    }
+    /// отрисовка дня/дней
+    function RenderDays(lessonsTimes, scheduleDays, basedateOfDay,maxLessonsInSimilarTime) {
+        //строка для формирования html
+        var dataStr = "";
+        //строка для временного хранения всякой чепухи
+        var tempStr = "";
+        //временные диапазоны строки
+        var lessonsTimesCount = lessonsTimes.length;
+
+        if (scheduleDays == null || !Array.isArray(scheduleDays)) {
+            var tempDay = scheduleDays;
+            scheduleDays = new Array();
+            scheduleDays.push(tempDay);
+        }
+        //день который отрисовываем
+        var scheduleDay;
+       
+        //дата для итерация
+        var dateOfDay;
+        var dayOfDateString;
+        //день недели
+        var dayOfWeekStr;
+       
+        for (var lessonTimeIndex = 0; lessonTimeIndex < lessonsTimesCount; lessonTimeIndex++) {
+            //первая строка то день недели
+            dataStr = "<tr>";
+
+            for (var dayIndex = 0; dayIndex < scheduleDays.length; dayIndex++) {
+                dateOfDay = Date.parse(basedateOfDay.toGMTString());
+                dateOfDay.addDays(7 * dayIndex);
+
+                dayOfDateString = dateOfDay.toString("dd-MM");
+                dayOfWeekStr = GetDayOfWeek(new Date(dateOfDay.toString("yyyy-MM-dd")));
+
+                scheduleDay = scheduleDays[dayIndex];
+
+
+                if (lessonTimeIndex == 0) {
+                    tempStr = dayOfDateString + "</br>" + dayOfWeekStr;
+                    dataStr += GetTableCellString({ data: tempStr, rowspan: lessonsTimesCount, classString: "schedule-date-column" });
+
+                }
+
+                dataStr += GetTableCellString({ data: lessonsTimes[lessonTimeIndex] });
+
+                if (scheduleDay != null) {
+            
+                    var thisTimeLessons = new Array();
+                    var thisTimeNotifications = new Array();
+
+                    for (var lessonIndex = 0; lessonIndex < scheduleDay.Lessons.length + scheduleDay.Notifications.length; lessonIndex++) {
+                        if (scheduleDay.Lessons[lessonIndex] && scheduleDay.Lessons[lessonIndex].LessonTime == lessonsTimes[lessonTimeIndex])
+                            thisTimeLessons.push(scheduleDay.Lessons[lessonIndex]);
+
+                        if (scheduleDay.Notifications[lessonIndex] && scheduleDay.Notifications[lessonIndex].NotificationTime == lessonsTimes[lessonTimeIndex])
+                            thisTimeNotifications.push(scheduleDay.Notifications[lessonIndex]);
+                    }
+
+                    if (thisTimeLessons.length == 0) {
+                        dataStr += GetTableCellString({ data: "", colspan: maxLessonsInSimilarTime, });
+                    } 
+
+                    var currentColspan = maxLessonsInSimilarTime;
+                    var oditoryString = "";
+                    for (var lessonSubColumnIndex = 0; lessonSubColumnIndex < thisTimeLessons.length; lessonSubColumnIndex++) {
+                        var tempColspan = Math.ceil(currentColspan / (thisTimeLessons.length - lessonSubColumnIndex));
+                        currentColspan = currentColspan - tempColspan;
+
+                        dataStr += GetTableCellString({
+                            data: GetLessonData(thisTimeLessons[lessonSubColumnIndex]),
+                            colspan: tempColspan,
+                            classString: thisTimeLessons[lessonSubColumnIndex].Discipline.TranslitName
+                        });
+                        oditoryString += lessonSubColumnIndex == 0 ? "" : " / ";
+
+                        oditoryString += thisTimeLessons[lessonSubColumnIndex].Classroom == null ? " - " : thisTimeLessons[lessonSubColumnIndex].Classroom;
+                    }
+                    dataStr += GetTableCellString({ data: oditoryString });
+
+
+
+                    //notification;
+                    var notificationCellContent = "";
+
+                    for (var notificationIndex = 0; notificationIndex < thisTimeNotifications.length; notificationIndex++) {
+                        notificationCellContent += GetNoticeData(thisTimeNotifications[notificationIndex]);
+
+                        if (notificationIndex != 0 && notificationIndex % 3 == 0)
+                            notificationCellContent += "</br>";
+
+                    }
+                   
+                  
+                    notificationCellContent += GetNoticeAddBtn(lessonsTimes[lessonTimeIndex], dateOfDay.toString("dd-MM-yyyy"));
+
+                    dataStr += GetTableCellString({ data: notificationCellContent });
+
+
+                } else {
+                    dataStr += GetTableCellString({ data: "", colspan: maxLessonsInSimilarTime });
+                    dataStr += GetTableCellString({ data: "" });
+                    dataStr += GetTableCellString({ data: "" });
+                }
+            }
+            dataStr += "</tr>";
+            InsertRowInScheduleTable(dataStr);
+        }
+    }
+    //отрисовка шапки таблицы
+    function GetTableHeadForSchedule(count,lessonsColumnColspan) {
+        var headOfTable = "<tr class='schedule-head'>";
+        for (var i = 0; i < count; i++) {
+            headOfTable += GetTableCellString({ data: GetTextWithGlyphicon("Дата занятий", "glyphicon-calendar") });
+            headOfTable += GetTableCellString({ data: GetTextWithGlyphicon("Время занятий", "glyphicon-time") });
+            headOfTable += GetTableCellString({ data: "Занятие", colspan: lessonsColumnColspan });
+            headOfTable += GetTableCellString({ data: GetTextWithGlyphicon("Аудитория", "glyphicon-home") });
+            headOfTable += GetTableCellString({ data: GetTextWithGlyphicon("Заметки", "glyphicon-bookmark") });
+        }
+        headOfTable += "</tr>";
+        return headOfTable;
+    }
+    //вставка плавная строки в таблицу
+    function InsertRowInScheduleTable(data) {
+        $(data).hide().appendTo("#scheduleTable").show();
+    }
+    //отрисовать одну ячейку
+    function GetTableCellString(opts) {
+        opts.colspan = (opts.colspan == null) ? " " : " colspan=\"" + opts.colspan + "\" ";
+        opts.rowspan = (opts.rowspan == null) ? " " : " rowspan=\"" + opts.rowspan + "\" ";
+        opts.classString = (opts.classString == null) ? " " : " class=\"" + opts.classString + "\" ";
+        opts.idString = (opts.idString == null) ? " " : " id=\"" + opts.idString + "\" ";
+        opts.alignString =(opts.alignString == null) ? " align=\"center\" " : " align=\"" + opts.alignString + + "\" "; 
+
+        return "<td  "+ opts.alignString + opts.idString +  opts.classString +  opts.colspan +  opts.rowspan + ">" + opts.data + "</td>";
+    }
+    //формирование тултипа для предмета
+    function GetLessonData(lesson) {
+
+        var glyphicon = "";
+        //в зависимости от типа занятия вешаем иконку
+        if (lesson.LessonTypeName == "лекция") {
+            glyphicon = "<span class='glyphicon glyphicon-book'/></span>";
+        }
+        if (lesson.LessonTypeName == "практическое") {
+            glyphicon = "<span class='glyphicon glyphicon-pencil'/></span>";
+        }
+        if (lesson.LessonTypeName == "лабораторная") {
+            glyphicon = "<span class='glyphicon glyphicon-hdd'/></span>";
+        }
+
+
+
+        var disciplineStr = "<div class='btn btn-default poper subjectBtn' data-placement='right'>" + glyphicon + "  " + lesson.Discipline.ShortName;
+
+        //вставляем заголовок
+        disciplineStr += "<div id='popover-head' class='hide'>Информация о занятии</div>";
+        //таблица для главной инфы
+        disciplineStr += "<div id='popover-content' class='hide'><table class='table'>";
+
+        //препод
+        if (lesson.PropodMeta != null)
+            disciplineStr += "<tr><td>Преподаватель</td><td>" + lesson.PropodMeta.UserFullName + "</td></tr>";
+
+        if (lesson.LessonTypeId != null) {
+            disciplineStr += "<tr><td>Тип занятия</td><td>" + lesson.LessonTypeName + "</td></tr>";
+
+        }
+
+        if (lesson.SpecialityName != null)
+            disciplineStr += "<tr><td>Специальность</td><td>" + lesson.SpecialityName + "</td></tr>";
+
+        if (lesson.FormOfStudyName != null)
+            disciplineStr += "<tr><td>Форма обучения</td><td>" + lesson.FormOfStudyName + "</td></tr>";
+
+        if (lesson.FlowName != null)
+            disciplineStr += "<tr><td>Поток</td><td>" + lesson.FlowName + "</td></tr>";
+
+        if (lesson.GroupId != null)
+            disciplineStr += "<tr><td>Номер группы</td><td>" + lesson.GroupName + "</td></tr>";
+
+        if (lesson.SubGroupId != null)
+            disciplineStr += "<tr><td>Номер подгруппы</td><td>" + lesson.SubGroupName + "</td></tr>";
+
+        //закрываем все 
+        disciplineStr += " </table></div></div>";
+
+        return disciplineStr;
+    }
+
+    //формирование заметки
+    function GetNoticeData(notice) {
+
+        var glyphicon = "";
+        //в зависимости от типа занятия вешаем иконку
+        if (notice.NotificationTypeName == "Заметка") {
+            glyphicon = "<span class='glyphicon glyphicon-tags'/></span>";
+        }
+     
+        var noticeStr = "<div class='btn btn-default poper ' data-placement='right'>" + glyphicon + "  ";
+
+        //вставляем заголовок
+    
+        noticeStr += "<div id='popover-head' class='hide'>" + notice.NotificationTypeName + "</div>";
+        //таблица для главной инфы
+        noticeStr += "<div id='popover-content' class='hide'><table class='table'>";
+
+        if (notice.NotificationText != null)
+            noticeStr += "<tr><td colspan='2'>" + notice.NotificationText + "</td></tr>";
+
+      
+
+        var editBtn = GetNoticeAddBtn("", "", notice.NotificationId);
+        var removeBtn = GetNoticeRemoveBtn(notice.NotificationId);
+        noticeStr += "<tr><td>" + editBtn + "</td><td>" + removeBtn + "</td></tr>";
+
+
+        //закрываем все 
+        noticeStr += " </table></div></div>";
+
+        return noticeStr;
+    }
+    
+    function GetNoticeAddBtn(time,date,id) {
+
+        var glyphicon = id == null
+                           ? "<i class='glyphicon glyphicon-plus' aria-hidden=\"true\"/></i>"
+                           : "<i class='glyphicon glyphicon-edit' aria-hidden=\"true\"/></i>";
+
+        var title = id == null
+                            ?"Добавить заметку" 
+                            : "Редактировать заметку";
+       
+
+
+        var str = " <button  class=\"btn btn-default edit-control editButton \" title=\"" + title + "\""
+            + " onclick='initNotificationWindow(\"" + time + "\",\"" + date + "\"," + id + ")'>"
+            + glyphicon + "</button>";
+        return str;
+    }
+
+    function GetNoticeRemoveBtn( id) {
+
+        var glyphicon = "<i class='glyphicon glyphicon-trash' aria-hidden=\"true\"/></i>";
+                      
+        var str = " <button  class=\"btn btn-default edit-control editButton \" title=\"Удалить заметку\""
+            + " onclick='RemoveNotice(" + id + ")'>"
+            + glyphicon + "</button>";
+        return str;
+    }
+    //формирование текста с иконкой
+    function GetTextWithGlyphicon(data, glyphicon) {
+        return  "<span><span class=\"glyphicon " + glyphicon + "\"></span> " + data + "</span>";
+    }
+    //получить день едели по дате
+    function GetDayOfWeek(date) {
+        var weekday = new Array(7);
+        weekday[0] = "Воскресенье";
+        weekday[1] = "Понедельник";
+        weekday[2] = "Вторник";
+        weekday[3] = "Среда";
+        weekday[4] = "Четверг";
+        weekday[5] = "Пятница";
+        weekday[6] = "Суббота";
+        return weekday[date.getDay()];
+    }
+    //получеть день по индексу
+    function getDayByIndex(week, index) {
+        if (week == null)
+            return null;
+        switch (index) {
+        case 0:return week.Monday;
+        case 1:return week.Tuesday;
+        case 2:return week.Wednesday;
+        case 3: return week.Thursday;
+        case 4: return week.Friday;
+        case 5: return week.Saturday;
+            
+        default: return null;
+        }
+    }
+    //получить индекс первого дня недели для простого расписания
+    function getStartIndexForOneWeekSchedule(week) {
+        if (week.Monday != null)
+            return 0;
+
+        if (week.Tuesday != null)
+            return 1;
+
+        if (week.Wednesday != null)
+            return 2;
+
+        if (week.Thursday != null)
+            return 3;
+
+        if (week.Friday != null)
+            return 4;
+
+        if (week.Saturday != null)
+            return 5;
+        return null;
+    }
+
+    function AddNotice(time) {
+        alert(time);
+
+    }
+</script>
+
+
+<table id="scheduleTable" class="table table-bordered ">
+
+</table>
+
+@{ Html.RenderAction("EditNotification", "Notification");}

@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "HomeUserPage";
+
+    Layout = (Model.IsPartialView) ? null : "../Shared/_Layout.cshtml";
+
+}
+
+@model AUPPRB.Models.ViewModels.UsersModels.UserCommonViewModel
+
+@if (!Model.IsPartialView)
+{
+    <h2>Личная страница пользователя</h2>
+}
+<div class="col-md-3">
+    <div class="avatar">
+        <img src="~/Content/img/profile.jpg" width="100%" alt="">
+    </div>
+</div>
+
+
+<div class="name col-md-offset-1 col-md-8">
+    @if (!Model.IsPartialView)
+    {
+        <h3 style="margin-top:0px;">Основная информация</h3>
+    }
+    <table class="table table-striped">
+        <tr>
+            <td>Логин:</td>
+            <td>@Model.Login</td>
+        </tr>
+        <tr>
+            <td>Фамилия:</td>
+            <td>@Model.LastName</td>
+        </tr>
+        <tr>
+            <td>Имя:</td>
+            <td>@Model.FirstName</td>
+        </tr>
+        <tr>
+            <td>Отчество:</td>
+            <td>@Model.MiddleName</td>
+        </tr>
+        @{
+            if (Model.PrepodMeta != null)
+            {
+                var prepodMeta = Model.PrepodMeta;
+                <tr>
+                    <td>
+                        Статус:
+                    </td>
+                    <td>
+                        Преподаватель
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Отчество:</td>
+                    <td>@prepodMeta.</td>
+                </tr>
+            }
+            else
+            {
+                var studentMeta = Model.StudentMeta;
+
+                if (studentMeta != null)
+                {
+                    <tr>
+                        <td>
+                            Статус:
+                        </td>
+                        <td>
+                            Студент
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Дата поступления:</td>
+                        <td>@studentMeta.AdmissionDate</td>
+                    </tr>
+                    <tr>
+                        <td>Дата выпуска:</td>
+                        <td>@studentMeta.GraduationDate</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>@studentMeta.FacultyId</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+
+            }
+        }
+    </table>
+</div>

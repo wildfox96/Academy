@@ -1,0 +1,96 @@
+﻿@using AUPPRB.Models.ViewModels.ExpertCenterModels
+@model OutputModel
+@{
+    ViewBag.Title = "Prep";
+}
+
+<span style="align-content: center; font-size: 24px; display: table; margin: 0 auto;" class="label label-info"><i class="fa fa-users"></i> Преподаватели:</span>
+<div id="base" align="center">
+    <br />
+    <ul>
+        @foreach (var item in Model.List)
+        {
+            var initial = Model.PrepDispList.FirstOrDefault(p => p.LastName == item);
+            string name = "", photo = "", likes = "", idSotr = "";
+            if (initial != null)
+            {
+                likes = initial.Likes.ToString();
+                idSotr = initial.IdSotr.ToString();
+                if (initial.FirstName.Length > 0 && initial.MiddleName.Length > 0)
+                {
+                    name = item + " " + initial.FirstName[0] + "." + initial.MiddleName[0] + ".";
+                }
+                else
+                {
+                    name = item;
+                }
+
+                if (initial.Photo == null)
+                {
+                    photo = Path.Combine(Server.MapPath("~"), "/Content/images/PrepodPhoto/empty.png");
+                }
+                else
+                {
+                    photo = Path.Combine(Server.MapPath("~"), "/Content/images/PrepodPhoto/") + initial.Photo;
+                }
+
+                <div align="left">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="img-circle" style="background-image: url(@photo); background-repeat: no-repeat; background-position: center; background-size: contain; width: 120px; height: 120px; border: solid 2px deepskyblue;"></div>
+                            </td>
+                            <td>
+                                <div style="font-size: 34px; align-content: center">
+                                    <b>@name</b>
+                                    <br /><span id="likes_count_@idSotr">@likes</span>
+                                    <button onclick="AddLike(@idSotr)"><img src="~/Content/img/like.jpg" width="40" /></button>
+                                    </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <hr style="display: block; height: 1px; border: 0; border-top: 3px solid #000000; margin: 1em 0; padding: 0;">
+                <br />
+                var count = 0;
+                foreach (var item2 in Model.PrepDispList.Where(p => p.LastName == item))
+                {
+                    string a = "";
+
+                    if (item2.Name != null)
+                    {
+                        a = item2.Name;
+                        count++;
+                        <div align="left" class="panel" style="color: white; display: inline-table; margin-right: 3%; font-size: 24px; width: 30%; float: left; background-color: deepskyblue">
+                            <i class="fa fa-book"></i> @a
+                        </div>
+                    }
+
+                    if (count % 3 == 0)
+                    {
+                        <div style="clear: both;"></div>
+                    }
+                }
+                <div style="clear: both;"></div>
+            }
+        }
+    </ul>
+
+    <ul class="pagination">
+        @for (var q = 1; q <= Model.PagingInfo.TotalPages; q++)
+        {
+            <li> <a class="page-number2" href="javascript:void(0);" style="font-size: 24px">@q</a></li>
+        }
+    </ul>
+</div>
+<script>
+    function AddLike(id) {
+        $.post("AddLike", { idSotr: id }, function (data) {
+            if (data.type == 'success') {
+                debugger;
+                document.getElementById("likes_count_" + id).innerText = data.count;
+            } else
+                alertify.error(data.message);
+        });
+    }
+</script>

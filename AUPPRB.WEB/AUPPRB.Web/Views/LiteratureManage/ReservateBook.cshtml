@@ -1,0 +1,110 @@
+﻿@using AUPPRB.Models.ViewModels.jqGridModels
+@using Trirand.Web.Mvc
+@model AUPPRB.Models.ViewModels.Literature.ReservateBookViewModel
+
+@{
+    ViewBag.Title = "Выдача книги";
+
+}
+
+   
+<h2>@ViewBag.Title</h2>
+
+<div id="filter"  style=" padding-top: 20px;">
+    <div class="form-group">
+        <label>Название книги</label>
+        <select class="form-control" id="literatureId">
+            @foreach (var lit in Model.LiteratureNames)
+            {
+                <option value="@lit.Key">@lit.Value</option>
+            }
+        </select>
+
+
+    </div>
+    <div class="form-group">
+        <label>Номер книги</label>
+        <select class="form-control" id="bookId"></select>
+    </div>
+
+
+</div>
+
+
+
+<div style="padding-top: 20px;">
+    @Html.Trirand().JQGrid(Model.UsersGrid.UsersGrid, "UsersGrid")
+
+    @{ Html.RenderPartial("_GridResources", new JqGridSettingsModel()
+       {
+           AdditionalButtonFormater = "UsersFormatter",
+           JqGridName = "UsersGrid",
+           NeedCloseEditWindowAfterSave = false,
+           NeedDeleteButton = false,
+           NeedAddButton = false,
+           NeedEditButton = false,
+           NeedViewButton = true,
+           NeedViewWrappingDialog = true,
+           ViewAction = "UserDetails"
+       }); }
+</div>
+<div class="form-group" style="padding-top: 20px">
+    <a href='@Url.Action("Index")' class="btn btn-default "><i class="glyphicon glyphicon-arrow-left" ></i> Назад</a>
+</div>
+      
+
+
+
+
+
+
+
+
+
+<script>
+    $(function() {
+        FillDropdownDataAsync('@Url.Action("GetBookNumbers")', { id: $("#literatureId").val() }, $("#bookId"), "Выберите номер книги", true);
+
+        $("#literatureId").change(function() {
+            var currentList = this;
+            var selectedItem = $(currentList).val();
+
+            FillDropdownDataAsync('@Url.Action("GetBookNumbers")', { id: selectedItem }, $("#bookId"), "Выберите номер книги", true);
+
+        });
+
+    });
+
+    function UsersFormatter(options) {
+        var template = "";
+
+        template += '<span" onclick="Reservate(' + options.rowId + ')"  class="btn btn-default " title="Выдача книги">Выдать</span>';
+     
+        return template;
+    }
+
+    function Reservate(userId) {
+        if ($("#bookId").val() == "") {
+            alertify.log("Книга не выбрана", "error");
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("ReservateBook")',
+            async: false,
+            data: {
+                bookId: $("#bookId").val(),
+                userId:userId
+            },
+            dataType: "json",
+            type: "POST",
+            error: function() {
+                FillDropdownDataAsync('@Url.Action("GetBookNumbers")', { id: $("#literatureId").val() }, $("#bookId"), "Выберите номер книги", true);
+            },
+            success: function(response) {
+                alertify.log(response.message, response.type);
+                FillDropdownDataAsync('@Url.Action("GetBookNumbers")', { id: $("#literatureId").val() }, $("#bookId"), "Выберите номер книги", true);
+            }});
+    }
+</script>
+

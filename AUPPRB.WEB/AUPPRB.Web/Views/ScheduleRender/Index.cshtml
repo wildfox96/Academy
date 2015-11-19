@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "Расписание занятий";
+}
+<script>
+    //var str = '{"DaysCount":"1","Weeks":{"Monday":{"DateOfDay":"2014-11-03","IsPast":"False","IsCurrentDay":"False","Lessons":[{"Discipline":{"ShortName":"\u0421\u0438\u0441\u0442\u0435\u043c\u044b \u0431\u0430\u0437 \u0434\u0430\u043d\u043d\u044b\u0445"},"LessonTime":"15.00-16.20"},{"Discipline":{"ShortName":"\u0418\u043c"},"LessonTime":"15.00-16.20"},{"Discipline":{"ShortName":"\u041a\u0421\u0418\u0422"},"LessonTime":"16.30-17.50"},{"Discipline":{"ShortName":"\u041f\u043e\u0438\u0434"},"LessonTime":"18.10-19.30"},{"Discipline":{"ShortName":"\u041f\u043e\u0438\u0434"},"LessonTime":"19.40-21.00"}]}},"LessonsTime":["15.00-16.20","16.30-17.50","18.10-19.30","19.40-21.00"]}';
+    //var src = JSON.parse(str);
+
+    $(function () {
+
+        $("#schedualFor").change(function () {
+            var currentList = this;
+            var selectedItem = $(currentList).val();
+            VisibilityControl();
+            if (selectedItem == "forPrepod") {
+                SetPrepodsForSelet(selectedItem);
+            }
+            else if (selectedItem == "forGroup") {
+                SetSpecialnostiForSelet(selectedItem);
+            }
+        });
+
+        $("#selectSpecialnost").change(function () {
+            $.ajax({
+                url: '@Url.Action("GetGodiPostupForConfiguration", "ScheduleRender")',
+                type: "POST",
+                async: true,
+                data: { specialostId: $(this).val() },
+                beforeSend: ShowLoader(),
+                error: HideLoader(),
+                success: function (data) {
+                    var items = "";
+                    items += "<option value='-1' selected='selected'>---Выберите год поступления ---</option>";
+                    $.each(data.Godi, function (i, item) {
+                        items += "<option value=\"" + item + "\">" + item + "</option>";
+                    });
+                    $("#selectGod").html(items);
+                    VisibilityControl();
+                },
+            });
+
+        });
+
+
+        $("#selectGod").change(function () {
+            $.ajax({
+                url: '@Url.Action("GetGroupsForConfiguration", "ScheduleRender")',
+                type: "POST",
+                async: true,
+                data: { specialostId: $("#selectSpecialnost").val(), god: $(this).val() },
+                beforeSend: ShowLoader(),
+                error: HideLoader(),
+                success: function (data) {
+                    var items = "";
+                    items += "<option value='-1' selected='selected'>---Выберите группу ---</option>";
+                    $.each(data.Groups, function (i, item) {
+                        items += "<option value=\"" + item.Id + "\">" + item.Data + "</option>";
+                    });
+                    $("#selectGroup").html(items);
+                    VisibilityControl();
+                },
+            });
+
+        });
+
+    });
+
+
+    function SetPrepodsForSelet(selectedItem) {
+        $.ajax({
+            url: '@Url.Action("GetPrepodsForSchedualConfiguration", "ScheduleRender")',
+            type: "POST",
+            async: true,
+            beforeSend: ShowLoader(),
+            error: HideLoader(),
+            success: function (data) {
+                var items = "";
+                items += "<option value='-1' selected='selected'>---Выберите преподавателя ---</option>";
+                $.each(data.Prepods, function (i, item) {
+                    items += "<option value=\"" + item.Id + "\">" + item.FIO + "</option>";
+                });
+                $("#selectPrepod").html(items);
+                VisibilityControl();
+            },
+
+        });
+    }
+
+    function SetSpecialnostiForSelet(selectedItem) {
+        $.ajax({
+            url: '@Url.Action("GetSpezialnostiForConfiguration", "ScheduleRender")',
+            type: "POST",
+            async: true,
+            beforeSend: ShowLoader(),
+            error: HideLoader(),
+            success: function (data) {
+                var items = "";
+                items += "<option value='-1' selected='selected'>---Выберите специальность ---</option>";
+                $.each(data.Prepods, function (i, item) {
+                    items += "<option value=\"" + item.Id + "\">" + item.FIO + "</option>";
+                });
+                $("#selectSpecialnost").html(items);
+                VisibilityControl();
+            },
+
+        });
+    }
+
+    function GenerateSchedule() {
+        debugger;
+        var configuaration = {
+            DateFrom: $("#dateFrom").datepicker("getDate"),
+            DateTo: $("#dateTo").datepicker("getDate")
+        };
+        switch ($("#schedualFor").val()) {
+            case "self":
+                configuaration["SchedualFor"] = "CurrentUser";
+                break;
+            case "forPrepod":
+                configuaration["SchedualFor"] = "User";
+                configuaration["UserId"] = $("#selectPrepod").val();
+                break;
+            case "forGroup":
+                configuaration["SchedualFor"] = "UserGroup";
+                configuaration["UserGroupId"] = $("#selectGroup").val();
+        }
+
+
+        GenerateScheduleForUser(configuaration);
+    }
+
+    function GetScheduleInExcell() {
+
+        if ($("#dateFrom").val() == "" || $("#dateTo").val() == "") {
+            alertify.log("Укажите дату", "alert");
+            return;
+        }
+
+
+        var dateFrom = $("#dateFrom").datepicker("getDate").toUTCString();
+        var dateTo = $("#dateTo").datepicker("getDate").toUTCString();
+
+        switch ($("#schedualFor").val()) {
+            case "self":
+                $("#userIdForExcell").val("");
+                $("#groupIdForExcell").val("");
+                break;
+            case "forPrepod":
+                if ($("#selectPrepod").val() == -1 || $("#selectPrepod").val() == null) {
+                    alertify.log("Выберите преподавателя из списка", "alert");
+                    return;
+                }
+                $("#userIdForExcell").val($("#selectPrepod").val());
+                $("#groupIdForExcell").val("");
+                break;
+            case "forGroup":
+                if ($("#selectGroup").val() == -1 || $("#selectGroup").val() == null) {
+                    alertify.log("Выберите группу", "alert");
+                    return;
+                }
+                $("#groupIdForExcell").val($("#selectGroup").val());
+                $("#userIdForExcell").val("");
+                break;
+        }
+
+
+
+        $("#dateFromForExcell").val(dateFrom);
+        $("#dateToForExcell").val(dateTo);
+
+        ShowLoader();
+
+        $.fileDownload($("#ExcellForm").prop('action'), {
+            httpMethod: "POST",
+            data: $("#ExcellForm").serialize()
+        })
+                .done(function () { HideLoader(); })
+                .fail(function () { HideLoader(); });
+    }
+
+    function VisibilityControl() {
+        if ($("#schedualFor").val() == "self") {
+            $("#configurationforPrepod").hide();
+
+
+            $("#configurationforGroup").hide();
+            $(".selectSpecialnost").hide();
+            $(".selectGod").hide();
+            $(".selectGroup").hide();
+        }
+        if ($("#schedualFor").val() == "forPrepod") {
+            $("#configurationforPrepod").show();
+
+            $("#configurationforGroup").hide();
+            $(".selectSpecialnost").hide();
+            $(".selectGod").hide();
+            $(".selectGroup").hide();
+        }
+        if ($("#schedualFor").val() == "forGroup") {
+            $("#configurationforPrepod").hide();
+
+            $("#configurationforGroup").show();
+            $(".selectSpecialnost").show();
+
+            if ($("#selectSpecialnost").val() == -1) {
+                $("#selectGod").val(-1);
+                $("#selectGroup").val(-1);
+
+                $(".selectGod").hide();
+                $(".selectGroup").hide();
+            } else {
+                $(".selectGod").show();
+            }
+
+            if ($("#selectGod").val() == -1 || $("#selectGod").val() == null) {
+                $("#selectGroup").val(-1);
+
+                $(".selectGroup").hide();
+            } else {
+                $(".selectGroup").show();
+            }
+
+
+        }
+        HideLoader();
+    }
+
+</script>
+
+<div>
+    <h2>Расписание</h2>
+
+    Дата с <input type="text" id="dateFrom" data-date-format="DD-MM-YYYY" class="dateInput" />
+    Дата по <input type="text" id="dateTo" data-date-format="DD-MM-YYYY" class="dateInput" />
+
+    <button href="#" class="btn btn-info" style="width: 200px;margin-left:20px" onclick="GenerateSchedule()"><i class="fa fa-desktop"></i> Построить расписание</button>
+    <button href="#" class="btn btn-info" style="width: 200px; margin-left: 100px" onclick="GetScheduleInExcell()"><i class="fa fa-download"></i> Выгрузить в Excell</button>
+</div>
+
+
+<div id="extensionConfiguration" style="margin-top:20px">
+    <label for="schedualFor">Пострить расписание:</label>
+    <select class="form-control" id="schedualFor">
+        <option value="self">Для себя</option>
+        <option value="forPrepod">Для преподователя</option>
+        <option value="forGroup">Для группы</option>
+    </select>
+</div>
+
+<div id="configurationData">
+    <div style="display: none" id="configurationforPrepod">
+        <label style="margin-top:20px" for="selectPrepod">Пострить расписание:</label>
+        <select class="form-control" id="selectPrepod"></select>
+    </div>
+    <div style="display: none" id="configurationforGroup">
+        <label style="margin-top:20px" class="selectSpecialnost" for="selectPrepod">Выберите специальность</label>
+        <select class="form-control selectSpecialnost" id="selectSpecialnost"></select>
+
+        <label style="margin-top:20px" style="display: none" class="selectGod" for="selectPrepod">Выберите год поступления</label>
+        <select style="display: none" class="form-control selectGod" id="selectGod"></select>
+
+        <label style="margin-top:20px" style="display: none" class="selectGroup" for="selectPrepod">Выберите группу</label>
+        <select style="display: none" class="form-control selectGroup" id="selectGroup"></select>
+    </div>
+</div>
+
+<form id="ExcellForm" action="@Url.Action("GetScheduleInExcellFormatForUser", "ScheduleRender")">
+    <input type="text" id="dateToForExcell" name="dateTo" data-date-format="DD-MM-YYYY" hidden />
+    <input type="text" id="dateFromForExcell" name="dateFrom" data-date-format="DD-MM-YYYY" hidden />
+    <input type="text" id="userIdForExcell" name="userId" data-date-format="DD-MM-YYYY" hidden />
+    <input type="text" id="groupIdForExcell" name="groupId" data-date-format="DD-MM-YYYY" hidden />
+
+
+
+</form>
+
+
+
+
+@{Html.RenderPartial("_ScheduleResource");}
+
+

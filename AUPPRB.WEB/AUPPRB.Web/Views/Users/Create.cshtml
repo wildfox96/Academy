@@ -1,0 +1,473 @@
+﻿@using AUPPRB.Web.Controllers.Base
+@model AUPPRB.Models.ViewModels.UsersModels.UserCommonViewModel
+@{
+    Layout = null;
+}
+<style>
+    .dropdown-toggle.selectpicker.btn-default {
+        width: 270px !important;
+    }
+
+    .cafedraAdd {
+        margin-left: -15px !important;
+        margin-top: 10px !important;
+    }
+
+    .form-group.select-group {
+        margin: 0 auto !important;
+        margin-left: -15px !important;
+        margin-top: 7px !important;
+        margin-bottom: 7px !important;
+    }
+
+    .tree {
+        min-height: 20px;
+        padding: 19px;
+        margin-bottom: 20px;
+        background-color: #fbfbfb;
+        border: 1px solid #999;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+        .tree li {
+            list-style-type: none;
+            margin: 0;
+            padding: 10px 5px 0 5px;
+            position: relative;
+        }
+
+            .tree li::before, .tree li::after {
+                content: '';
+                left: -20px;
+                position: absolute;
+                right: auto;
+            }
+
+            .tree li::before {
+                border-left: 1px solid #999;
+                bottom: 50px;
+                height: 100%;
+                top: 0;
+                width: 1px;
+            }
+
+            .tree li::after {
+                border-top: 1px solid #999;
+                height: 20px;
+                top: 25px;
+                width: 25px;
+            }
+
+            .tree li span {
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                /*border: 1px solid #999;*/
+                border-radius: 5px;
+                display: inline-block;
+                padding: 3px 8px;
+                text-decoration: none;
+            }
+
+            .tree li.parent_li > span {
+                cursor: pointer;
+            }
+
+        .tree > ul > li::before, .tree > ul > li::after {
+            border: 0;
+        }
+
+        .tree li:last-child::before {
+            height: 30px;
+        }
+
+    /*.tree li.parent_li > span:hover, .tree li.parent_li > span:hover + ul li span {
+                background: #eee;
+                border: 1px solid #94a0b4;
+                color: #000;
+            }*/
+</style>
+
+<!-- Nav tabs -->
+
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#grund" role="tab" data-toggle="tab">Общие сведения</a></li>
+        <li><a href="#rechts" role="tab" data-toggle="tab">Настройка прав доступа</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="grund">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(c => c.IsNewUser)
+
+            <div style="margin:50px;">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-user"></span></div>
+                                @Html.TextBoxFor(m => m.LastName, new { autocomplete = "off", @class = "form-control", @placeholder = "Фамилия" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.LastName)
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-user"></span></div>
+                                @Html.TextBoxFor(m => m.FirstName, new { autocomplete = "off", @class = "form-control", @placeholder = "Имя" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.FirstName)
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-user"></span></div>
+                                @Html.TextBoxFor(m => m.MiddleName, new { autocomplete = "off", @class = "form-control", @placeholder = "Отчество" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.MiddleName)
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-log-in"></span></div>
+                                @Html.TextBoxFor(m => m.Login, new { autocomplete = "off", @class = "form-control", @placeholder = "Логин" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Login)
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-lock"></span></div>
+                                @Html.TextBoxFor(m => m.Password, new { autocomplete = "off", @class = "form-control", @placeholder = "Пароль" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-envelope"></span></div>
+                                @Html.TextBoxFor(m => m.Email, new { autocomplete = "off", @class = "form-control", @placeholder = "E-mail" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-phone"></span></div>
+                                @Html.TextBoxFor(m => m.Phone, new { autocomplete = "off", @class = "form-control", @placeholder = "Номер телефона" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Phone)
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-phone-alt"></span></div>
+                                @Html.TextBoxFor(m => m.AdditionalPhone, new { autocomplete = "off", @class = "form-control", @placeholder = "Дополнительный номер телефона" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.AdditionalPhone)
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-th-large"></span></div>
+                                @Html.TextBoxFor(m => m.Skype, new { autocomplete = "off", @class = "form-control", @placeholder = "Skype" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Skype)
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="glyphicon  glyphicon-th-large"></span></div>
+                                @*@Html.CheckBoxFor(m => m.IsBlocked, new { autocomplete = "off", @class = "form-control" })*@
+                                <input class="form-control" type="checkbox" id="IsBlocked" name="IsBlocked" data-label="Заблокировать пользователя" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
+                        @{
+
+                            if (Model.StudentMeta != null)
+                            {
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(m => m.StudentMeta.FacultyId, (IEnumerable<SelectListItem>)ViewBag.Facultaty, "---Укажите факультет---", new { @class = "selectpicker" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.StudentMeta.FacultyId)
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(m => m.StudentMeta.SpecialityId, (IEnumerable<SelectListItem>)ViewBag.Speciality, "---Укажите специальность---", new { @class = "selectpicker" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.StudentMeta.SpecialityId)
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(m => m.StudentMeta.AdmissionDate, (IEnumerable<SelectListItem>)ViewBag.Years, "---Укажите год начала обучения---", new { @class = "selectpicker" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.StudentMeta.AdmissionDate)
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(m => m.StudentMeta.GraduationDate, (IEnumerable<SelectListItem>)ViewBag.Years, "---Укажите год окончания обучения---", new { @class = "selectpicker" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.StudentMeta.GraduationDate)
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(m => m.StudentMeta.FlowId, (IEnumerable<SelectListItem>)ViewBag.Flows, "---Укажите номер потока---", new { @class = "selectpicker" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.StudentMeta.FlowId)
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(m => m.StudentMeta.GroupId, (IEnumerable<SelectListItem>)ViewBag.Groups, "---Укажите номер группы---", new { @class = "selectpicker" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.StudentMeta.GroupId)
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span>Номер студенческого билета</span></div>
+                                        @Html.TextBoxFor(m => m.StudentMeta.StudentCardNumber, new { autocomplete = "off", @class = "form-control" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.StudentMeta.StudentCardNumber)
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Номер зачетной книжки</span></div>
+                                        @Html.TextBoxFor(m => m.StudentMeta.MarkBookNumber, new { autocomplete = "off", @class = "form-control" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.StudentMeta.MarkBookNumber)
+                                </div>
+                            }
+                            else if (Model.PrepodMeta != null)
+                            {
+                                @Html.HiddenFor(model => model.PrepodMeta.DepartmentsIdsString)
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.DropDownListFor(m => m.PrepodMeta.DegreeId, (IEnumerable<SelectListItem>)ViewBag.Degree, "---Укажите ученую степень---", new { @class = "selectpicker" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.PrepodMeta.DegreeId)
+                                </div>
+                                if (Model.PrepodMeta.DepartmentsIds != null)
+                                {
+                                    <table class="cafedry" style="width: 100%;">
+
+                                        @*@foreach (var departmentsId in Model.PrepodMeta.DepartmentsIds)
+                                            {
+
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group select-group">
+                                                            <div class="input-group cafedrastandartselect " style="width: 100px !important;">
+                                                                @Html.DropDownList("---Укажите кафедру---", (IEnumerable<SelectListItem>)ViewBag.Dapartments, new { @class = "selectpicker cafedryselect", name = "select" + departmentsId })
+                                                            </div>
+                                                            <br />
+                                                        </div>
+                                                        <script>
+                                                            debugger;
+                                                            $('.selectpicker').selectpicker();
+                                                            $("[name=" + select + "@departmentsId" + "]").val("@departmentsId");
+                                                        </script>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class='btn btn-default selectminus'>-</button>
+                                                    </td>
+                                                </tr>
+                                            }*@
+                                        @if (Model.PrepodMeta.DepartmentsIds.Count == 0)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group select-group">
+                                                        <div class="input-group cafedrastandartselect" style="width: 100px !important;">
+                                                            @Html.DropDownList("---Укажите кафедру---", (IEnumerable<SelectListItem>)ViewBag.Dapartments, new { @class = "selectpicker cafedryselect", name = "select" + 0 })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+
+                                            foreach (var departmentsId in ViewBag.Dapartments)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group select-group">
+                                                            <div class="input-group cafedrastandartselect " style="width: 100px !important;">
+                                                                @Html.DropDownList("---Укажите кафедру---", (IEnumerable<SelectListItem>)departmentsId, new { @class = "selectpicker cafedryselect" })
+                                                            </div>
+                                                            <br />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class='btn btn-default selectminus'>-</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+
+                                }
+                                <input class="btn btn-default cafedraAdd" type="button" value="Добавить кафедру">
+                                <div class="divObmen" style="display:none;"></div>
+
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane " id="rechts">
+            @Html.HiddenFor(model => model.Tasks)
+            @{
+                var bCont = new BaseController();
+                var roles = bCont.GetAllRoles();
+
+                <div class="tree well">
+                    <ul>
+                        @{
+                            foreach (var role in roles)
+                            {
+                                <li>
+                                    <span class="spanButton">
+                                        <button type="button" class="btn btn-sm btn-info">
+                                            <span class=" glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span><span style="color: rgb(66, 139, 202); font-size:18px; font-weight: bold; vertical-align: middle;" class="nameOfRole">@role.Name</span>
+
+                                    <ul>
+                                        @{
+                                foreach (var task in role.RoleTask.Select(c => c.Task))
+                                {
+                                    <li><span><input type="checkbox" id="@String.Format("role_{0}__task_{1}", role.Id, task.Id)" name="@String.Format("role_{0}__task_{1}", role.Id, task.Id)" value="@task.Id" data-label="@task.Name" /></span></li>
+                                }
+                                        }
+
+                                    </ul>
+                                </li>
+
+
+
+                            }
+                        }
+                    </ul>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    function personSavedComplete(result) {
+
+    }
+
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+    });
+    $(function () {
+
+        $(".cafedraAdd").on("click", function () {
+            debugger;
+            $(".divObmen").html("");
+            var select = $(".cafedrastandartselect:first select.selectpicker").clone().appendTo($(".divObmen"));
+            console.log(select);
+            $(".cafedry").append("<tr><td><div class='form-group select-group'><div class='input-group' style='width: 100px!important;'>" + $(".divObmen").html() + "</div></div></td><td><button type='button' class='btn btn-default selectminus'>-</button></td></tr>");
+            $('.selectpicker').selectpicker();
+            $(".divObmen").html("");
+            rowdeletecafedraupdate();
+        });
+
+        $(".selectminus").on("click", function () {
+            debugger;
+            if ($("select.cafedryselect").length > 1) {
+                $(this).parent().parent().remove();
+            }
+        });
+
+        function rowdeletecafedraupdate() {
+            $(".selectminus").on("click", function () {
+                if ($("select.cafedryselect").length > 1) {
+                    $(this).parent().parent().remove();
+                }
+
+            });
+
+        }
+        $('.tree li:has(ul)').addClass('parent_li').find(' > span.spanButton').attr('title', 'Свернуть');
+        $('.tree li.parent_li > span.spanButton').on('click', function (e) {
+            var children = $(this).parent('li.parent_li').find(' > ul > li');
+            if (children.is(":visible")) {
+                children.hide('fast');
+                $(this).attr('title', 'Развернуть').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+            } else {
+                children.show('fast');
+                $(this).attr('title', 'Свернуть').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+            }
+            e.stopPropagation();
+        });
+
+        $(".nameOfRole").on("click", function (e) {
+            var children = $(this).parent('li.parent_li').find(' > ul > li');
+
+        });
+        var inputList = $("input[type=checkbox]");
+        for (var i = inputList.length - 1; i >= 0; i--) {
+            $(inputList[i]).prettyCheckable();
+        }
+
+        $(".nameOfRole").click(function () {
+            var children = $(this).parent('li.parent_li').find(' > ul > li');
+            if (children.is(":visible")) {
+                var countChecked = $(children).find("a").length;
+                var checkedsCount = $(children).find("a.checked").length;
+                if (countChecked == checkedsCount) {
+                    $(children).find("a.checked").removeClass("checked");
+                } else {
+                    $(children).find("a").addClass("checked");
+                }
+                $(this).attr('title', 'Развернуть').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+            }
+        });
+
+        @if (!string.IsNullOrEmpty(Model.Tasks))
+        {
+
+                                        @:var tasksmas = "@Model.Tasks";
+                                                                                                                                                                                                                                                @:tasksmas = tasksmas.split(";");
+                                                                                                                                                                                                                                                @: $(tasksmas).each(function (ind, elem) { if (elem != "") { if (!$("input[value=" + elem + "]:first").is(':checked')) { $("input[value=" + elem + "]:first").next().addClass("checked") } } });
+
+
+        }
+    });
+
+    function collectionRolesAndTasks() {
+        alert();
+        var tasks = "";
+        $(".parent_li").find("> ul > li").find("a.checked").each(function (ind, elem) {
+            tasks += $(elem).parent().find("input[type=checkbox]").val() + ";";
+
+        });
+        $("#Tasks").val(tasks);
+
+
+        //кафедры
+
+        var departmentsIds = "";
+        $("select.selectpicker.cafedryselect").each(function (ind, elem) {
+            departmentsIds += $(elem).val() + ";";
+        });
+        console.log(departmentsIds);
+        $("#PrepodMeta_DepartmentsIdsString").val(departmentsIds);
+
+    }
+
+    function BeginSaveUser() {
+        debugger;
+
+    }
+
+</script>

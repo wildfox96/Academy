@@ -1,0 +1,152 @@
+﻿@model AUPPRB.Models.ViewModels.ExpertCenterModels.OutputModel
+@using Json = System.Web.Script.Serialization;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Рейтинг Дисциплин и Преподавателей";
+}
+<link rel="stylesheet" href="~/Content/jquery-ui.css">     
+<script src="~/Scripts/ModalWindow.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.1.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<link rel="stylesheet" href="~/Content/aupprb.css">
+
+<script>
+        function showAlert() {
+            BootAlert('Введите в поле поиска предмет или преподавателя, при этом задав тип. Далее нажмите кнопку Найти!');
+        }
+    
+        $(document).ready(function () {
+            function set(value) {
+                return value;
+            }
+            var isSearch;
+            $(function () {
+                var data = set(@Html.Raw(new Json.JavaScriptSerializer().Serialize(Model.DispList)));
+                $("#find").autocomplete({
+                    source: data
+                });
+            });
+
+            function loadPrep() {
+                var links = document.getElementsByClassName("page-number2");
+                $("#find").val('');
+                $.ajax({
+                    url: '@Url.Action("Prep", "ExpertCenter")',
+                    success: function (result) {
+                        $("#results").html(result);
+                        document.getElementById('First').checked = true;
+                        links[0].style.color = "red";
+                        var data = set(@Html.Raw(new Json.JavaScriptSerializer().Serialize(Model.PrepodList)));
+                        $("#find").autocomplete({
+                            source: data
+                        });
+                    }
+                });
+            }
+
+            function loadDisp() {
+                $("#find").val('');
+                var links = document.getElementsByClassName("page-number");
+                $.ajax({
+                    url: '@Url.Action("Disp", "ExpertCenter")',
+                    success: function (result) {
+                        $("#results").html(result);
+                        document.getElementById('Second').checked = true;
+                        links[0].style.color = "red";
+                        var data = set(@Html.Raw(new Json.JavaScriptSerializer().Serialize(Model.DispList)));
+                        $("#find").autocomplete({
+                            source: data
+                        });
+                    }
+                });
+            }
+
+            $(document).on("click", "input[id='First']",function () { loadPrep();});
+            $(document).on("click", "input[id='Second']",function () { loadDisp();});
+
+            $(document).on("click", ".page-number", function () {
+                var page = parseInt($(this).html());
+                var links = document.getElementsByClassName("page-number");
+                $.ajax({
+                    url: '@Url.Action("Disp")',
+                    data: { page: page },
+                    success: function (data) {
+                        $("#results").html(data);
+                        links[page - 1].style.color = "red";
+                    }
+                });
+            });
+
+            $(document).on("click", ".page-number2", function () {
+                var page = parseInt($(this).html());
+                var links = document.getElementsByClassName("page-number2");
+                $.ajax({
+                    url: '@Url.Action("Prep")',
+                    data: { page: page },
+                    success: function (data) {
+                        $("#results").html(data);
+                        links[page - 1].style.color = "red";
+                    }
+                });
+            });
+
+            $("#results").load('@Url.Action("Disp")', function () {
+                document.getElementById('Second').checked = true;
+                var links = document.getElementsByClassName("page-number");
+                links[0].style.color = "red";
+            });
+
+            function isEmptyOrSpaces(str) {
+                return str === null || str.match(/^ *$/) !== null;
+            }
+
+            $("#check").click(function () {
+                var name = { 'find': $("#find").val() };
+                if (!isEmptyOrSpaces($("#find").val()))
+                isSearch = true;
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Search", "ExpertCenter")',
+                    data: JSON.stringify(name),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        $("#results").html(result);
+                    }
+                });
+            });
+
+            $(document).on("click", "#clear", function () {
+                if (isSearch) {
+                if (document.getElementById('First').checked==true)
+                    loadPrep();
+                else
+                    loadDisp();
+                $("#find").val('');
+                isSearch = false;
+                }
+            });
+        });
+    </script>
+
+
+    <div align="center" style="font-size: 24px">
+        <span class="panel"  style="font-size: 24px;background-color: deepskyblue;color: white"><b>Экспертный центр АупПРБ</b></span>
+        <input type="image" src="~/Content/images/PrepodPhoto/faq.png" width="30" height="30" style="position:relative;top:5px;left:1px;" data-toggle="modal" data-target="#myModal" onclick="showAlert()" />
+            <table style="width: 100%">
+                <tr>
+                    <td style="width:100%">
+                        <input id="find" style="font-size: 24px" name="find" placeholder="Начинайте вводить..." class="form-control input_control" />
+                    </td>
+                    <td align="right">
+                        <button id="clear" style="color: red" class="btn btn-default btn-lg glyphicon glyphicon-remove" title="Нажмите, чтобы очистить результаты поиска"></button>
+                    </td>
+                </tr>
+            </table>   
+            <input type="submit" style="font-size: 24px" value="Найти" id="check" class="btn btn-default btn-lg" />
+        <br />
+        <input style="width:1em;height:1em;" type="radio" name="rbutton" id="First"><b>Преподаватели</b>
+        <input style="width:1em;height:1em;" type="radio" name="rbutton" id="Second"><b>Дисциплины</b>
+    </div>
+    <div style="width:auto; background-color: white;" id="results" class="thumbnail container"></div>
+
+

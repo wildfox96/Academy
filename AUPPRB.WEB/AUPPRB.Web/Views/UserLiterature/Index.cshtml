@@ -1,0 +1,23 @@
+﻿@using AUPPRB.Models.ViewModels.jqGridModels
+@using Trirand.Web.Mvc
+@model AUPPRB.Models.ViewModels.jqGridModels.ReservateBookMetaJqGridModel
+
+@{
+    ViewBag.Title = "Моя литература";
+
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+
+<div style="padding-top: 20px;" >
+    @Html.Trirand().JQGrid(Model.BookJqGridModelGrid, "BookJqGrid")
+</div>
+
+
+
+
+
+
+@{ Html.RenderPartial("_GridResources", new JqGridSettingsModel() { JqGridName = "BookJqGrid", NeedDeleteButton = false, NeedAddButton = false, NeedEditButton = false, NeedViewButton = true, NeedViewWrappingDialog = true, ViewDialogTitle = "Основная информация о книге" }); }

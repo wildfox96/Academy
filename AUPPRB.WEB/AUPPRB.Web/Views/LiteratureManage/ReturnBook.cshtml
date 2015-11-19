@@ -1,0 +1,144 @@
+﻿@using Json = System.Web.Script.Serialization;
+
+
+@{
+    ViewBag.Title = "Возврат книги";
+}
+
+
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css">     
+<script src="~/Scripts/jquery-ui-1.11.1.js"></script>
+<link rel="stylesheet" href="~/Content/aupprb.css">
+
+<style>
+    .form-control {
+        width: 90%;
+    }
+
+    .ui-autocomplete .ui-menu-item {
+        font-size: 20px
+    }
+</style>
+
+
+
+<div style="padding-top: 20px;">
+     
+    <div class="container " style="width: 100%;">
+        <div class="form-group">
+            <label>Номер книги</label>
+            <input id="autocomplete" name="find" placeholder="Введите номер книги" class="form-control " />
+        </div>
+    </div>
+
+
+    <div class="container" style="padding-top: 20px ;background-color: ghostwhite;  width: 100%;">
+        <div class="form-group">
+            <label>Название книги</label>
+            <input type="text" class="form-control" disabled="" id="bookName" />
+        </div>
+        <div class="form-group">
+            <label>Дата выдачи</label>
+            <input type="text" class="form-control" disabled="" id="getDate" />
+        </div>
+        <div class="form-group">
+            <label>Фамилия</label>
+            <input type="text" class="form-control" disabled="" id="lastName" />
+        </div>
+        <div class="form-group">
+            <label>Имя</label>
+            <input type="text" class="form-control" disabled="" id="firstName" />
+        </div>
+        <div class="form-group">
+            <label>Отчество</label>
+            <input type="text" class="form-control" disabled="" id="middleName" />
+        </div>
+    </div>
+</div>
+
+
+
+<div id="actions" style="padding-top: 20px">
+    <a href='@Url.Action("Index")' class="btn btn-default "><i class="glyphicon glyphicon-arrow-left"></i> Назад</a>
+    <span class="btn btn-default" id="returnBtn" onclick="ReturnBook()" style="display: none">Возврат книги</span>
+</div>
+
+
+
+
+
+<script>
+
+    $(function () {
+
+        $('#autocomplete').bind("enterKey", function (e) {
+            setReservatorInfo($(this).val());
+        });
+
+
+        //$('#autocomplete').focusout(function() {
+        //    $(this).trigger("enterKey");
+        //});
+
+
+        $('#autocomplete').keyup(function (e) {
+            if (e.keyCode == 13) {
+                $(this).trigger("enterKey");
+            }
+        });
+        SetReservateBookNumbers();
+
+    });
+
+    function setReservatorInfo(val) {
+        $.post('@Url.Action("GetReservatorInfo")', { bookNumber: val }, function (data) {
+            if (data.success) {
+
+                $("#bookName").val(data.info.BookName);
+                $("#getDate").val(data.info.ReservateDate);
+                $("#firstName").val(data.info.FirstName);
+                $("#middleName").val(data.info.MiddleName);
+                $("#lastName").val(data.info.LastName);
+
+                alertify.log("Книга может быть списана с пользователя", "info");
+                $("#returnBtn").show();
+            } else {
+                alertify.log("Книга не найдена", "info");
+                $("#returnBtn").hide();
+            }
+            SetReservateBookNumbers();
+        });
+    }
+
+    function SetReservateBookNumbers() {
+        $.ajax({
+            url: '@Url.Action("GetReservedBookNumbers")',
+            cache: false,
+            success: function (data) {
+                var array = new Array();
+                for (var i = 0; i < data.length; i++)
+                    array.push(data[i]);
+
+                $("#autocomplete").autocomplete({
+                    minLength: 1,
+                    source: array
+                });
+            }
+        });
+    }
+
+    function ReturnBook() {
+        $.post('@Url.Action("ReturnBook")', { number: $("#autocomplete").val() }, function (response) {
+            alertify.log(response.message, response.type);
+            $("#autocomplete").val("");
+            $("#bookName").val("");
+            $("#getDate").val("");
+            $("#firstName").val("");
+            $("#middleName").val("");
+            $("#lastName").val("");
+            $("#returnBtn").hide();
+            SetReservateBookNumbers();
+        });
+    }
+</script>

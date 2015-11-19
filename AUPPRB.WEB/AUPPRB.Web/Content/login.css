@@ -1,0 +1,43 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	background: #eee;
+	font-size: 18px;
+	font-family: 'Istok Web', sans-serif;
+}
+
+.enter {
+	position: absolute;
+	width: 300px;
+	top: 50%;
+	left: 50%;
+	margin-top: -200px;
+	margin-left: -150px;
+}
+
+img {
+	margin: 0 auto;
+	display: block;
+}
+
+form {
+	margin-top: 20px;
+}
+
+label {
+	font-size: 18px;
+}
+
+.btn {
+	float: right;
+	width: 90px;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0; 
+
+}

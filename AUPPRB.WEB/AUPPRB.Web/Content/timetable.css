@@ -1,0 +1,29 @@
+table tr td{
+	vertical-align: middle !important;
+	border: 2px solid white;
+}
+
+table thead {
+	background: #595959;
+	color: white;
+}
+
+table thead  tr td{
+	border: 0;
+}
+
+.table-striped > td tr:nth-of-type(odd) {
+  background-color: #f2f2f2 !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+  background-color: #d9d9d9 !important;
+
+
+.table tr:first-child{
+	background: #000;
+}
+
+.table tr td {
+	background: #000;
+}

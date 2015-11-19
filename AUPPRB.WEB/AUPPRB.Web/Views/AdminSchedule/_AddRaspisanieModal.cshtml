@@ -1,0 +1,186 @@
+﻿<div class="modal fade" id="addParaModal" tabindex="-1" role="dialog" aria-labelledby="addParaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                <h3 class="modal-title" id="addParaModalLabel">Добавление занятия</h3>
+            </div>
+
+            @using (Ajax.BeginForm("AddPara", "AdminSchedule",
+                new AjaxOptions
+                {
+                    HttpMethod = "Post",
+                    //OnBegin = "Begin",
+                    //OnComplete = "Complete",
+                    OnSuccess = "SuccessResult"
+                },
+                new { name = "AddParaForm", id = "AddParaForm", style = "margin: 0", @class = "form-horizontal" }))
+            {
+                <div class="modal-body">
+
+                    @Html.ValidationSummary(false)
+                    <div id="infoForGroup" class="row text-center">
+                        <span id="speciality"></span>
+                        <span id="year"></span><span> г.п.</span>
+                        (<span id="formaObuchenia"></span>)
+                      
+                    </div>
+                   
+                    <input type="hidden" id="idSpezMeta" name="IdSpezMeta" value=""/>
+                    <input type="hidden" id="potokIdModal" name="PotokId" value="" />
+                    <input type="hidden" id="idOfPrepod" name="PrepodId" value="" />
+                    
+                    <div id="infoForPrepod" class="form-group" style="display: none">
+                        <label class="col-sm-4 control-label" for="Prepod">Преподаватель :</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" id="prepodname" data-key="" data-val="true" value="" readonly>
+
+                        </div>
+                    </div>
+
+                    <div id="potokInfo" class="form-group" style="display: flex">
+                        <label class="col-sm-4 control-label" for="Potok">Поток :</label>
+                        <div class="col-sm-8">
+                            <input  class="form-control" type="text" id="potokname" data-key="" data-val="true" value="" readonly>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="display: flex">
+                        <label class="col-sm-4 control-label" for="UserName">Дата занятия :</label>
+                        <div class="col-sm-8">
+                            <input name="DateOfPara" class="form-control" type="text" id="currDateDialog" data-val-required="Не указано имя" data-val="true" value="" readonly>
+                           
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label id="vremiaZaniatiuLabel" class="col-sm-4 control-label"></label>
+                        <div id="listVremiaZaniatiu" class="col-sm-8" style="margin-bottom: 1%;"> 
+
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group">
+                        <label id="diszipliniLabel" class="col-sm-4 control-label"></label>
+                        <div id="listDisziplini" class="col-sm-8" style="margin-bottom: 1%;">
+
+                        </div>
+
+                    </div>
+                    
+                    <div id="infoPrepodDisciplines" class="form-group">
+                        <label id="prepodiDisciplinesLabel" class="col-sm-4 control-label"></label>
+                        <div id="listPrepodiDisciplines" class="col-sm-8" style="margin-bottom: 1%;">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group" style="display: flex">
+                        <label class="col-sm-4 control-label" for="auditory">Аудитория :</label>
+                        <div class="col-sm-8">
+                            <input name="Auditory" class="form-control" type="text" id="auditory" data-val-required="Не указана аудитория" data-val="true" placeholder="например: 509">
+                        </div>
+                    </div>
+                    
+                    <div id="infoSpezialnosti" class="form-group">
+                        <label id="spezialnostiLabel" class="col-sm-4 control-label"></label>
+                        <div id="listSpezialnosti" class="col-sm-8" style="margin-bottom: 1%;">
+
+                        </div>
+
+                    </div>
+                    
+                    <div id="infoFormOfStudy" class="form-group">
+                        <label id="formOfStudyLabel" class="col-sm-4 control-label"></label>
+                        <div id="listFormOfStudy" class="col-sm-8" style="margin-bottom: 1%;">
+
+                        </div>
+
+                    </div>
+                    
+                    <div id="infoYearOfEntering" class="form-group">
+                        <label id="yearOfEnteringLabel" class="col-sm-4 control-label"></label>
+                        <div id="listYearsOfEntering" class="col-sm-8" style="margin-bottom: 1%;">
+
+                        </div>
+
+                    </div>
+                    
+                    <div id="infoPotoki" class="form-group">
+                        <label id="potokLabel" class="col-sm-4 control-label"></label>
+                        <div id="listPotoki" class="col-sm-8" style="margin-bottom: 1%;">
+
+                        </div>
+
+                    </div>
+                    
+                    <div id="infoTypeOfPara" class="form-group">
+                        <label id="typesOfParaLabel" class="col-sm-4 control-label"></label>
+                        <div id="listTypesOfPara" class="col-sm-8" style="margin-bottom: 1%;">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label id="groupsLabel" class="col-sm-4 control-label"></label>
+                        <div id="listGroups" class="col-sm-8" style="margin-bottom: 1%;">
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label id="subGroupsLabel" class="col-sm-4 control-label"></label>
+                        <div id="listSubGroups" class="col-sm-8" style="margin-bottom: 1%;">
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="sendData">Добавить</button>
+                    <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Отмена</button>
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>
+<script>
+    function SuccessResult(response) { //TODO: брать данные с сервера
+        if (response) {
+           
+            $('#addParaModal').modal('hide');
+            var date = response.date;
+
+            if (response.spez) {
+                var spez = response.spez;
+                var year = response.year;
+                var potokId = response.potokId;
+               
+              
+                RenderGroupScheduleForADay(spez, year, potokId, date);
+            }
+               
+            
+            if (response.prepodId) {
+                var prepodId = response.prepodId;
+                RenderPrepodScheduleForADay(prepodId, date);
+            }
+
+            alertify.log(response.message, response.type);
+
+
+        }
+      
+       
+
+    }
+
+</script>

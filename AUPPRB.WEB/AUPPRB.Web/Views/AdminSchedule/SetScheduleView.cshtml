@@ -1,0 +1,1222 @@
+﻿@using AUPPRB.Common.Extensions
+@using StringExtensions = AUPPRB.Common.Extensions.StringExtensions
+
+@{
+    string prepodName = string.Empty;
+    int prepodId = 0;
+    
+    if (ViewBag.PrepodName!=null && ViewBag.PrepodId!=0)
+    {
+        prepodId = ViewBag.PrepodId;
+        prepodName = ViewBag.PrepodName;
+    }
+   
+
+    string yearOfEntering= (string)ViewBag.YearOfEntering;
+    string formOfStudyName = string.Empty;
+
+    if (ViewBag.FormOfStudy != null)
+    {
+        formOfStudyName = (string)ViewBag.FormOfStudy;
+    }
+    
+    string spezialnost = string.Empty;
+    
+    int kurs = 0;
+    
+    if (yearOfEntering != null)
+    {
+        //kurs = DateTime.Now.Year - Int32.Parse(yearOfEntering);
+        kurs = Int32.Parse(yearOfEntering);
+    }
+
+    string title = (string)ViewBag.Title;
+
+    string potokName = string.Empty;
+    int potokId = 0;
+    int idSpezMeta = 0;
+    
+    if (ViewBag.PotokName != null && ViewBag.PotokId != 0)
+    {
+        potokName = ViewBag.PotokName;
+        potokId = ViewBag.PotokId;
+    }
+    
+    if (ViewBag.Spezialnost != null)
+    {
+        spezialnost = (string) ViewBag.Spezialnost;
+    }
+    
+    if (ViewBag.IdSpezMeta != null)
+    {
+        idSpezMeta = (int) ViewBag.IdSpezMeta;
+    } 
+    
+}
+<style>
+    .hide {
+        display: none;
+    }
+
+    .schedule-head {
+        background-color: beige;
+    }
+
+    .schedule-date-column {
+        background-color: GHOSTWHITE;
+    }
+
+    .subjectBtn {
+        width: 80%;
+    }
+</style>
+<style>
+    #liniya {
+        width: 250px;
+        height: 225px;
+        float: left;
+        text-align: center;
+    }
+
+    .higlightCurrDay {
+        border: solid 2px rgb(168, 183, 242);
+    }
+
+    td.tddate:hover {
+        border: solid 1.2px rgb(139, 255, 128);
+    }
+</style>
+
+
+<h2>@ViewBag.Title</h2>
+
+<div id="far" class="row">
+    <div class="col-xs-3">
+        @Html.Partial("_CalendarPartialView")    
+    </div>
+    <div class="col-xs-9">
+        <div class="row text-center"><span id="currDate"></span></div>
+        <div><a href="#b" id="addPara" data-target="#addParaModal">Добавить пару</a></div>
+
+        @if (title == "Расписание для ППС")
+        {
+            
+            <div class="row text-center">
+                <span id="prepodId" data-key="@prepodId">@prepodName</span> 
+            </div>
+        }
+        else if (title == "Расписание для групп")
+        {
+            <div class="row text-center" >
+                <span id="spezialnost" data-key="@idSpezMeta">@spezialnost</span>  <span id="kurs">@kurs</span> г.п. <span id="typeOfStudy">(@formOfStudyName)</span> <span id="potok" data-key="@potokId">@potokName</span> 
+            </div>
+        }
+       <div id="message" class="text-center"></div>
+      <table id="scheduleTable" class="table table-bordered "></table>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-9">
+        @Html.ActionLink("Назад", "Index","AdminSchedule", new{@class="btn btn-default"})
+    </div>
+   
+</div>
+
+@{Html.RenderPartial("_AddRaspisanieModal");}
+
+@{Html.RenderPartial("_DeleteModal");}
+
+
+<script>
+    
+    var currYear = new Date().getFullYear();
+    var currMonth = new Date().getMonth() + 1;
+
+    var c = new Date();
+    var date = c.getDate() + '-' + (c.getMonth() + 1) + '-' + c.getFullYear();
+
+    $(function() {
+
+        FillCalendar(currMonth, currYear);
+        
+        var spez = $('#spezialnost').text();
+        var idSpezMeta = $('#spezialnost').attr('data-key');
+        var year = $('#kurs').text();
+        var potokId = $('#potok').attr('data-key');
+        var potokName = $('#potok').text();
+        var prepodId = $('#prepodId').attr('data-key');
+        var prepodName = $('#prepodId').text();
+        var formOfStudy = $('#typeOfStudy').text();
+
+        
+        
+        if (spez.length > 0 && year.length > 0 && potokId.length > 0) {
+        
+            RenderGroupScheduleForADay(spez, year, potokId, date);
+            $('#currDate').text(date);
+        } else {
+            RenderPrepodScheduleForADay(prepodId, date);
+            $('#currDate').text(date);
+        }
+
+        
+
+        $("#next").click(function () {
+            showNextMonth();
+        });
+
+        $("#prev").click(function () {
+            showPrevMonth();
+        });
+
+        $('.orientir').on('click', '.tddate, .currtddate', function () {
+
+            //убираем везде обводку
+            $('.tddate').each(function () {
+                $(this).css('border', 'solid 1px');
+            });
+
+            $(this).css('border', 'solid 2px blue');
+            $('.currtddate').css('border', 'dashed 2px red');
+            var date = $(this).attr('id');
+
+            if (spez.length > 0 && year.length > 0 && potokId.length > 0) {
+                RenderGroupScheduleForADay(spez, year, potokId, date);
+            } else {
+                RenderPrepodScheduleForADay(prepodId, date);
+            }
+           
+            $('#currDate').text(date);
+
+        });
+
+        //Открытие диалога для удаления пары
+        $('#far').on('click', '.glyphicon-remove', function (e) {
+            var idOfPara = $(this).attr('id');
+           
+            $('#deleteParaModal').modal('show');
+            $('#paraId').val(idOfPara);
+            $('#prepodId').val(prepodId);
+
+            if (spez.length > 0 && year.length > 0 && potokId.length > 0) {
+                $('#typeOfEntity').val("Groups");
+            } else {
+                $('#typeOfEntity').val("Prepod");
+            }
+
+
+        });
+
+        // Подготовка, и открытие диалога для добавления пары
+        $('#far').on('click', '#addPara', function(e) {
+
+            var dateForDialog = $('#currDate').text();
+
+            e.preventDefault();
+
+            if (spez.length > 0 && year.length > 0 && potokId.length > 0) {
+               
+                $('#addParaModal').modal('show');
+
+                $('#infoPrepodDisciplines').css('display', 'flex');
+                $('#infoForGroup').css('display', 'block');
+                $('#infoForPrepod').css('display', 'none');
+                $('#potokInfo').css('display', 'flex');
+                $('#infoSpezialnosti').css('display', 'none');
+                $('#infoFormOfStudy').css('display', 'none');
+                $('#infoYearOfEntering').css('display', 'none');
+                $('#infoPotoki').css('display', 'none');
+
+
+                $('#speciality').text(spez);
+                $('#year').text(year);
+                //$('#flow').attr('data-key', potokId);
+                //$('#flow').text(potokName);
+                $('#formaObuchenia').text(formOfStudy);
+                $('#currDateDialog').val(dateForDialog);
+                $('#potokname').val(potokName);
+                $('#potokIdModal').val(potokId);
+                $('#idSpezMeta').val(idSpezMeta);
+
+
+                GetTypeOfZanyatie();
+                GetVremiaZaniatiu();
+                GetDisziplini();
+
+            } else {
+               //Подготовка диалога для препода
+
+                $('#addParaModal').modal('show');
+
+                $('#infoForGroup').css('display', 'none');
+                $('#infoForPrepod').css('display', 'flex');
+                $('#potokInfo').css('display', 'none');
+                $('#infoPrepodDisciplines').css('display', 'none');
+                $('#infoSpezialnosti').css('display', 'flex');
+                $('#infoFormOfStudy').css('display', 'flex');
+                $('#infoYearOfEntering').css('display', 'flex');
+                $('#infoPotoki').css('display', 'flex');
+
+                $('#currDateDialog').val(dateForDialog);
+              
+                $('#prepodname').val(prepodName);
+                $('#idOfPrepod').val(prepodId);
+
+
+                GetTypeOfZanyatie();
+                GetVremiaZaniatiu();
+                GetDisciplinesOfPrepod(prepodId);
+                GetSpezialnosti();
+            }
+
+            
+        });
+
+        // Отображение преподов для дисциплин в расписании для групп
+        if (spez.length > 0 && year.length > 0 && potokId.length > 0) {
+            $('#addParaModal').on('change', '#disziplini', function () {
+                var disciplineId = $(this).val();
+                $('#listPrepodiDisciplines').empty();
+                GetPrepodiDisciplines(disciplineId);
+
+            });
+        }
+
+        //Подгрузка форм обучения для расписания преподов
+        $('#addParaModal').on('change', '#spezialnosti', function() {
+
+            var spezId = $(this).val();
+            $('#listFormOfStudy').empty();
+            GetFormsOfStudy(spezId);
+
+        });
+
+        //Отображение дропдауна с годами поступления для расписания препода
+        $('#addParaModal').on('change', '#formsOfStudy', function () {
+
+            var spezId = $('#spezialnosti option:selected').val();
+            var formOfStudyId = $(this).val();
+            $('#listYearsOfEntering').empty();
+            GetYearOfEntering(spezId, formOfStudyId);
+
+        });
+
+        //Потоки для распиания препода
+        $('#addParaModal').on('change', '#years', function() {
+            var year = $(this).val();
+            var spezId = $('#spezialnosti option:selected').val();
+            $('#listPotoki').empty();
+            GetPotoki(spezId, year);
+        });
+
+        // Подгрузка групп и подгрупп для диалолга.....................................................
+
+        if (spez.length > 0 && year.length > 0 && potokId.length > 0) {
+            $('#addParaModal').on('change', '#typeOfPara', function () {
+                if ($('#typeOfPara option:selected').text() != "лекция") {
+                    $('#listGroups').empty();
+                    $('#listSubGroups').empty();
+                    GetGroups(idSpezMeta);
+                    GetSubgroups(idSpezMeta);
+                } else {
+                    $('#subGroupsLabel').text('');
+                    $('#groupsLabel').text('');
+                    $('#listGroups').empty();
+                    $('#listSubGroups').empty();
+                }
+
+            });
+        } else {
+            //Подгрузка групп/подгрупп для препода
+            $('#addParaModal').on('change', '#typeOfPara', function () {
+
+                var year = $('#years option:selected').val();
+                var spezId = $('#spezialnosti option:selected').val();
+                var idSpezMetaInternal = GetIdSpezMeta(spezId, year);
+
+                if ($('#typeOfPara option:selected').text() != "лекция") {
+                    $('#listGroups').empty();
+                    $('#listSubGroups').empty();
+                    GetGroups(idSpezMetaInternal); 
+                    GetSubgroups(idSpezMetaInternal);
+
+                } else {
+                    $('#subGroupsLabel').text('');
+                    $('#groupsLabel').text('');
+                    $('#listGroups').empty();
+                    $('#listSubGroups').empty();
+                }
+
+            });
+
+        }
+
+       
+
+    });
+
+    //Get spezMetaId
+    function GetIdSpezMeta(spezId, god) {
+
+        var spezMetaId = 0;
+        $.ajax({
+
+            url: '@Url.Action("GetSpezMetaId", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data: { spezialnostId: spezId, god: god },
+            success: function (data) {
+                if (data) {
+                    spezMetaId = data.spezMetaId;
+
+                } else {
+                    console.log(data);
+                }
+            }
+
+        });
+        return spezMetaId;
+    }
+
+
+    //Годы поступления для расписания преподов
+    function GetYearOfEntering(spezId, formOfStudyId) {
+        $.ajax({
+
+            url: '@Url.Action("GetGodiPostupForConfiguration", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data: { formOfStudyId: formOfStudyId, spezialnostId: spezId },
+            success: function(data) {
+                if (data) {
+
+                    $('#yearOfEnteringLabel').text('');
+                    var godi = data.Godi;
+
+                    $('#yearOfEnteringLabel').text('Год');
+                    var options = "<option value=''>-- Выберите год поступления--</option>";
+                    var selectList;
+                    for (var i = 0; i < godi.length; i++) {
+                        options += "<option value=" + godi[i] + ">" + godi[i] + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='years' name='Year'>" + options + "</select>";
+                    $('#listYearsOfEntering').html("");
+                    $('#listYearsOfEntering').append(selectList);
+                } else {
+                    console.log(data);
+                }
+
+            }
+
+        });
+
+    }
+
+    //Выбрать потоки для расписания препода
+    function GetPotoki(spezId, god) {
+
+        $.ajax({
+            url: '@Url.Action("GetPotokiForConfiguration", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data: { specialostId: spezId, god: god },
+            success: function(data) {
+                if (data) {
+
+                    $('#potokLabel').text('');
+                    var potoki = data.Potoki;
+
+                    $('#potokLabel').text('Поток');
+                    var options = "<option value=''>-- Выберите поток--</option>";
+                    var selectList;
+                    for (var i = 0; i < potoki.length; i++) {
+                        options += "<option value=" + potoki[i].Id + ">" + potoki[i].Data + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='potoki' name='ПотокИд'>" + options + "</select>";
+                    $('#listPotoki').html("");
+                    $('#listPotoki').append(selectList);
+                } else {
+                    console.log(data);
+                }
+
+            }
+        });
+    }
+
+    //Выбрать форму обучения для расписания преподов
+    function GetFormsOfStudy(spezId) {
+        $.ajax({
+
+            url: '@Url.Action("GetFormsOfStudyForConfiguration", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data: { specialostId: spezId },
+            success: function (data) {
+                if (data) {
+
+                    $('#formOfStudyLabel').text('');
+                    var formsOfStudy = data.FormsOfStudy;
+
+                    $('#formOfStudyLabel').text('Форма обучения');
+                    var options = "<option value=''>-- Выберите форму обучения--</option>";
+                    var selectList;
+                    for (var i = 0; i < formsOfStudy.length; i++) {
+                        options += "<option value=" + formsOfStudy[i].Id + ">" + formsOfStudy[i].Name + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='formsOfStudy' name='FormOfStudyId'>" + options + "</select>";
+                    $('#listFormOfStudy').html("");
+                    $('#listFormOfStudy').append(selectList);
+                } else {
+                    console.log(data);
+                }
+
+            }
+
+        });
+    }
+
+    //Специальности для расписания преподов
+    function GetSpezialnosti() {
+        
+        $.ajax({
+
+            url: '@Url.Action("GetSpezialnostiForConfiguration", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+
+            success: function (data) {
+                if (data) {
+
+                    $('#spezialnostiLabel').text('');
+                    var spezialnosti = data.Spezialnosti;
+
+                    $('#spezialnostiLabel').text('Специальность');
+                    var options = "<option value=''>-- Выберите специальность--</option>";
+                    var selectList;
+                    for (var i = 0; i < spezialnosti.length; i++) {
+                        options += "<option value=" + spezialnosti[i].Id + ">" + spezialnosti[i].Name + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='spezialnosti' name='SpezialnostId'>" + options + "</select>";
+                    $('#listSpezialnosti').html("");
+                    $('#listSpezialnosti').append(selectList);
+                } else {
+                    console.log(data);
+                }
+
+            }
+
+        });
+    }
+
+ 
+    //Подгруппы для группы
+    function GetSubgroups(idSpezMeta) {
+        $.ajax({
+
+            url: '@Url.Action("GetSubGroups", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data: { idSpezMeta: idSpezMeta },
+            success: function (data) {
+                if (data) {
+
+                    $('#subGroupsLabel').text('');
+                    var subGroups = data.SubGroups;
+
+                    $('#subGroupsLabel').text('Подгруппа');
+                    var options = "<option value=''>-- Выберите подгруппу--</option>";
+                    var selectList;
+                    for (var i = 0; i < subGroups.length; i++) {
+                        options += "<option value=" + subGroups[i].Id + ">" + subGroups[i].Name + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='subgroups' name='SubgroupId'>" + options + "</select>";
+                    $('#listSubGroups').html("");
+                    $('#listSubGroups').append(selectList);
+                } else {
+                    console.log(data);
+                }
+
+            }
+
+        });
+
+
+    }
+
+
+    //Группы конкретного специальности и потока
+    function GetGroups(idSpezMeta) {
+
+        $.ajax({
+
+            url: '@Url.Action("GetGroups", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data: { idSpezMeta: idSpezMeta },
+            success: function (data) {
+                if (data) {
+
+                    $('#groupsLabel').text('');
+                    var groups = data.Groups;
+
+                    $('#groupsLabel').text('Группа');
+                    var options = "<option value=''>-- Выберите группу--</option>";
+                    var selectList;
+                    for (var i = 0; i < groups.length; i++) {
+                        options += "<option value=" + groups[i].Id + ">" + groups[i].Name + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='groups' name='GroupId'>" + options + "</select>";
+                    $('#listGroups').html("");
+                    $('#listGroups').append(selectList);
+                } else {
+                    console.log(data);
+                }
+
+            }
+
+        });
+
+    }
+
+    //Дисциплины для препода 
+    function GetDisciplinesOfPrepod(prepodId) {
+        $.ajax({
+
+            url: '@Url.Action("GetDisciplinesOfPrepod", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data: { prepodId: prepodId },
+            success: function (data) {
+                if (data) {
+
+                    $('#diszipliniLabel').text('');
+                    var disziplini = data.Disziplini;
+
+                    $('#diszipliniLabel').text('Дисциплина');
+                    var options = "<option value=''>-- Выберите дисциплину--</option>";
+                    var selectList;
+                    for (var i = 0; i < disziplini.length; i++) {
+                        options += "<option value=" + disziplini[i].Id + ">" + disziplini[i].Name + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='disziplini' name='DisciplineId'>" + options + "</select>";
+                    $('#listDisziplini').html("");
+                    $('#listDisziplini').append(selectList);
+                } else {
+                    console.log(data);
+                }
+
+            }
+
+
+        });
+
+    }
+
+    function GetPrepodiDisciplines(disciplineId) {
+        $.ajax({
+
+            url: '@Url.Action("GetPrepodiDisciplines", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data:{disciplineId:disciplineId},
+            success: function (data) {
+                if (data) {
+
+                    $('#prepodiDisciplinesLabel').text('');
+                    var prepodiDisciplines = data.PrepodiDisciplines;
+
+                    $('#prepodiDisciplinesLabel').text('Преподаватель');
+                    var options = "<option value=''>-- Выберите преподавателя--</option>";
+                    var selectList;
+                    for (var i = 0; i < prepodiDisciplines.length; i++) {
+                        options += "<option value=" + prepodiDisciplines[i].Id + ">" + prepodiDisciplines[i].Name + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='prepodiDiszipline' name='PrepodiDisziplineId'>" + options + "</select>";
+                    $('#listPrepodiDisciplines').html("");
+                    $('#listPrepodiDisciplines').append(selectList);
+                } else {
+                    console.log(data);
+                }
+
+            }
+
+
+        });
+
+    }
+
+  
+    function GetDisziplini() {
+        
+        $.ajax({
+
+            url: '@Url.Action("GetDisziplini", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            success: function (data) {
+                if (data) {
+
+                    $('#diszipliniLabel').text('');
+                    var disziplini = data.Disziplini;
+
+                    $('#diszipliniLabel').text('Дисциплина');
+                    var options = "<option value=''>-- Выберите дисциплину--</option>";
+                    var selectList;
+                    for (var i = 0; i < disziplini.length; i++) {
+                        options += "<option value=" + disziplini[i].Id + ">" + disziplini[i].Name + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='disziplini' name='DisciplineId'>" + options + "</select>";
+                    $('#listDisziplini').html("");
+                    $('#listDisziplini').append(selectList);
+                } else {
+                    console.log(data);
+                }
+
+            }
+
+
+        });
+
+    }
+
+
+    function GetVremiaZaniatiu() {
+
+        $.ajax({
+            
+            url: '@Url.Action("GetVremiaZaniatiu", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            success: function (data){
+                if (data) {
+                    
+                    $('#vremiaZaniatiuLabel').text('');
+                    var vremiaZaniatiu = data.VremiaZaniatiu;
+
+                    $('#vremiaZaniatiuLabel').text('Время занятия');
+                    var options = "<option value=''>-- Выберите время занятия --</option>";
+                    var selectList;
+                    for (var i = 0; i < vremiaZaniatiu.length; i++) {
+                        options += "<option value=" + vremiaZaniatiu[i].Id + ">" + vremiaZaniatiu[i].Name + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select input-validation-error' data-val-required='Не указано время' data-val='true' id='vremiaZaniatiu' name='TimeOfParaId'>" + options + "</select>";
+                    $('#listVremiaZaniatiu').html("");
+                    $('#listVremiaZaniatiu').append(selectList);
+                } else {
+                    console.log(data);
+                }
+                
+            }
+
+
+        });
+
+    }
+
+    function GetTypeOfZanyatie() {
+        $.ajax({
+            url: '@Url.Action("GetTypesOfPara", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            success: function (data) {
+                if (data) {
+
+                    $('#typesOfParaLabel').text('');
+                    var typesOfPara = data.TypesOfPara;
+
+                    $('#typesOfParaLabel').text('Тип занятия');
+                    var options = "<option value=''>-- Выберите тип занятия --</option>";
+                    var selectList;
+                    for (var i = 0; i < typesOfPara.length; i++) {
+                        options += "<option value=" + typesOfPara[i].Id + ">" + typesOfPara[i].Name + "</option>";
+                    }
+                    selectList = "<select class = 'form-control chosen-select' id='typeOfPara' name='TypeOfParaId'>" + options + "</select>";
+                    $('#listTypesOfPara').html("");
+                    $('#listTypesOfPara').append(selectList);
+                } else {
+                    console.log(data);
+                }
+               
+
+            },
+        });
+
+    }
+
+
+    function RenderPrepodScheduleForADay(prepodId, date) {
+     
+        $.ajax({
+            url: '@Url.Action("RenderPrepodScheduleForADay", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data: { prepodId:prepodId, scheduleDate: date },
+            success: function (data) {
+                $('#message').html('');
+                $("#scheduleTable").html("");
+                if (data.Schedule.Lessons.length > 0) {
+                    generateOneDaySchedule(data.Schedule);
+                } else {
+                    var message = "<span style='text-color:red; font-weight: bold'>Занятий нет</span>";
+                    $('#message').html(message);
+                }
+
+                $('.poper').popover({
+                    html: true,
+                    title: function () {
+                        //alert($("#popover-head",this).html());
+                        return $("#popover-head", this).html();
+                    },
+                    content: function () {
+                        return $("#popover-content", this).html();
+                    }
+                });
+            },
+
+        });
+    }
+
+    //Генерирование расписания для групп
+    function RenderGroupScheduleForADay(spez, year, potokId, date) {
+        $.ajax({
+            url: '@Url.Action("RenderGroupScheduleForADay", "AdminSchedule")',
+            datatype: 'json',
+            type: 'POST',
+            async: false,
+            data: { spezialnost: spez, year: year, potok: potokId, scheduleDate: date },
+            success: function (data) {
+                $('#message').html('');
+                $("#scheduleTable").html("");
+                if (data.Schedule.Lessons.length > 0) {
+                    generateOneDaySchedule(data.Schedule);
+                } else {
+                    var message = "<span style='text-color:red; font-weight: bold'>Занятий нет</span>";
+                    $('#message').html(message);
+                }
+
+                $('.poper').popover({
+                    html: true,
+                    title: function () {
+                        //alert($("#popover-head",this).html());
+                        return $("#popover-head", this).html();
+                    },
+                    content: function () {
+                        return $("#popover-content", this).html();
+                    }
+                });
+            },
+
+        });
+
+    }
+    
+    function FillCalendar(month, year) {
+        $.ajax({
+            url: '@Url.Action("GetCalendar")',
+            datatype: 'json',
+            type: 'POST',
+            data: { month: month, year: year },
+            success: function (data) {
+                var curCalendar = data.Calendar;
+                $("#calendarHead").text(curCalendar.MonthName + " " + curCalendar.YearId);
+                $("#calendarHead").attr("data-year", curCalendar.YearId);
+                $("#calendarHead").attr("data-month", curCalendar.MonthId);
+
+                $("#calendarTbData").html("");
+
+                var row = "<tr>";
+                var col = "";
+                for (var i = 0; i < curCalendar.Days.length; i++) {
+
+                    var curDay = curCalendar.Days[i];
+                    if (curDay.IsToday) {
+                        col = "<td id=" + curDay.DateString + " class='currtddate'  style='background-color: " + curDay.Color + "; cursor: pointer; width: 34px; height: 31px; border: dashed 2px red; border-radius: 5px;'>";
+                    } else if (curDay.DateString != null) {
+
+                        col = "<td id=" + curDay.DateString + " class='tddate' style='cursor:pointer; background-color:" + curDay.Color + "; width: 34px; height: 31px; border-radius: 5px;' >";
+                    } else {
+
+                        col = "<td id=" + curDay.DateString + " style='width: 34px; height: 31px; border-radius: 5px;'>";
+                    }
+
+                    //дату отрис не надо
+                    if (!curDay.IsDraw) {
+                        col += "</td>";
+                        row += col;
+                        col = "";
+                    }
+
+                    col += curDay.NumberOfDay;
+                    col += "</td>";
+
+                    row += col;
+                    col = "";
+
+                    if (curDay.IsEndOfWeek || i == curCalendar.Days.length - 1) {
+                        row += "</tr>";
+                        $("#calendarTbData").append(row);
+                        row = "<tr>";
+                    }
+                }
+            }
+        });
+    }
+
+    //расширение Date
+    Date.prototype.addHours = function (h) {
+        this.setHours(this.getHours() + h);
+        return this;
+    };
+
+    //вывод лишь времени 
+    function getTimeForMe(datetime) {
+        var a_p = "";
+        var d = datetime;
+        var curr_hour = d.getHours();
+        if (curr_hour < 12) {
+            a_p = "AM";
+        }
+        else {
+            a_p = "PM";
+        }
+
+        var curr_min = d.getMinutes();
+
+        curr_min = curr_min + "";
+
+        if (curr_min.length == 1) {
+            curr_min = "0" + curr_min;
+        }
+
+        var result = curr_hour + " : " + curr_min + " " + a_p;
+
+        return result;
+
+    }
+
+
+    function showPrevMonth() {
+
+        currYear = $("#calendarHead").attr("data-year");
+        currMonth = $("#calendarHead").attr("data-month");
+
+        var prevmonth = parseInt(currMonth) - 1;
+        var prevyear = parseInt(currYear);
+
+        if (prevmonth < 1) {
+            prevyear = prevyear - 1;
+            prevmonth = 12;
+        }
+
+        FillCalendar(prevmonth, prevyear);
+
+    }
+
+    function showNextMonth() {
+        currYear = $("#calendarHead").attr("data-year");
+        currMonth = $("#calendarHead").attr("data-month");
+
+        var nextmonth = parseInt(currMonth) + 1;
+        var nextyear = parseInt(currYear);
+
+        if (nextmonth > 12) {
+            nextyear = nextyear + 1;
+            nextmonth = 1;
+        }
+        FillCalendar(nextmonth, nextyear);
+    }
+
+</script>
+
+
+<script>    //Отображение расписания на день
+    //TODO: почистить скрипт для отображения только одного дня
+
+    //отрисовка расписания состоящего из одного дня
+    function generateOneDaySchedule(schedule) {
+        var headOfTable = GetTableHeadForSchedule(1, schedule.MaxLessonsInSimilarTime);
+        InsertRowInScheduleTable(headOfTable);
+
+        var scheduleDay = schedule;
+
+        var dateOfDay = Date.parse(scheduleDay.DateOfDay);
+
+        RenderDays(schedule.LessonsTime, scheduleDay, dateOfDay, schedule.MaxLessonsInSimilarTime);
+    }
+   
+    /// отрисовка дня/дней
+    function RenderDays(lessonsTimes, scheduleDays, basedateOfDay,maxLessonsInSimilarTime) {
+        //строка для формирования html
+        var dataStr = "";
+        //строка для временного хранения всякой чепухи
+        var tempStr = "";
+        //временные диапазоны строки
+        var lessonsTimesCount = lessonsTimes.length;
+
+        if (scheduleDays == null || !Array.isArray(scheduleDays)) {
+            var tempDay = scheduleDays;
+            scheduleDays = new Array();
+            scheduleDays.push(tempDay);
+        }
+        //день который отрисовываем
+        var scheduleDay;
+
+        //дата для итерация
+        var dateOfDay;
+        var dayOfDateString;
+        //день недели
+        var dayOfWeekStr;
+
+        for (var lessonTimeIndex = 0; lessonTimeIndex < lessonsTimesCount; lessonTimeIndex++) {
+            //первая строка то день недели
+            dataStr = "<tr>";
+
+            for (var dayIndex = 0; dayIndex < scheduleDays.length; dayIndex++) {
+                dateOfDay = Date.parse(basedateOfDay.toLocaleDateString());
+                dateOfDay.addDays(7 * dayIndex);
+
+                dayOfDateString = dateOfDay.toString("dd-MM");
+                dayOfWeekStr = GetDayOfWeek(new Date(dateOfDay.toString("yyyy-MM-dd")));
+
+                scheduleDay = scheduleDays[dayIndex];
+
+
+                if (lessonTimeIndex == 0) {
+                    tempStr = dayOfDateString + "</br>" + dayOfWeekStr;
+                    dataStr += GetTableCellString({ data: tempStr, rowspan: lessonsTimesCount, classString: "schedule-date-column" });
+
+                }
+
+                dataStr += GetTableCellString({ data: lessonsTimes[lessonTimeIndex] });
+
+                if (scheduleDay != null) {
+                   
+                    var thisTimeLessons = new Array();
+
+                    for (var lessonIndex = 0; lessonIndex < scheduleDay.Lessons.length; lessonIndex++) {
+                        if (scheduleDay.Lessons[lessonIndex].LessonTime == lessonsTimes[lessonTimeIndex])
+                            thisTimeLessons.push(scheduleDay.Lessons[lessonIndex]);
+                    }
+
+                    if (thisTimeLessons.length == 0) {
+                        dataStr += GetTableCellString({ data: "", colspan: maxLessonsInSimilarTime, });
+                    }
+
+
+                    thisTimeLessons=thisTimeLessons.sort(function (lessonA, lessonB) {
+                        var groupA = parseInt(lessonA.GroupName == "" ? "0" : lessonA.GroupName);
+                        var groupB = parseInt(lessonB.GroupName == "" ? "0" : lessonB.GroupName);
+
+                        // Sort first on day
+                        if (groupA > groupB) {
+                            return 1;
+                        } else if (groupA < groupB) {
+                            return -1;
+                        } else {
+
+                            var subGroupA = parseInt(lessonA.SubGroupName == "" ? "0" : lessonA.SubGroupName);
+                            var subGroupB = parseInt(lessonB.SubGroupName == "" ? "0" : lessonB.SubGroupName);
+
+                            if (subGroupA > subGroupB) {
+                                return 1;
+                            } else if (subGroupA < subGroupB) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    });
+
+                    var currentColspan = maxLessonsInSimilarTime;
+                    var oditoryString = "";
+                    for (var lessonSubColumnIndex = 0; lessonSubColumnIndex < thisTimeLessons.length; lessonSubColumnIndex++) {
+                        var tempColspan = Math.ceil(currentColspan /( thisTimeLessons.length - lessonSubColumnIndex));
+                        currentColspan = currentColspan - tempColspan;
+
+                        dataStr += GetTableCellString({
+                            data: GetLessonData(thisTimeLessons[lessonSubColumnIndex]),
+                            colspan: tempColspan,
+                            classString: thisTimeLessons[lessonSubColumnIndex].Discipline.TranslitName
+                        });
+                        oditoryString += lessonSubColumnIndex == 0 ? "" : " / ";
+
+                        oditoryString += thisTimeLessons[lessonSubColumnIndex].Classroom == null ? " - " : thisTimeLessons[lessonSubColumnIndex].Classroom;
+                    }
+                   
+                    dataStr += GetTableCellString({ data: oditoryString });
+                   
+
+
+                } else {
+                    dataStr += GetTableCellString({ data: "", colspan: maxLessonsInSimilarTime });
+                    dataStr += GetTableCellString({ data: "" });
+                }
+
+
+            }
+            dataStr += "</tr>";
+            InsertRowInScheduleTable(dataStr);
+        }
+    }
+
+    //отрисовка шапки таблицы
+    function GetTableHeadForSchedule(count,lessonsColumnColspan) {
+        var headOfTable = "<tr class='schedule-head'>";
+        for (var i = 0; i < count; i++) {
+            headOfTable += GetTableCellString({ data: GetTextWithGlyphicon("Дата занятий", "glyphicon-calendar") });
+            headOfTable += GetTableCellString({ data: GetTextWithGlyphicon("Время занятий", "glyphicon-time") });
+            headOfTable += GetTableCellString({ data: "Занятие", colspan: lessonsColumnColspan });
+            headOfTable += GetTableCellString({ data: GetTextWithGlyphicon("Аудитория", "glyphicon-home") });
+        }
+        headOfTable += "</tr>";
+        return headOfTable;
+    }
+
+    //вставка плавная строки в таблицу
+    function InsertRowInScheduleTable(data) {
+        $(data).hide().appendTo("#scheduleTable").show();
+    }
+
+    //отрисовать одну ячейку
+    function GetTableCellString(opts) {
+        opts.colspan = (opts.colspan == null) ? " " : " colspan=\"" + opts.colspan + "\" ";
+        opts.rowspan = (opts.rowspan == null) ? " " : " rowspan=\"" + opts.rowspan + "\" ";
+        opts.classString = (opts.classString == null) ? " " : " class=\"" + opts.classString + "\" ";
+        opts.idString = (opts.idString == null) ? " " : " id=\"" + opts.idString + "\" ";
+        opts.alignString = (opts.alignString == null) ? " align=\"center\" " : " align=\"" + opts.alignString + + "\" ";
+
+        return "<td  "+ opts.alignString + opts.idString +  opts.classString +  opts.colspan +  opts.rowspan + ">" + opts.data + "</td>";
+    }
+
+    //формирование тултипа для предмета
+    function GetLessonData(lesson) {
+
+        var glyphicon = "";
+        //в зависимости от типа занятия вешаем иконку
+        if (lesson.LessonTypeName == "лекция") {
+            glyphicon = "<span class='glyphicon glyphicon-book'/></span>";
+        }
+        if (lesson.LessonTypeName == "практическое") {
+            glyphicon = "<span class='glyphicon glyphicon-pencil'/></span>";
+        }
+        if (lesson.LessonTypeName == "лабораторная") {
+            glyphicon = "<span class='glyphicon glyphicon-hdd'/></span>";
+        }
+
+        var disciplineStr = "<div class='btn btn-default poper subjectBtn' data-placement='right'>" + glyphicon + "  " + lesson.Discipline.ShortName;
+
+        //вставляем заголовок
+        disciplineStr += "<div id='popover-head' class='hide'>Информация о занятии</div>";
+        //таблица для главной инфы
+        disciplineStr += "<div id='popover-content' class='hide'><table class='table'>";
+
+        //препод
+        if (lesson.PropodMeta != null)
+            disciplineStr += "<tr><td>Преподаватель</td><td>" + lesson.PropodMeta.UserFullName + "</td></tr>";
+
+        if (lesson.LessonTypeId != null) {
+            disciplineStr += "<tr><td>Тип занятия</td><td>" + lesson.LessonTypeName + "</td></tr>";
+
+        }
+
+        if (lesson.SpecialityName != null)
+            disciplineStr += "<tr><td>Специальность</td><td>" + lesson.SpecialityName + "</td></tr>";
+
+        if (lesson.FormOfStudyName != null)
+            disciplineStr += "<tr><td>Форма обучения</td><td>" + lesson.FormOfStudyName + "</td></tr>";
+
+        if (lesson.FlowName != null)
+            disciplineStr += "<tr><td>Поток</td><td>" + lesson.FlowName + "</td></tr>";
+
+        if (lesson.GroupId != null)
+            disciplineStr += "<tr><td>Номер группы</td><td>" + lesson.GroupName + "</td></tr>";
+
+        if (lesson.SubGroupId != null)
+            disciplineStr += "<tr><td>Номер подгруппы</td><td>" + lesson.SubGroupName + "</td></tr>";
+
+        if (lesson.Id != null) {
+            var setupSection = "<tr><td><span class='btn btn-default glyphicon glyphicon-remove' title='Удалить занятие' id='" + lesson.Id + "'></span></td><td><a href='@Url.Action("Edit","AdminSchedule")/"+lesson.Id+"' class='btn btn-default glyphicon glyphicon-wrench' title='Редактировать занятие'></a></td>";
+            disciplineStr += setupSection;
+        }
+        
+        //закрываем все
+        disciplineStr += " </table></div></div>";
+
+        return disciplineStr;
+    }
+
+    //формирование текста с иконкой
+    function GetTextWithGlyphicon(data, glyphicon) {
+        return  "<span><span class=\"glyphicon " + glyphicon + "\"></span> " + data + "</span>";
+    }
+
+    //получить день недели по дате
+    function GetDayOfWeek(date) {
+        var weekday = new Array(7);
+        weekday[0] = "Воскресенье";
+        weekday[1] = "Понедельник";
+        weekday[2] = "Вторник";
+        weekday[3] = "Среда";
+        weekday[4] = "Четверг";
+        weekday[5] = "Пятница";
+        weekday[6] = "Суббота";
+        return weekday[date.getDay()];
+    }
+
+
+    //получеть день по индексу
+    function getDayByIndex(week, index) {
+        if (week == null)
+            return null;
+        switch (index) {
+        case 0:return week.Monday;
+        case 1:return week.Tuesday;
+        case 2:return week.Wednesday;
+        case 3: return week.Thursday;
+        case 4: return week.Friday;
+        case 5: return week.Saturday;
+
+        default: return null;
+        }
+    }
+
+
+    //получить индекс первого дня недели для простого расписания
+    function getStartIndexForOneWeekSchedule(week) {
+        if (week.Monday != null)
+            return 0;
+
+        if (week.Tuesday != null)
+            return 1;
+
+        if (week.Wednesday != null)
+            return 2;
+
+        if (week.Thursday != null)
+            return 3;
+
+        if (week.Friday != null)
+            return 4;
+
+        if (week.Saturday != null)
+            return 5;
+        return null;
+    }
+
+</script>

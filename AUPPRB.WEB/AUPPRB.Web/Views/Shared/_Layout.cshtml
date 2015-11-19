@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    @Scripts.Render("~/bundles/jqueryJs")
+    @Scripts.Render("~/bundles/jqueryUiJs")
+    @Scripts.Render("~/bundles/bootstrapJs")
+    @Scripts.Render("~/bundles/mvcToolsJs")
+    @Scripts.Render("~/bundles/jqGridJs")
+    @Scripts.Render("~/bundles/usefulToolsJs")
+
+    @*@Styles.Render("~/Content/aupprbCss")*@
+    @Styles.Render("~/Content/bootstrapCss")
+    @Styles.Render("~/bundles/usefulCssTools")
+    @Styles.Render("~/Content/themes/custom-theme/customThemeCss")
+    @Styles.Render("~/Content/userInterface")
+</head>
+<body>
+    <header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4  logo">
+                    <img src="~/Content/img/logo.png" height="133" width="163" alt="Логотип">
+                    <h1>Академия управлени при Президенте Республики Беларусь</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <nav class="navbar-default">
+                    <div class="collapse navbar-collapse" id="navbar">
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Главная", "Login", "Home")</li>
+                            <li>@Html.ActionLink("Расписание", "Index", "ScheduleRender")</li>
+                            <li>@Html.ActionLink("Экспертный центр", "Index", "ExpertCenter")</li>
+                            <li>@Html.ActionLink("Мои книги", "Index", "UserLiterature")</li>
+                            <li>@Html.ActionLink("Литература академии", "Index", "AcademyLiterature")</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Администратор<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("Администрирование расписания", "Index", "AdminSchedule")</li>
+                                    <li>@Html.ActionLink("Словари", "Index", "Dictionary")</li>
+                                    <li>@Html.ActionLink("Работа с пользователями", "Users", "Users")</li>
+                                    <li>@Html.ActionLink("Дисциплины", "Index", "Discipline")</li>
+                                    <li>@Html.ActionLink("Управление литературой", "Index", "LiteratureManage")</li>
+                                </ul>
+                            </li>
+                            <li></li>
+                            <li>@Html.ActionLink("Выход", "LogOff", "Home")</li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="container">
+        <div class="row">
+            <main class="col-md-12">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <footer>
+        <p></p>
+    </footer>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<script>
+    $(function () {
+        $("body").height($(window).height());
+        $('.selectpicker').selectpicker();
+
+        $(".dateInput").datepicker();
+        $(".dateInput").datepicker("option", "dateFormat", "dd-mm-yy");
+    });
+</script>
+
+
+

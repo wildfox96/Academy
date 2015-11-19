@@ -1,0 +1,57 @@
+﻿@model AUPPRB.Models.ViewModels.Literature.BookViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = null;
+}
+
+<style>
+    .form-control {
+          width: 45%
+    }
+
+</style>
+
+<div>
+    <div class="container">
+        <div class="form-group">
+            @Html.LabelFor(p => p.BookNumber)
+            @Html.TextBoxFor(p => p.BookNumber, new { @class = "form-control", placeholder = "Полное название", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.FullName)
+            @Html.TextBoxFor(p => p.FullName, new { @class = "form-control", placeholder = "Полное название", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.ShortName)
+            @Html.TextBoxFor(p => p.ShortName, new { @class = "form-control", placeholder = "Краткое название", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Year)
+            @Html.TextBoxFor(p => p.Year, new { @class = "form-control", placeholder = "Год издания", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.PublishingHouse)
+            @Html.TextBoxFor(p => p.PublishingHouse, new { @class = "form-control", placeholder = "Издательство", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.MainAuthor)
+            @Html.TextBoxFor(p => p.MainAuthor, new { @class = "form-control", placeholder = "Автор", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.AdditionalAuthors)
+            @Html.TextBoxFor(p => p.AdditionalAuthors, new { @class = "form-control", placeholder = "Сооавторы", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(p => p.Desqription)
+            @Html.TextAreaFor(p => p.Desqription, new { @class = "form-control", placeholder = "Описание", disabled = "disabled" })
+        </div>
+
+    </div>
+
+
+
+
+
+
+</div>

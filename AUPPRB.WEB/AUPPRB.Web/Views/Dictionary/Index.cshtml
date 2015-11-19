@@ -1,0 +1,19 @@
+﻿@using AUPPRB.Models.ViewModels.jqGridModels
+@using Trirand.Web.Mvc
+@model DictionaryJqGridModel
+
+@{
+    ViewBag.Title = "Управление справочниками";
+    Layout = "../Shared/_Layout.cshtml";
+   
+}
+
+
+
+@Html.Trirand().JQGrid(Model.DictionaryGrid, "DictionaryGrid")
+
+
+@{ Html.RenderPartial("_GridResources", new JqGridSettingsModel(){NeedDeleteButton = false}); }
+
+
+

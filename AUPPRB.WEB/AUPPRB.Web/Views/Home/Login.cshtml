@@ -1,0 +1,74 @@
+﻿@model AUPPRB.Models.ViewModels.LoginViewModel
+@{
+    ViewBag.Title = "Вход в систему";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    
+    @Scripts.Render("~/bundles/jqueryJs")
+    @Scripts.Render("~/bundles/jqueryUiJs")
+    @Scripts.Render("~/bundles/bootstrapJs")
+    @Scripts.Render("~/bundles/mvcToolsJs")
+    @Scripts.Render("~/bundles/usefulToolsJs")
+    @Scripts.Render("~/bundles/jqGridJs")
+
+    @Styles.Render("~/Content/aupprbCss")
+    @Styles.Render("~/Content/bootstrapCss")
+    @Styles.Render("~/bundles/usefulCssTools")
+    @Styles.Render("~/Content/themes/custom-theme/customThemeCss")
+    @Styles.Render("~/Content/userInterface")
+   
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="enter">
+                @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                {
+                    <div class="logo">
+                        <img src="~/Content/img/logo_log.png" width="200" alt="">
+                    </div>
+                    @Html.AntiForgeryToken()
+                    <h1>Вход в систему</h1>
+
+                    <div class="form-group">
+                        @*<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Логин">*@
+                        @Html.TextBoxFor(m => m.Login, new { autocomplete = "off", @class = "form-control", @placeholder = "Логин" })
+                    </div>
+
+                    <div class="form-group">
+                        @*<input type="password" class="form-control" id="inputPassword3" placeholder="Пароль">*@
+                        @Html.PasswordFor(m => m.Password, new { autocomplete = "off", @class = "form-control", @placeholder = "Пароль" })
+                    </div>
+
+                    @*<div class="form-group">
+                            <div class="input-group">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @Html.CheckBoxFor(m => m.RememberMe, new { autocomplete = "off", @class = "form-control" })
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>@Html.LabelFor(m => m.RememberMe, new { autocomplete = "off", @class = "" })</td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>*@
+
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

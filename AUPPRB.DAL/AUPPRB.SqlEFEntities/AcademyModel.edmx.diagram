@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e5fc99570e844c0cb922b25603a40e89" Name="Diagram1" ZoomLevel="81">
+        <EntityTypeShape EntityType="AcademyDBModel.Contact" Width="1.5" PointX="11.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Dictionary" Width="1.5" PointX="3" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.DictionaryType" Width="1.5" PointX="0.75" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Discipline" Width="1.5" PointX="8.25" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Nagruzka" Width="1.5" PointX="5.25" PointY="19.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Prepod_PrepodiCafedri" Width="1.5" PointX="13.5" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Prepod_PrepodMeta" Width="1.5" PointX="8.25" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.PrepodDiscipline" Width="1.5" PointX="10.5" PointY="24" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Raspisanie" Width="1.5" PointX="15.75" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Role" Width="1.5" PointX="11.25" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.RoleTask" Width="1.5" PointX="13.5" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.SostavGrupp" Width="1.5" PointX="15.75" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Spezialnost" Width="1.5" PointX="3" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Spezialnost_SpezialnostMeta" Width="1.5" PointX="5.25" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.SpezialRazdeliDisziplini" Width="1.625" PointX="10.5" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.SpisokGrupp" Width="1.5" PointX="7.5" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Student_StudentMeta" Width="1.5" PointX="13.5" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.Task" Width="1.5" PointX="11.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.User" Width="1.5" PointX="11.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.UserMeta" Width="1.5" PointX="13.5" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.UserRole" Width="1.5" PointX="13.5" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.UserTask" Width="1.5" PointX="13.5" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.VidiRabot" Width="1.5" PointX="5.25" PointY="32.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.VremyaZanyatia" Width="1.5" PointX="13.5" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcademyDBModel.ZaniatiaySemestr" Width="1.5" PointX="12.75" PointY="26.75" IsExpanded="true" />
+        <AssociationConnector Association="AcademyDBModel.FK_UserMeta_Contact" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Dictionary_DictionaryType" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Nagruzka_Dictionary" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Prepod_PrepodMeta_Dictionary1" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Prepod_PropodiCafedri_Dictionary" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Prepod_PropodiCafedri_Dictionary1" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Raspisanie_Dictionary" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Raspisanie_Dictionary1" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Spezialnost_SpezialnostMeta_Dictionary" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Spezialnost_SpezialnostMeta_Dictionary1" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Spezialnost_SpezialnostMeta_Dictionary2" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Spezialnost_SpezialnostMeta_Dictionary3" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_SpezialRazdeliDisziplini_Dictionary" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_SpisokGrupp_Dictionary" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_SpisokGrupp_Dictionary1" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary2" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary3" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_VidiRabot_Dictionary" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_PrepodDiscipline_Discipline" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_SpezialRazdeliDisziplini_Discipline" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Nagruzka_Prepod_PropodiCafedri" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Nagruzka_SpisokGrupp" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Nagruzka_ZaniatiaySemestr" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Prepod_PropodiCafedri_Prepod_PrepodMeta" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Raspisanie_Prepod_PropodiCafedri" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Prepod_PrepodMeta_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_PrepodDiscipline_Prepod_PrepodMeta" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Raspisanie_SpezialRazdeliDisziplini" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Raspisanie_SpisokGrupp" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Raspisanie_VidiRabot" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Raspisanie_VremyaZanyatia" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_RoleTask_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_UserRole_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_RoleTask_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_SostavGrupp_SpisokGrupp" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_SostavGrupp_Student_StudentMeta" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Spezialnost_SpezialnostMeta_Spezialnost" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_SpezialRazdeliDisziplini_Spezialnost_SpezialnostMeta" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_SpisokGrupp_Spezialnost_SpezialnostMeta" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Student_StudentMeta_Spezialnost_SpezialnostMeta" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_ZaniatiaySemestr_SpezialRazdeliDisziplini" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_Student_StudentMeta_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_UserTask_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_UserMeta_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_UserRole_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_UserTask_User" ManuallyRouted="false" />
+        <AssociationConnector Association="AcademyDBModel.FK_ZaniatiaySemestr_VidiRabot" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AcademyDBModel.Notification" Width="1.5" PointX="18.75" PointY="20" />
+        <AssociationConnector Association="AcademyDBModel.FK_Notifications_Dictionary" />
+        <AssociationConnector Association="AcademyDBModel.FK_Notifications_User" />
+        <AssociationConnector Association="AcademyDBModel.FK_Notifications_VremyaZanyatia" />
+        <EntityTypeShape EntityType="AcademyDBModel.Library_Book" Width="1.5" PointX="14.25" PointY="33.875" />
+        <EntityTypeShape EntityType="AcademyDBModel.Library_EventType" Width="1.5" PointX="14.25" PointY="1.25" />
+        <EntityTypeShape EntityType="AcademyDBModel.Library_History" Width="1.5" PointX="16.5" PointY="10.75" />
+        <EntityTypeShape EntityType="AcademyDBModel.Library_Literature" Width="1.5" PointX="12" PointY="33.625" />
+        <EntityTypeShape EntityType="AcademyDBModel.Library_ReservateBook" Width="1.5" PointX="16.5" PointY="6.75" />
+        <AssociationConnector Association="AcademyDBModel.FK_Library_Book_Library_Literature" />
+        <AssociationConnector Association="AcademyDBModel.FK_Library_History_Library_Book" />
+        <AssociationConnector Association="AcademyDBModel.FK_Library_ReservateBook_Library_Book" />
+        <AssociationConnector Association="AcademyDBModel.FK_Library_History_Library_EventType" />
+        <AssociationConnector Association="AcademyDBModel.FK_Library_History_User" />
+        <AssociationConnector Association="AcademyDBModel.FK_Library_ReservateBook_User" />
+        <AssociationConnector Association="AcademyDBModel.FK_Library_ReservateBook_User1" />
+        <AssociationConnector Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary4" />
+        <AssociationConnector Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary5" />
+        <AssociationConnector Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary1" />
+        <EntityTypeShape EntityType="AcademyDBModel.Prepod_PrepodLikes" Width="1.5" PointX="18.5" PointY="15.5" />
+        <AssociationConnector Association="AcademyDBModel.FK_Prepod_PrepodLikes_Prepod_PrepodMeta" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

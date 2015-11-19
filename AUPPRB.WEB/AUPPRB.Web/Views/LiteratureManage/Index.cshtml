@@ -1,0 +1,54 @@
+﻿@using AUPPRB.Models.ViewModels.jqGridModels
+@using Trirand.Web.Mvc
+@model LiteratureMetaJqGridModel
+
+@{
+    ViewBag.Title = "Управление литературой";
+
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+<div style="padding-top: 20px;">
+    <div class="control-group" style="float: left">
+        <a href="@Url.Action("Edit", "LiteratureManage", null)" class="btn btn-default" role='button' data-toggle='modal' data-target='#modal' title='Добавить литературу'>
+            <i class="glyphicon glyphicon-plus-sign"></i> Добавить литературу
+        </a>
+    </div>
+    <div class="control-group" style="margin-left: 200px ">
+        <a href="@Url.Action("ReturnBook", "LiteratureManage", null)" class="btn btn-default" role='button' title='Возврат киниги'>
+            Возврат книги
+        </a>
+    </div>
+
+</div>
+
+<div style="padding-top: 20px;">
+    @Html.Trirand().JQGrid(Model.LiteratureGrid, "LiteratureGrid")
+</div>
+
+
+
+
+
+
+
+
+@{ Html.RenderPartial("_GridResources", new JqGridSettingsModel() { AdditionalButtonFormater = "AdditionalButtons", JqGridName = "LiteratureGrid", NeedCloseEditWindowAfterSave = false, NeedDeleteButton = true, NeedAddButton = true, NeedEditButton = true }); }
+
+
+
+
+<script>
+    function AdditionalButtons(options) {
+        var template = "";
+
+        var reservateUrl = '@Url.Action("ReservateBook")' + "?Id=" + options.rowId;
+
+        template += '<a href="' + reservateUrl + '"  class="btn btn-default " title="Выдача книги">Выдача</a>';
+
+
+        return template;
+    }
+</script>

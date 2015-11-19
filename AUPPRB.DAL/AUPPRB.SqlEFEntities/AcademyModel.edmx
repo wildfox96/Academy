@@ -1,0 +1,3339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AcademyDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="AdditionalPhoneNumber" Type="nvarchar(max)" />
+          <Property Name="Skype" Type="nvarchar(max)" />
+          <Property Name="PhotoPath" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DictionaryTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DictionaryType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsSystem" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Discipline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ShortName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Rate" Type="float" />
+        </EntityType>
+        <EntityType Name="Library_Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LitaratureId" Type="int" Nullable="false" />
+          <Property Name="BookNumber" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Library_EventType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Library_History">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="HistoryDate" Type="datetime" Nullable="false" />
+          <Property Name="EventTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Library_Literature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ShortName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="PublishingHouse" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MainAuthor" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AdditionalAuthors" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Desqription" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Library_ReservateBook">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="ReservateDate" Type="datetime" Nullable="false" />
+          <Property Name="ManagerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nagruzka">
+          <Key>
+            <PropertyRef Name="IdNagrz" />
+          </Key>
+          <Property Name="IdNagrz" Type="int" Nullable="false" />
+          <Property Name="IdZanSem" Type="int" Nullable="false" />
+          <Property Name="Pot" Type="int" Nullable="false" />
+          <Property Name="IdSpiskaGrupp" Type="int" />
+          <Property Name="IdPodGrupp" Type="int" />
+          <Property Name="Semestr" Type="int" Nullable="false" />
+          <Property Name="Chasov" Type="float" Nullable="false" />
+          <Property Name="Chelovek" Type="int" Nullable="false" />
+          <Property Name="IdPrepodaCafedri" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="NotificationId" />
+          </Key>
+          <Property Name="NotificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="IdVremyaZanyatia" Type="int" Nullable="false" />
+          <Property Name="NotificationType" Type="int" Nullable="false" />
+          <Property Name="NotificationData" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prepod_PrepodiCafedri">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSotr" Type="int" Nullable="false" />
+          <Property Name="IdCafedri" Type="int" Nullable="false" />
+          <Property Name="Stavka" Type="float" Nullable="false" />
+          <Property Name="TipZanyatosti" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prepod_PrepodLikes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSotr" Type="int" Nullable="false" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prepod_PrepodMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="DegreeId" Type="int" Nullable="false" />
+          <Property Name="IsDismissed" Type="bit" Nullable="false" />
+          <Property Name="Classroom" Type="nvarchar" MaxLength="50" />
+          <Property Name="Rate" Type="float" />
+          <Property Name="Photo" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PrepodDiscipline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSotr" Type="int" Nullable="false" />
+          <Property Name="IdDisciplini" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Raspisanie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Data" Type="datetime" Nullable="false" />
+          <Property Name="IdUchPlanaDisciplini" Type="int" Nullable="false" />
+          <Property Name="IdVidaRaboti" Type="int" Nullable="false" />
+          <Property Name="IdVremyaZanyatia" Type="int" Nullable="false" />
+          <Property Name="Pot" Type="int" Nullable="false" />
+          <Property Name="IdSpiskaGrupp" Type="int" />
+          <Property Name="NomerPodGrupp" Type="int" />
+          <Property Name="IdPrepodaCafedri" Type="int" Nullable="false" />
+          <Property Name="NomerZanyatiaVSemestre" Type="int" Nullable="false" />
+          <Property Name="Auditoriya" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TipNagruzki" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoleTask">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SostavGrupp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlagVibil" Type="bit" Nullable="false" />
+          <Property Name="IdSpisGroup" Type="int" Nullable="false" />
+          <Property Name="IdStud" Type="int" Nullable="false" />
+          <Property Name="Podgroup" Type="int" Nullable="false" />
+          <Property Name="DateEdit" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Spezialnost">
+          <Key>
+            <PropertyRef Name="IdSpez" />
+          </Key>
+          <Property Name="IdSpez" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Spezialnost" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Spez" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Shifr" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Qualification" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Spezialnost_SpezialnostMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSpez" Type="int" Nullable="false" />
+          <Property Name="GodPostup" Type="int" Nullable="false" />
+          <Property Name="IdFrmObuch" Type="int" Nullable="false" />
+          <Property Name="SrokObuch" Type="int" Nullable="false" />
+          <Property Name="IdPodrazd" Type="int" Nullable="false" />
+          <Property Name="IdFak" Type="int" Nullable="false" />
+          <Property Name="IdInst" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpezialRazdeliDisziplini">
+          <Key>
+            <PropertyRef Name="IdUpPlanDisciplini" />
+          </Key>
+          <Property Name="IdUpPlanDisciplini" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSpezMeta" Type="int" Nullable="false" />
+          <Property Name="IdRzdRab" Type="int" Nullable="false" />
+          <Property Name="IdDisciplini" Type="int" Nullable="false" />
+          <Property Name="Nm1" Type="int" Nullable="false" />
+          <Property Name="Nm2" Type="int" Nullable="false" />
+          <Property Name="Nm3" Type="int" Nullable="false" />
+          <Property Name="Lekcii" Type="int" Nullable="false" />
+          <Property Name="PracticheskieZanyatia" Type="int" Nullable="false" />
+          <Property Name="LaboratornieRaboti" Type="int" Nullable="false" />
+          <Property Name="SeminarskieZanyatia" Type="int" Nullable="false" />
+          <Property Name="SamostoyatelnieRaboti" Type="int" Nullable="false" />
+          <Property Name="Sem1" Type="int" Nullable="false" />
+          <Property Name="Sem2" Type="int" Nullable="false" />
+          <Property Name="Sem3" Type="int" Nullable="false" />
+          <Property Name="Sem4" Type="int" Nullable="false" />
+          <Property Name="Sem5" Type="int" Nullable="false" />
+          <Property Name="Sem6" Type="int" Nullable="false" />
+          <Property Name="Sem7" Type="int" Nullable="false" />
+          <Property Name="Sem8" Type="int" Nullable="false" />
+          <Property Name="Sem9" Type="int" Nullable="false" />
+          <Property Name="Sem10" Type="int" Nullable="false" />
+          <Property Name="Sem11" Type="int" Nullable="false" />
+          <Property Name="Sem12" Type="int" Nullable="false" />
+          <Property Name="ExamSem" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DifZachetSem" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ZachetSem" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="KursovayaSem" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="KontrolnayanSem" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="KfP" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="KfT" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpisokGrupp">
+          <Key>
+            <PropertyRef Name="IdGroup" />
+          </Key>
+          <Property Name="IdGroup" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Gruppa" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pot" Type="int" Nullable="false" />
+          <Property Name="KolPodGroup" Type="int" Nullable="false" />
+          <Property Name="KolStud" Type="int" Nullable="false" />
+          <Property Name="Kurs" Type="int" />
+          <Property Name="IdPodrazd" Type="int" Nullable="false" />
+          <Property Name="IdSpezMeta" Type="int" Nullable="false" />
+          <Property Name="FlagVib" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student_StudentMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FacultyId" Type="int" Nullable="false" />
+          <Property Name="IdSpecialtyMeta" Type="int" Nullable="false" />
+          <Property Name="Pot" Type="int" Nullable="false" />
+          <Property Name="AdmissionDate" Type="datetime" Nullable="false" />
+          <Property Name="GraduationDate" Type="datetime" Nullable="false" />
+          <Property Name="IsDismissed" Type="bit" Nullable="false" />
+          <Property Name="MarkBookNumber" Type="int" Nullable="false" />
+          <Property Name="StudentCardNumber" Type="int" Nullable="false" />
+          <Property Name="FormOfStuduId" Type="int" Nullable="false" />
+          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="SpecialtyId" Type="int" Nullable="false" />
+          <Property Name="FlowId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BlockDate" Type="datetime" />
+          <Property Name="BlockReason" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="ErrorPinCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ContactId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserTask">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VidiRabot">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRzdRab" Type="int" Nullable="false" />
+          <Property Name="VidRaboti" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="VidRabSokr" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="VidRabAbbreviatura" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NormChas" Type="float" Nullable="false" />
+          <Property Name="Flag" Type="bit" Nullable="false" />
+          <Property Name="Primech1" Type="nvarchar(max)" />
+          <Property Name="Primech2" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="VremyaZanyatia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ZaniatiaySemestr">
+          <Key>
+            <PropertyRef Name="IdZanSem" />
+          </Key>
+          <Property Name="IdZanSem" Type="int" Nullable="false" />
+          <Property Name="IdUchPDisciplini" Type="int" Nullable="false" />
+          <Property Name="Sem" Type="int" Nullable="false" />
+          <Property Name="Chs" Type="int" Nullable="false" />
+          <Property Name="IdVidaRabot" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Dictionary_DictionaryType">
+          <End Role="DictionaryType" Type="Self.DictionaryType" Multiplicity="1" />
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DictionaryType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dictionary">
+              <PropertyRef Name="DictionaryTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_Book_Library_Literature">
+          <End Role="Library_Literature" Type="Self.Library_Literature" Multiplicity="1" />
+          <End Role="Library_Book" Type="Self.Library_Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Library_Literature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_Book">
+              <PropertyRef Name="LitaratureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_History_Library_Book">
+          <End Role="Library_Book" Type="Self.Library_Book" Multiplicity="1" />
+          <End Role="Library_History" Type="Self.Library_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Library_Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_History">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_History_Library_EventType">
+          <End Role="Library_EventType" Type="Self.Library_EventType" Multiplicity="1" />
+          <End Role="Library_History" Type="Self.Library_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Library_EventType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_History">
+              <PropertyRef Name="EventTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_History_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Library_History" Type="Self.Library_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_History">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_ReservateBook_Library_Book">
+          <End Role="Library_Book" Type="Self.Library_Book" Multiplicity="1" />
+          <End Role="Library_ReservateBook" Type="Self.Library_ReservateBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Library_Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_ReservateBook">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_ReservateBook_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Library_ReservateBook" Type="Self.Library_ReservateBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_ReservateBook">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_ReservateBook_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Library_ReservateBook" Type="Self.Library_ReservateBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_ReservateBook">
+              <PropertyRef Name="ManagerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nagruzka_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Nagruzka" Type="Self.Nagruzka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nagruzka">
+              <PropertyRef Name="Pot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nagruzka_Prepod_PropodiCafedri">
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="1" />
+          <End Role="Nagruzka" Type="Self.Nagruzka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nagruzka">
+              <PropertyRef Name="IdPrepodaCafedri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nagruzka_SpisokGrupp">
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="0..1" />
+          <End Role="Nagruzka" Type="Self.Nagruzka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpisokGrupp">
+              <PropertyRef Name="IdGroup" />
+            </Principal>
+            <Dependent Role="Nagruzka">
+              <PropertyRef Name="IdSpiskaGrupp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nagruzka_ZaniatiaySemestr">
+          <End Role="ZaniatiaySemestr" Type="Self.ZaniatiaySemestr" Multiplicity="1" />
+          <End Role="Nagruzka" Type="Self.Nagruzka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ZaniatiaySemestr">
+              <PropertyRef Name="IdZanSem" />
+            </Principal>
+            <Dependent Role="Nagruzka">
+              <PropertyRef Name="IdZanSem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="NotificationType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_VremyaZanyatia">
+          <End Role="VremyaZanyatia" Type="Self.VremyaZanyatia" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VremyaZanyatia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="IdVremyaZanyatia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PrepodLikes_Prepod_PrepodMeta">
+          <End Role="Prepod_PrepodMeta" Type="Self.Prepod_PrepodMeta" Multiplicity="1" />
+          <End Role="Prepod_PrepodLikes" Type="Self.Prepod_PrepodLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodLikes">
+              <PropertyRef Name="IdSotr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PrepodMeta_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Prepod_PrepodMeta" Type="Self.Prepod_PrepodMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodMeta">
+              <PropertyRef Name="DegreeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PrepodMeta_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Prepod_PrepodMeta" Type="Self.Prepod_PrepodMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodMeta">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PropodiCafedri_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="IdCafedri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PropodiCafedri_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="TipZanyatosti" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PropodiCafedri_Prepod_PrepodMeta">
+          <End Role="Prepod_PrepodMeta" Type="Self.Prepod_PrepodMeta" Multiplicity="1" />
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="IdSotr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrepodDiscipline_Discipline">
+          <End Role="Discipline" Type="Self.Discipline" Multiplicity="1" />
+          <End Role="PrepodDiscipline" Type="Self.PrepodDiscipline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discipline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PrepodDiscipline">
+              <PropertyRef Name="IdDisciplini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrepodDiscipline_Prepod_PrepodMeta">
+          <End Role="Prepod_PrepodMeta" Type="Self.Prepod_PrepodMeta" Multiplicity="1" />
+          <End Role="PrepodDiscipline" Type="Self.PrepodDiscipline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PrepodDiscipline">
+              <PropertyRef Name="IdSotr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="Pot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="TipNagruzki" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_Prepod_PropodiCafedri">
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdPrepodaCafedri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_SpezialRazdeliDisziplini">
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdUpPlanDisciplini" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdUchPlanaDisciplini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_SpisokGrupp">
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="0..1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpisokGrupp">
+              <PropertyRef Name="IdGroup" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdSpiskaGrupp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_VidiRabot">
+          <End Role="VidiRabot" Type="Self.VidiRabot" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VidiRabot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdVidaRaboti" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_VremyaZanyatia">
+          <End Role="VremyaZanyatia" Type="Self.VremyaZanyatia" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VremyaZanyatia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdVremyaZanyatia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleTask_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RoleTask" Type="Self.RoleTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoleTask">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="RoleTask" Type="Self.RoleTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoleTask">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SostavGrupp_SpisokGrupp">
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="1" />
+          <End Role="SostavGrupp" Type="Self.SostavGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpisokGrupp">
+              <PropertyRef Name="IdGroup" />
+            </Principal>
+            <Dependent Role="SostavGrupp">
+              <PropertyRef Name="IdSpisGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SostavGrupp_Student_StudentMeta">
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="1" />
+          <End Role="SostavGrupp" Type="Self.SostavGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student_StudentMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SostavGrupp">
+              <PropertyRef Name="IdStud" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdFrmObuch" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdPodrazd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Dictionary2">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdFak" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Dictionary3">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdInst" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Spezialnost">
+          <End Role="Spezialnost" Type="Self.Spezialnost" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spezialnost">
+              <PropertyRef Name="IdSpez" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdSpez" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpezialRazdeliDisziplini_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdRzdRab" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpezialRazdeliDisziplini_Discipline">
+          <End Role="Discipline" Type="Self.Discipline" Multiplicity="1" />
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discipline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdDisciplini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpezialRazdeliDisziplini_Spezialnost_SpezialnostMeta">
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="1" />
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdSpezMeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpisokGrupp_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpisokGrupp">
+              <PropertyRef Name="Pot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpisokGrupp_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpisokGrupp">
+              <PropertyRef Name="IdPodrazd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpisokGrupp_Spezialnost_SpezialnostMeta">
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="1" />
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpisokGrupp">
+              <PropertyRef Name="IdSpezMeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="FlowId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary2">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary4">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary5">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Spezialnost_SpezialnostMeta">
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="IdSpecialtyMeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMeta_Contact">
+          <End Role="Contact" Type="Self.Contact" Multiplicity="1" />
+          <End Role="UserMeta" Type="Self.UserMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contact">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserMeta">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMeta_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserMeta" Type="Self.UserMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserMeta">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTask_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VidiRabot_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="VidiRabot" Type="Self.VidiRabot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VidiRabot">
+              <PropertyRef Name="IdRzdRab" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ZaniatiaySemestr_SpezialRazdeliDisziplini">
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="1" />
+          <End Role="ZaniatiaySemestr" Type="Self.ZaniatiaySemestr" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdUpPlanDisciplini" />
+            </Principal>
+            <Dependent Role="ZaniatiaySemestr">
+              <PropertyRef Name="IdUchPDisciplini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ZaniatiaySemestr_VidiRabot">
+          <End Role="VidiRabot" Type="Self.VidiRabot" Multiplicity="1" />
+          <End Role="ZaniatiaySemestr" Type="Self.ZaniatiaySemestr" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VidiRabot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ZaniatiaySemestr">
+              <PropertyRef Name="IdVidaRabot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AcademyDBModelStoreContainer">
+          <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dictionary" EntityType="Self.Dictionary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DictionaryType" EntityType="Self.DictionaryType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Discipline" EntityType="Self.Discipline" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Library_Book" EntityType="Self.Library_Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Library_EventType" EntityType="Self.Library_EventType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Library_History" EntityType="Self.Library_History" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Library_Literature" EntityType="Self.Library_Literature" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Library_ReservateBook" EntityType="Self.Library_ReservateBook" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nagruzka" EntityType="Self.Nagruzka" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prepod_PrepodiCafedri" EntityType="Self.Prepod_PrepodiCafedri" Schema="dbo" Table="Prepod.PrepodiCafedri" store:Type="Tables" />
+          <EntitySet Name="Prepod_PrepodLikes" EntityType="Self.Prepod_PrepodLikes" Schema="dbo" Table="Prepod.PrepodLikes" store:Type="Tables" />
+          <EntitySet Name="Prepod_PrepodMeta" EntityType="Self.Prepod_PrepodMeta" Schema="dbo" Table="Prepod.PrepodMeta" store:Type="Tables" />
+          <EntitySet Name="PrepodDiscipline" EntityType="Self.PrepodDiscipline" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Raspisanie" EntityType="Self.Raspisanie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleTask" EntityType="Self.RoleTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SostavGrupp" EntityType="Self.SostavGrupp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Spezialnost" EntityType="Self.Spezialnost" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Spezialnost_SpezialnostMeta" EntityType="Self.Spezialnost_SpezialnostMeta" Schema="dbo" Table="Spezialnost.SpezialnostMeta" store:Type="Tables" />
+          <EntitySet Name="SpezialRazdeliDisziplini" EntityType="Self.SpezialRazdeliDisziplini" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SpisokGrupp" EntityType="Self.SpisokGrupp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student_StudentMeta" EntityType="Self.Student_StudentMeta" Schema="dbo" Table="Student.StudentMeta" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserMeta" EntityType="Self.UserMeta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTask" EntityType="Self.UserTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VidiRabot" EntityType="Self.VidiRabot" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VremyaZanyatia" EntityType="Self.VremyaZanyatia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ZaniatiaySemestr" EntityType="Self.ZaniatiaySemestr" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Dictionary_DictionaryType" Association="Self.FK_Dictionary_DictionaryType">
+            <End Role="DictionaryType" EntitySet="DictionaryType" />
+            <End Role="Dictionary" EntitySet="Dictionary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_Book_Library_Literature" Association="Self.FK_Library_Book_Library_Literature">
+            <End Role="Library_Literature" EntitySet="Library_Literature" />
+            <End Role="Library_Book" EntitySet="Library_Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_History_Library_Book" Association="Self.FK_Library_History_Library_Book">
+            <End Role="Library_Book" EntitySet="Library_Book" />
+            <End Role="Library_History" EntitySet="Library_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_History_Library_EventType" Association="Self.FK_Library_History_Library_EventType">
+            <End Role="Library_EventType" EntitySet="Library_EventType" />
+            <End Role="Library_History" EntitySet="Library_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_History_User" Association="Self.FK_Library_History_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Library_History" EntitySet="Library_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_ReservateBook_Library_Book" Association="Self.FK_Library_ReservateBook_Library_Book">
+            <End Role="Library_Book" EntitySet="Library_Book" />
+            <End Role="Library_ReservateBook" EntitySet="Library_ReservateBook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_ReservateBook_User" Association="Self.FK_Library_ReservateBook_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Library_ReservateBook" EntitySet="Library_ReservateBook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_ReservateBook_User1" Association="Self.FK_Library_ReservateBook_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Library_ReservateBook" EntitySet="Library_ReservateBook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nagruzka_Dictionary" Association="Self.FK_Nagruzka_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Nagruzka" EntitySet="Nagruzka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nagruzka_Prepod_PropodiCafedri" Association="Self.FK_Nagruzka_Prepod_PropodiCafedri">
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+            <End Role="Nagruzka" EntitySet="Nagruzka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nagruzka_SpisokGrupp" Association="Self.FK_Nagruzka_SpisokGrupp">
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+            <End Role="Nagruzka" EntitySet="Nagruzka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nagruzka_ZaniatiaySemestr" Association="Self.FK_Nagruzka_ZaniatiaySemestr">
+            <End Role="ZaniatiaySemestr" EntitySet="ZaniatiaySemestr" />
+            <End Role="Nagruzka" EntitySet="Nagruzka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Dictionary" Association="Self.FK_Notifications_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_User" Association="Self.FK_Notifications_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_VremyaZanyatia" Association="Self.FK_Notifications_VremyaZanyatia">
+            <End Role="VremyaZanyatia" EntitySet="VremyaZanyatia" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PrepodLikes_Prepod_PrepodMeta" Association="Self.FK_Prepod_PrepodLikes_Prepod_PrepodMeta">
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+            <End Role="Prepod_PrepodLikes" EntitySet="Prepod_PrepodLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PrepodMeta_Dictionary1" Association="Self.FK_Prepod_PrepodMeta_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PrepodMeta_User" Association="Self.FK_Prepod_PrepodMeta_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PropodiCafedri_Dictionary" Association="Self.FK_Prepod_PropodiCafedri_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PropodiCafedri_Dictionary1" Association="Self.FK_Prepod_PropodiCafedri_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PropodiCafedri_Prepod_PrepodMeta" Association="Self.FK_Prepod_PropodiCafedri_Prepod_PrepodMeta">
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrepodDiscipline_Discipline" Association="Self.FK_PrepodDiscipline_Discipline">
+            <End Role="Discipline" EntitySet="Discipline" />
+            <End Role="PrepodDiscipline" EntitySet="PrepodDiscipline" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrepodDiscipline_Prepod_PrepodMeta" Association="Self.FK_PrepodDiscipline_Prepod_PrepodMeta">
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+            <End Role="PrepodDiscipline" EntitySet="PrepodDiscipline" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_Dictionary" Association="Self.FK_Raspisanie_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_Dictionary1" Association="Self.FK_Raspisanie_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_Prepod_PropodiCafedri" Association="Self.FK_Raspisanie_Prepod_PropodiCafedri">
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_SpezialRazdeliDisziplini" Association="Self.FK_Raspisanie_SpezialRazdeliDisziplini">
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_SpisokGrupp" Association="Self.FK_Raspisanie_SpisokGrupp">
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_VidiRabot" Association="Self.FK_Raspisanie_VidiRabot">
+            <End Role="VidiRabot" EntitySet="VidiRabot" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_VremyaZanyatia" Association="Self.FK_Raspisanie_VremyaZanyatia">
+            <End Role="VremyaZanyatia" EntitySet="VremyaZanyatia" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleTask_Role" Association="Self.FK_RoleTask_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RoleTask" EntitySet="RoleTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleTask_Task" Association="Self.FK_RoleTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="RoleTask" EntitySet="RoleTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SostavGrupp_SpisokGrupp" Association="Self.FK_SostavGrupp_SpisokGrupp">
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+            <End Role="SostavGrupp" EntitySet="SostavGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SostavGrupp_Student_StudentMeta" Association="Self.FK_SostavGrupp_Student_StudentMeta">
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+            <End Role="SostavGrupp" EntitySet="SostavGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Dictionary" Association="Self.FK_Spezialnost_SpezialnostMeta_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Dictionary1" Association="Self.FK_Spezialnost_SpezialnostMeta_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Dictionary2" Association="Self.FK_Spezialnost_SpezialnostMeta_Dictionary2">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Dictionary3" Association="Self.FK_Spezialnost_SpezialnostMeta_Dictionary3">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Spezialnost" Association="Self.FK_Spezialnost_SpezialnostMeta_Spezialnost">
+            <End Role="Spezialnost" EntitySet="Spezialnost" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpezialRazdeliDisziplini_Dictionary" Association="Self.FK_SpezialRazdeliDisziplini_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpezialRazdeliDisziplini_Discipline" Association="Self.FK_SpezialRazdeliDisziplini_Discipline">
+            <End Role="Discipline" EntitySet="Discipline" />
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpezialRazdeliDisziplini_Spezialnost_SpezialnostMeta" Association="Self.FK_SpezialRazdeliDisziplini_Spezialnost_SpezialnostMeta">
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpisokGrupp_Dictionary" Association="Self.FK_SpisokGrupp_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpisokGrupp_Dictionary1" Association="Self.FK_SpisokGrupp_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpisokGrupp_Spezialnost_SpezialnostMeta" Association="Self.FK_SpisokGrupp_Spezialnost_SpezialnostMeta">
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary" Association="Self.FK_Student_StudentMeta_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary2" Association="Self.FK_Student_StudentMeta_Dictionary2">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary4" Association="Self.FK_Student_StudentMeta_Dictionary4">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary5" Association="Self.FK_Student_StudentMeta_Dictionary5">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Spezialnost_SpezialnostMeta" Association="Self.FK_Student_StudentMeta_Spezialnost_SpezialnostMeta">
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_User" Association="Self.FK_Student_StudentMeta_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMeta_Contact" Association="Self.FK_UserMeta_Contact">
+            <End Role="Contact" EntitySet="Contact" />
+            <End Role="UserMeta" EntitySet="UserMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMeta_User" Association="Self.FK_UserMeta_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserMeta" EntitySet="UserMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_User" Association="Self.FK_UserRole_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTask_Task" Association="Self.FK_UserTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTask_User" Association="Self.FK_UserTask_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VidiRabot_Dictionary" Association="Self.FK_VidiRabot_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="VidiRabot" EntitySet="VidiRabot" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ZaniatiaySemestr_SpezialRazdeliDisziplini" Association="Self.FK_ZaniatiaySemestr_SpezialRazdeliDisziplini">
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+            <End Role="ZaniatiaySemestr" EntitySet="ZaniatiaySemestr" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ZaniatiaySemestr_VidiRabot" Association="Self.FK_ZaniatiaySemestr_VidiRabot">
+            <End Role="VidiRabot" EntitySet="VidiRabot" />
+            <End Role="ZaniatiaySemestr" EntitySet="ZaniatiaySemestr" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AcademyDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AdditionalPhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Skype" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhotoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserMeta" Relationship="Self.FK_UserMeta_Contact" FromRole="Contact" ToRole="UserMeta" />
+        </EntityType>
+        <EntityType Name="Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DictionaryTypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DictionaryType" Relationship="Self.FK_Dictionary_DictionaryType" FromRole="Dictionary" ToRole="DictionaryType" />
+          <NavigationProperty Name="Nagruzka" Relationship="Self.FK_Nagruzka_Dictionary" FromRole="Dictionary" ToRole="Nagruzka" />
+          <NavigationProperty Name="Prepod_PrepodMeta" Relationship="Self.FK_Prepod_PrepodMeta_Dictionary1" FromRole="Dictionary" ToRole="Prepod_PrepodMeta" />
+          <NavigationProperty Name="Prepod_PrepodiCafedri" Relationship="Self.FK_Prepod_PropodiCafedri_Dictionary" FromRole="Dictionary" ToRole="Prepod_PrepodiCafedri" />
+          <NavigationProperty Name="Prepod_PrepodiCafedri1" Relationship="Self.FK_Prepod_PropodiCafedri_Dictionary1" FromRole="Dictionary" ToRole="Prepod_PrepodiCafedri" />
+          <NavigationProperty Name="Raspisanie" Relationship="Self.FK_Raspisanie_Dictionary" FromRole="Dictionary" ToRole="Raspisanie" />
+          <NavigationProperty Name="Raspisanie1" Relationship="Self.FK_Raspisanie_Dictionary1" FromRole="Dictionary" ToRole="Raspisanie" />
+          <NavigationProperty Name="Spezialnost_SpezialnostMeta" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Dictionary" FromRole="Dictionary" ToRole="Spezialnost_SpezialnostMeta" />
+          <NavigationProperty Name="Spezialnost_SpezialnostMeta1" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Dictionary1" FromRole="Dictionary" ToRole="Spezialnost_SpezialnostMeta" />
+          <NavigationProperty Name="Spezialnost_SpezialnostMeta2" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Dictionary2" FromRole="Dictionary" ToRole="Spezialnost_SpezialnostMeta" />
+          <NavigationProperty Name="Spezialnost_SpezialnostMeta3" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Dictionary3" FromRole="Dictionary" ToRole="Spezialnost_SpezialnostMeta" />
+          <NavigationProperty Name="SpezialRazdeliDisziplini" Relationship="Self.FK_SpezialRazdeliDisziplini_Dictionary" FromRole="Dictionary" ToRole="SpezialRazdeliDisziplini" />
+          <NavigationProperty Name="SpisokGrupp" Relationship="Self.FK_SpisokGrupp_Dictionary" FromRole="Dictionary" ToRole="SpisokGrupp" />
+          <NavigationProperty Name="SpisokGrupp1" Relationship="Self.FK_SpisokGrupp_Dictionary1" FromRole="Dictionary" ToRole="SpisokGrupp" />
+          <NavigationProperty Name="Student_StudentMeta" Relationship="Self.FK_Student_StudentMeta_Dictionary" FromRole="Dictionary" ToRole="Student_StudentMeta" />
+          <NavigationProperty Name="Student_StudentMeta1" Relationship="Self.FK_Student_StudentMeta_Dictionary2" FromRole="Dictionary" ToRole="Student_StudentMeta" />
+          <NavigationProperty Name="Student_StudentMeta2" Relationship="Self.FK_Student_StudentMeta_Dictionary3" FromRole="Dictionary" ToRole="Student_StudentMeta" />
+          <NavigationProperty Name="VidiRabot" Relationship="Self.FK_VidiRabot_Dictionary" FromRole="Dictionary" ToRole="VidiRabot" />
+          <NavigationProperty Name="Notifications" Relationship="AcademyDBModel.FK_Notifications_Dictionary" FromRole="Dictionary" ToRole="Notification" />
+          <NavigationProperty Name="Student_StudentMeta3" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary4" FromRole="Dictionary" ToRole="Student_StudentMeta" />
+          <NavigationProperty Name="Student_StudentMeta4" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary5" FromRole="Dictionary" ToRole="Student_StudentMeta" />
+          <NavigationProperty Name="Student_StudentMeta5" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary1" FromRole="Dictionary" ToRole="Student_StudentMeta" />
+        </EntityType>
+        <EntityType Name="DictionaryType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsSystem" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Dictionary" Relationship="Self.FK_Dictionary_DictionaryType" FromRole="DictionaryType" ToRole="Dictionary" />
+        </EntityType>
+        <EntityType Name="Discipline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PrepodDiscipline" Relationship="Self.FK_PrepodDiscipline_Discipline" FromRole="Discipline" ToRole="PrepodDiscipline" />
+          <NavigationProperty Name="SpezialRazdeliDisziplini" Relationship="Self.FK_SpezialRazdeliDisziplini_Discipline" FromRole="Discipline" ToRole="SpezialRazdeliDisziplini" />
+          <Property Name="Rate" Type="Double" />
+        </EntityType>
+        <EntityType Name="Nagruzka">
+          <Key>
+            <PropertyRef Name="IdNagrz" />
+          </Key>
+          <Property Name="IdNagrz" Type="Int32" Nullable="false" />
+          <Property Name="IdZanSem" Type="Int32" Nullable="false" />
+          <Property Name="Pot" Type="Int32" Nullable="false" />
+          <Property Name="IdSpiskaGrupp" Type="Int32" />
+          <Property Name="IdPodGrupp" Type="Int32" />
+          <Property Name="Semestr" Type="Int32" Nullable="false" />
+          <Property Name="Chasov" Type="Double" Nullable="false" />
+          <Property Name="Chelovek" Type="Int32" Nullable="false" />
+          <Property Name="IdPrepodaCafedri" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PotDictionary" Relationship="Self.FK_Nagruzka_Dictionary" FromRole="Nagruzka" ToRole="Dictionary" />
+          <NavigationProperty Name="Prepod_PrepodiCafedri" Relationship="Self.FK_Nagruzka_Prepod_PropodiCafedri" FromRole="Nagruzka" ToRole="Prepod_PrepodiCafedri" />
+          <NavigationProperty Name="SpisokGrupp" Relationship="Self.FK_Nagruzka_SpisokGrupp" FromRole="Nagruzka" ToRole="SpisokGrupp" />
+          <NavigationProperty Name="ZaniatiaySemestr" Relationship="Self.FK_Nagruzka_ZaniatiaySemestr" FromRole="Nagruzka" ToRole="ZaniatiaySemestr" />
+        </EntityType>
+        <EntityType Name="Prepod_PrepodiCafedri">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdSotr" Type="Int32" Nullable="false" />
+          <Property Name="IdCafedri" Type="Int32" Nullable="false" />
+          <Property Name="Stavka" Type="Double" Nullable="false" />
+          <Property Name="TipZanyatosti" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CafdraDictionary" Relationship="Self.FK_Prepod_PropodiCafedri_Dictionary" FromRole="Prepod_PrepodiCafedri" ToRole="Dictionary" />
+          <NavigationProperty Name="TipZanyatostiDictionary1" Relationship="Self.FK_Prepod_PropodiCafedri_Dictionary1" FromRole="Prepod_PrepodiCafedri" ToRole="Dictionary" />
+          <NavigationProperty Name="Nagruzka" Relationship="Self.FK_Nagruzka_Prepod_PropodiCafedri" FromRole="Prepod_PrepodiCafedri" ToRole="Nagruzka" />
+          <NavigationProperty Name="Prepod_PrepodMeta" Relationship="Self.FK_Prepod_PropodiCafedri_Prepod_PrepodMeta" FromRole="Prepod_PrepodiCafedri" ToRole="Prepod_PrepodMeta" />
+          <NavigationProperty Name="Raspisanie" Relationship="Self.FK_Raspisanie_Prepod_PropodiCafedri" FromRole="Prepod_PrepodiCafedri" ToRole="Raspisanie" />
+        </EntityType>
+        <EntityType Name="Prepod_PrepodMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="DegreeId" Type="Int32" Nullable="false" />
+          <Property Name="IsDismissed" Type="Boolean" Nullable="false" />
+          <Property Name="Classroom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Dictionary" Relationship="Self.FK_Prepod_PrepodMeta_Dictionary1" FromRole="Prepod_PrepodMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="Prepod_PrepodiCafedri" Relationship="Self.FK_Prepod_PropodiCafedri_Prepod_PrepodMeta" FromRole="Prepod_PrepodMeta" ToRole="Prepod_PrepodiCafedri" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Prepod_PrepodMeta_User" FromRole="Prepod_PrepodMeta" ToRole="User" />
+          <NavigationProperty Name="PrepodDiscipline" Relationship="Self.FK_PrepodDiscipline_Prepod_PrepodMeta" FromRole="Prepod_PrepodMeta" ToRole="PrepodDiscipline" />
+          <Property Name="Rate" Type="Double" />
+          <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Prepod_PrepodLikes" Relationship="AcademyDBModel.FK_Prepod_PrepodLikes_Prepod_PrepodMeta" FromRole="Prepod_PrepodMeta" ToRole="Prepod_PrepodLikes" />
+        </EntityType>
+        <EntityType Name="PrepodDiscipline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSotr" Type="Int32" Nullable="false" />
+          <Property Name="IdDisciplini" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Discipline" Relationship="Self.FK_PrepodDiscipline_Discipline" FromRole="PrepodDiscipline" ToRole="Discipline" />
+          <NavigationProperty Name="Prepod_PrepodMeta" Relationship="Self.FK_PrepodDiscipline_Prepod_PrepodMeta" FromRole="PrepodDiscipline" ToRole="Prepod_PrepodMeta" />
+        </EntityType>
+        <EntityType Name="Raspisanie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Data" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdUchPlanaDisciplini" Type="Int32" Nullable="false" />
+          <Property Name="IdVidaRaboti" Type="Int32" Nullable="false" />
+          <Property Name="IdVremyaZanyatia" Type="Int32" Nullable="false" />
+          <Property Name="Pot" Type="Int32" Nullable="false" />
+          <Property Name="IdSpiskaGrupp" Type="Int32" />
+          <Property Name="NomerPodGrupp" Type="Int32" />
+          <Property Name="IdPrepodaCafedri" Type="Int32" Nullable="false" />
+          <Property Name="NomerZanyatiaVSemestre" Type="Int32" Nullable="false" />
+          <Property Name="Auditoriya" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TipNagruzki" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PotDictionary" Relationship="Self.FK_Raspisanie_Dictionary" FromRole="Raspisanie" ToRole="Dictionary" />
+          <NavigationProperty Name="TipNagruzkiDictionary" Relationship="Self.FK_Raspisanie_Dictionary1" FromRole="Raspisanie" ToRole="Dictionary" />
+          <NavigationProperty Name="Prepod_PrepodiCafedri" Relationship="Self.FK_Raspisanie_Prepod_PropodiCafedri" FromRole="Raspisanie" ToRole="Prepod_PrepodiCafedri" />
+          <NavigationProperty Name="SpezialRazdeliDisziplini" Relationship="Self.FK_Raspisanie_SpezialRazdeliDisziplini" FromRole="Raspisanie" ToRole="SpezialRazdeliDisziplini" />
+          <NavigationProperty Name="SpisokGrupp" Relationship="Self.FK_Raspisanie_SpisokGrupp" FromRole="Raspisanie" ToRole="SpisokGrupp" />
+          <NavigationProperty Name="VidiRabot" Relationship="Self.FK_Raspisanie_VidiRabot" FromRole="Raspisanie" ToRole="VidiRabot" />
+          <NavigationProperty Name="VremyaZanyatia" Relationship="Self.FK_Raspisanie_VremyaZanyatia" FromRole="Raspisanie" ToRole="VremyaZanyatia" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="RoleTask" Relationship="Self.FK_RoleTask_Role" FromRole="Role" ToRole="RoleTask" />
+          <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_Role" FromRole="Role" ToRole="UserRole" />
+        </EntityType>
+        <EntityType Name="RoleTask">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_RoleTask_Role" FromRole="RoleTask" ToRole="Role" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_RoleTask_Task" FromRole="RoleTask" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="SostavGrupp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlagVibil" Type="Boolean" Nullable="false" />
+          <Property Name="IdSpisGroup" Type="Int32" Nullable="false" />
+          <Property Name="IdStud" Type="Int32" Nullable="false" />
+          <Property Name="Podgroup" Type="Int32" Nullable="false" />
+          <Property Name="DateEdit" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="SpisokGrupp" Relationship="Self.FK_SostavGrupp_SpisokGrupp" FromRole="SostavGrupp" ToRole="SpisokGrupp" />
+          <NavigationProperty Name="Student_StudentMeta" Relationship="Self.FK_SostavGrupp_Student_StudentMeta" FromRole="SostavGrupp" ToRole="Student_StudentMeta" />
+        </EntityType>
+        <EntityType Name="Spezialnost">
+          <Key>
+            <PropertyRef Name="IdSpez" />
+          </Key>
+          <Property Name="IdSpez" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Spezialnost1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Spez" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Shifr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Qualification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Spezialnost_SpezialnostMeta" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Spezialnost" FromRole="Spezialnost" ToRole="Spezialnost_SpezialnostMeta" />
+        </EntityType>
+        <EntityType Name="Spezialnost_SpezialnostMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSpez" Type="Int32" Nullable="false" />
+          <Property Name="GodPostup" Type="Int32" Nullable="false" />
+          <Property Name="IdFrmObuch" Type="Int32" Nullable="false" />
+          <Property Name="SrokObuch" Type="Int32" Nullable="false" />
+          <Property Name="IdPodrazd" Type="Int32" Nullable="false" />
+          <Property Name="IdFak" Type="Int32" Nullable="false" />
+          <Property Name="IdInst" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FormObuchDictionary" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Dictionary" FromRole="Spezialnost_SpezialnostMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="PodrazdDictionary" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Dictionary1" FromRole="Spezialnost_SpezialnostMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="FakDictionary" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Dictionary2" FromRole="Spezialnost_SpezialnostMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="InstDictionary" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Dictionary3" FromRole="Spezialnost_SpezialnostMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="Spezialnost" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Spezialnost" FromRole="Spezialnost_SpezialnostMeta" ToRole="Spezialnost" />
+          <NavigationProperty Name="SpezialRazdeliDisziplini" Relationship="Self.FK_SpezialRazdeliDisziplini_Spezialnost_SpezialnostMeta" FromRole="Spezialnost_SpezialnostMeta" ToRole="SpezialRazdeliDisziplini" />
+          <NavigationProperty Name="SpisokGrupp" Relationship="Self.FK_SpisokGrupp_Spezialnost_SpezialnostMeta" FromRole="Spezialnost_SpezialnostMeta" ToRole="SpisokGrupp" />
+          <NavigationProperty Name="Student_StudentMeta" Relationship="Self.FK_Student_StudentMeta_Spezialnost_SpezialnostMeta" FromRole="Spezialnost_SpezialnostMeta" ToRole="Student_StudentMeta" />
+        </EntityType>
+        <EntityType Name="SpezialRazdeliDisziplini">
+          <Key>
+            <PropertyRef Name="IdUpPlanDisciplini" />
+          </Key>
+          <Property Name="IdUpPlanDisciplini" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSpezMeta" Type="Int32" Nullable="false" />
+          <Property Name="IdRzdRab" Type="Int32" Nullable="false" />
+          <Property Name="IdDisciplini" Type="Int32" Nullable="false" />
+          <Property Name="Nm1" Type="Int32" Nullable="false" />
+          <Property Name="Nm2" Type="Int32" Nullable="false" />
+          <Property Name="Nm3" Type="Int32" Nullable="false" />
+          <Property Name="Lekcii" Type="Int32" Nullable="false" />
+          <Property Name="PracticheskieZanyatia" Type="Int32" Nullable="false" />
+          <Property Name="LaboratornieRaboti" Type="Int32" Nullable="false" />
+          <Property Name="SeminarskieZanyatia" Type="Int32" Nullable="false" />
+          <Property Name="SamostoyatelnieRaboti" Type="Int32" Nullable="false" />
+          <Property Name="Sem1" Type="Int32" Nullable="false" />
+          <Property Name="Sem2" Type="Int32" Nullable="false" />
+          <Property Name="Sem3" Type="Int32" Nullable="false" />
+          <Property Name="Sem4" Type="Int32" Nullable="false" />
+          <Property Name="Sem5" Type="Int32" Nullable="false" />
+          <Property Name="Sem6" Type="Int32" Nullable="false" />
+          <Property Name="Sem7" Type="Int32" Nullable="false" />
+          <Property Name="Sem8" Type="Int32" Nullable="false" />
+          <Property Name="Sem9" Type="Int32" Nullable="false" />
+          <Property Name="Sem10" Type="Int32" Nullable="false" />
+          <Property Name="Sem11" Type="Int32" Nullable="false" />
+          <Property Name="Sem12" Type="Int32" Nullable="false" />
+          <Property Name="ExamSem" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DifZachetSem" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ZachetSem" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="KursovayaSem" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="KontrolnayanSem" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="KfP" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="KfT" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="RazdRabotDictionary" Relationship="Self.FK_SpezialRazdeliDisziplini_Dictionary" FromRole="SpezialRazdeliDisziplini" ToRole="Dictionary" />
+          <NavigationProperty Name="Discipline" Relationship="Self.FK_SpezialRazdeliDisziplini_Discipline" FromRole="SpezialRazdeliDisziplini" ToRole="Discipline" />
+          <NavigationProperty Name="Raspisanie" Relationship="Self.FK_Raspisanie_SpezialRazdeliDisziplini" FromRole="SpezialRazdeliDisziplini" ToRole="Raspisanie" />
+          <NavigationProperty Name="Spezialnost_SpezialnostMeta" Relationship="Self.FK_SpezialRazdeliDisziplini_Spezialnost_SpezialnostMeta" FromRole="SpezialRazdeliDisziplini" ToRole="Spezialnost_SpezialnostMeta" />
+          <NavigationProperty Name="ZaniatiaySemestr" Relationship="Self.FK_ZaniatiaySemestr_SpezialRazdeliDisziplini" FromRole="SpezialRazdeliDisziplini" ToRole="ZaniatiaySemestr" />
+        </EntityType>
+        <EntityType Name="SpisokGrupp">
+          <Key>
+            <PropertyRef Name="IdGroup" />
+          </Key>
+          <Property Name="IdGroup" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Gruppa" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pot" Type="Int32" Nullable="false" />
+          <Property Name="KolPodGroup" Type="Int32" Nullable="false" />
+          <Property Name="KolStud" Type="Int32" Nullable="false" />
+          <Property Name="Kurs" Type="Int32" />
+          <Property Name="IdPodrazd" Type="Int32" Nullable="false" />
+          <Property Name="IdSpezMeta" Type="Int32" Nullable="false" />
+          <Property Name="FlagVib" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PotokDictionary" Relationship="Self.FK_SpisokGrupp_Dictionary" FromRole="SpisokGrupp" ToRole="Dictionary" />
+          <NavigationProperty Name="PodrazdDictionary" Relationship="Self.FK_SpisokGrupp_Dictionary1" FromRole="SpisokGrupp" ToRole="Dictionary" />
+          <NavigationProperty Name="Nagruzka" Relationship="Self.FK_Nagruzka_SpisokGrupp" FromRole="SpisokGrupp" ToRole="Nagruzka" />
+          <NavigationProperty Name="Raspisanie" Relationship="Self.FK_Raspisanie_SpisokGrupp" FromRole="SpisokGrupp" ToRole="Raspisanie" />
+          <NavigationProperty Name="SostavGrupp" Relationship="Self.FK_SostavGrupp_SpisokGrupp" FromRole="SpisokGrupp" ToRole="SostavGrupp" />
+          <NavigationProperty Name="Spezialnost_SpezialnostMeta" Relationship="Self.FK_SpisokGrupp_Spezialnost_SpezialnostMeta" FromRole="SpisokGrupp" ToRole="Spezialnost_SpezialnostMeta" />
+        </EntityType>
+        <EntityType Name="Student_StudentMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FacultyId" Type="Int32" Nullable="false" />
+          <Property Name="IdSpecialtyMeta" Type="Int32" Nullable="false" />
+          <Property Name="Pot" Type="Int32" Nullable="false" />
+          <Property Name="AdmissionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="GraduationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsDismissed" Type="Boolean" Nullable="false" />
+          <Property Name="MarkBookNumber" Type="Int32" Nullable="false" />
+          <Property Name="StudentCardNumber" Type="Int32" Nullable="false" />
+          <Property Name="FormOfStuduId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FormObuchDictionary" Relationship="Self.FK_Student_StudentMeta_Dictionary" FromRole="Student_StudentMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="FacultyDictionary" Relationship="Self.FK_Student_StudentMeta_Dictionary2" FromRole="Student_StudentMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="PotDictionary" Relationship="Self.FK_Student_StudentMeta_Dictionary3" FromRole="Student_StudentMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="SostavGrupp" Relationship="Self.FK_SostavGrupp_Student_StudentMeta" FromRole="Student_StudentMeta" ToRole="SostavGrupp" />
+          <NavigationProperty Name="Spezialnost_SpezialnostMeta" Relationship="Self.FK_Student_StudentMeta_Spezialnost_SpezialnostMeta" FromRole="Student_StudentMeta" ToRole="Spezialnost_SpezialnostMeta" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Student_StudentMeta_User" FromRole="Student_StudentMeta" ToRole="User" />
+          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="SpecialtyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Dictionary3" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary4" FromRole="Student_StudentMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="Dictionary4" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary5" FromRole="Student_StudentMeta" ToRole="Dictionary" />
+          <Property Name="FlowId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Dictionary" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary1" FromRole="Student_StudentMeta" ToRole="Dictionary" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="RoleTask" Relationship="Self.FK_RoleTask_Task" FromRole="Task" ToRole="RoleTask" />
+          <NavigationProperty Name="UserTask" Relationship="Self.FK_UserTask_Task" FromRole="Task" ToRole="UserTask" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BlockDate" Type="DateTime" Precision="3" />
+          <Property Name="BlockReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="ErrorPinCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Prepod_PrepodMeta" Relationship="Self.FK_Prepod_PrepodMeta_User" FromRole="User" ToRole="Prepod_PrepodMeta" />
+          <NavigationProperty Name="Student_StudentMeta" Relationship="Self.FK_Student_StudentMeta_User" FromRole="User" ToRole="Student_StudentMeta" />
+          <NavigationProperty Name="UserMeta" Relationship="Self.FK_UserMeta_User" FromRole="User" ToRole="UserMeta" />
+          <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_User" FromRole="User" ToRole="UserRole" />
+          <NavigationProperty Name="UserTask" Relationship="Self.FK_UserTask_User" FromRole="User" ToRole="UserTask" />
+          <NavigationProperty Name="Notifications" Relationship="AcademyDBModel.FK_Notifications_User" FromRole="User" ToRole="Notification" />
+          <NavigationProperty Name="Library_History" Relationship="AcademyDBModel.FK_Library_History_User" FromRole="User" ToRole="Library_History" />
+          <NavigationProperty Name="Library_ReservateBook" Relationship="AcademyDBModel.FK_Library_ReservateBook_User" FromRole="User" ToRole="Library_ReservateBook" />
+          <NavigationProperty Name="Library_ReservateBook1" Relationship="AcademyDBModel.FK_Library_ReservateBook_User1" FromRole="User" ToRole="Library_ReservateBook" />
+        </EntityType>
+        <EntityType Name="UserMeta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContactId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Contact" Relationship="Self.FK_UserMeta_Contact" FromRole="UserMeta" ToRole="Contact" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserMeta_User" FromRole="UserMeta" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_UserRole_Role" FromRole="UserRole" ToRole="Role" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserRole_User" FromRole="UserRole" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserTask">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_UserTask_Task" FromRole="UserTask" ToRole="Task" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserTask_User" FromRole="UserTask" ToRole="User" />
+        </EntityType>
+        <EntityType Name="VidiRabot">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRzdRab" Type="Int32" Nullable="false" />
+          <Property Name="VidRaboti" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VidRabSokr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VidRabAbbreviatura" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NormChas" Type="Double" Nullable="false" />
+          <Property Name="Flag" Type="Boolean" Nullable="false" />
+          <Property Name="Primech1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Primech2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RazdRabDictionary" Relationship="Self.FK_VidiRabot_Dictionary" FromRole="VidiRabot" ToRole="Dictionary" />
+          <NavigationProperty Name="Raspisanie" Relationship="Self.FK_Raspisanie_VidiRabot" FromRole="VidiRabot" ToRole="Raspisanie" />
+          <NavigationProperty Name="ZaniatiaySemestr" Relationship="Self.FK_ZaniatiaySemestr_VidiRabot" FromRole="VidiRabot" ToRole="ZaniatiaySemestr" />
+        </EntityType>
+        <EntityType Name="VremyaZanyatia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Raspisanie" Relationship="Self.FK_Raspisanie_VremyaZanyatia" FromRole="VremyaZanyatia" ToRole="Raspisanie" />
+          <NavigationProperty Name="Notifications" Relationship="AcademyDBModel.FK_Notifications_VremyaZanyatia" FromRole="VremyaZanyatia" ToRole="Notification" />
+        </EntityType>
+        <EntityType Name="ZaniatiaySemestr">
+          <Key>
+            <PropertyRef Name="IdZanSem" />
+          </Key>
+          <Property Name="IdZanSem" Type="Int32" Nullable="false" />
+          <Property Name="IdUchPDisciplini" Type="Int32" Nullable="false" />
+          <Property Name="Sem" Type="Int32" Nullable="false" />
+          <Property Name="Chs" Type="Int32" Nullable="false" />
+          <Property Name="IdVidaRabot" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Nagruzka" Relationship="Self.FK_Nagruzka_ZaniatiaySemestr" FromRole="ZaniatiaySemestr" ToRole="Nagruzka" />
+          <NavigationProperty Name="SpezialRazdeliDisziplini" Relationship="Self.FK_ZaniatiaySemestr_SpezialRazdeliDisziplini" FromRole="ZaniatiaySemestr" ToRole="SpezialRazdeliDisziplini" />
+          <NavigationProperty Name="VidiRabot" Relationship="Self.FK_ZaniatiaySemestr_VidiRabot" FromRole="ZaniatiaySemestr" ToRole="VidiRabot" />
+        </EntityType>
+        <Association Name="FK_UserMeta_Contact">
+          <End Role="Contact" Type="Self.Contact" Multiplicity="1" />
+          <End Role="UserMeta" Type="Self.UserMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contact">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserMeta">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dictionary_DictionaryType">
+          <End Role="DictionaryType" Type="Self.DictionaryType" Multiplicity="1" />
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DictionaryType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dictionary">
+              <PropertyRef Name="DictionaryTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nagruzka_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Nagruzka" Type="Self.Nagruzka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nagruzka">
+              <PropertyRef Name="Pot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PrepodMeta_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Prepod_PrepodMeta" Type="Self.Prepod_PrepodMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodMeta">
+              <PropertyRef Name="DegreeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PropodiCafedri_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="IdCafedri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PropodiCafedri_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="TipZanyatosti" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="Pot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="TipNagruzki" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdFrmObuch" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdPodrazd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Dictionary2">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdFak" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Dictionary3">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdInst" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpezialRazdeliDisziplini_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdRzdRab" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpisokGrupp_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpisokGrupp">
+              <PropertyRef Name="Pot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpisokGrupp_Dictionary1">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpisokGrupp">
+              <PropertyRef Name="IdPodrazd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="FormOfStuduId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary2">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary3">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="Pot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VidiRabot_Dictionary">
+          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="VidiRabot" Type="Self.VidiRabot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VidiRabot">
+              <PropertyRef Name="IdRzdRab" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrepodDiscipline_Discipline">
+          <End Role="Discipline" Type="Self.Discipline" Multiplicity="1" />
+          <End Role="PrepodDiscipline" Type="Self.PrepodDiscipline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discipline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PrepodDiscipline">
+              <PropertyRef Name="IdDisciplini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpezialRazdeliDisziplini_Discipline">
+          <End Role="Discipline" Type="Self.Discipline" Multiplicity="1" />
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discipline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdDisciplini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nagruzka_Prepod_PropodiCafedri">
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="1" />
+          <End Role="Nagruzka" Type="Self.Nagruzka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nagruzka">
+              <PropertyRef Name="IdPrepodaCafedri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nagruzka_SpisokGrupp">
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="0..1" />
+          <End Role="Nagruzka" Type="Self.Nagruzka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpisokGrupp">
+              <PropertyRef Name="IdGroup" />
+            </Principal>
+            <Dependent Role="Nagruzka">
+              <PropertyRef Name="IdSpiskaGrupp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nagruzka_ZaniatiaySemestr">
+          <End Role="ZaniatiaySemestr" Type="Self.ZaniatiaySemestr" Multiplicity="1" />
+          <End Role="Nagruzka" Type="Self.Nagruzka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ZaniatiaySemestr">
+              <PropertyRef Name="IdZanSem" />
+            </Principal>
+            <Dependent Role="Nagruzka">
+              <PropertyRef Name="IdZanSem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PropodiCafedri_Prepod_PrepodMeta">
+          <End Role="Prepod_PrepodMeta" Type="Self.Prepod_PrepodMeta" Multiplicity="1" />
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="IdSotr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_Prepod_PropodiCafedri">
+          <End Role="Prepod_PrepodiCafedri" Type="Self.Prepod_PrepodiCafedri" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodiCafedri">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdPrepodaCafedri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prepod_PrepodMeta_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Prepod_PrepodMeta" Type="Self.Prepod_PrepodMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodMeta">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrepodDiscipline_Prepod_PrepodMeta">
+          <End Role="Prepod_PrepodMeta" Type="Self.Prepod_PrepodMeta" Multiplicity="1" />
+          <End Role="PrepodDiscipline" Type="Self.PrepodDiscipline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PrepodDiscipline">
+              <PropertyRef Name="IdSotr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_SpezialRazdeliDisziplini">
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdUpPlanDisciplini" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdUchPlanaDisciplini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_SpisokGrupp">
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="0..1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpisokGrupp">
+              <PropertyRef Name="IdGroup" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdSpiskaGrupp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_VidiRabot">
+          <End Role="VidiRabot" Type="Self.VidiRabot" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VidiRabot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdVidaRaboti" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Raspisanie_VremyaZanyatia">
+          <End Role="VremyaZanyatia" Type="Self.VremyaZanyatia" Multiplicity="1" />
+          <End Role="Raspisanie" Type="Self.Raspisanie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VremyaZanyatia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Raspisanie">
+              <PropertyRef Name="IdVremyaZanyatia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleTask_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RoleTask" Type="Self.RoleTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoleTask">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="RoleTask" Type="Self.RoleTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoleTask">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SostavGrupp_SpisokGrupp">
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="1" />
+          <End Role="SostavGrupp" Type="Self.SostavGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpisokGrupp">
+              <PropertyRef Name="IdGroup" />
+            </Principal>
+            <Dependent Role="SostavGrupp">
+              <PropertyRef Name="IdSpisGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SostavGrupp_Student_StudentMeta">
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="1" />
+          <End Role="SostavGrupp" Type="Self.SostavGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student_StudentMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SostavGrupp">
+              <PropertyRef Name="IdStud" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spezialnost_SpezialnostMeta_Spezialnost">
+          <End Role="Spezialnost" Type="Self.Spezialnost" Multiplicity="1" />
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spezialnost">
+              <PropertyRef Name="IdSpez" />
+            </Principal>
+            <Dependent Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="IdSpez" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpezialRazdeliDisziplini_Spezialnost_SpezialnostMeta">
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="1" />
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdSpezMeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpisokGrupp_Spezialnost_SpezialnostMeta">
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="1" />
+          <End Role="SpisokGrupp" Type="Self.SpisokGrupp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpisokGrupp">
+              <PropertyRef Name="IdSpezMeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Spezialnost_SpezialnostMeta">
+          <End Role="Spezialnost_SpezialnostMeta" Type="Self.Spezialnost_SpezialnostMeta" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spezialnost_SpezialnostMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="IdSpecialtyMeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ZaniatiaySemestr_SpezialRazdeliDisziplini">
+          <End Role="SpezialRazdeliDisziplini" Type="Self.SpezialRazdeliDisziplini" Multiplicity="1" />
+          <End Role="ZaniatiaySemestr" Type="Self.ZaniatiaySemestr" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpezialRazdeliDisziplini">
+              <PropertyRef Name="IdUpPlanDisciplini" />
+            </Principal>
+            <Dependent Role="ZaniatiaySemestr">
+              <PropertyRef Name="IdUchPDisciplini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTask_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMeta_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserMeta" Type="Self.UserMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserMeta">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTask_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserTask" Type="Self.UserTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserTask">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ZaniatiaySemestr_VidiRabot">
+          <End Role="VidiRabot" Type="Self.VidiRabot" Multiplicity="1" />
+          <End Role="ZaniatiaySemestr" Type="Self.ZaniatiaySemestr" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VidiRabot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ZaniatiaySemestr">
+              <PropertyRef Name="IdVidaRabot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AcademyDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Contact" EntityType="Self.Contact" />
+          <EntitySet Name="Dictionary" EntityType="Self.Dictionary" />
+          <EntitySet Name="DictionaryType" EntityType="Self.DictionaryType" />
+          <EntitySet Name="Discipline" EntityType="Self.Discipline" />
+          <EntitySet Name="Nagruzka" EntityType="Self.Nagruzka" />
+          <EntitySet Name="Prepod_PrepodiCafedri" EntityType="Self.Prepod_PrepodiCafedri" />
+          <EntitySet Name="Prepod_PrepodMeta" EntityType="Self.Prepod_PrepodMeta" />
+          <EntitySet Name="PrepodDiscipline" EntityType="Self.PrepodDiscipline" />
+          <EntitySet Name="Raspisanie" EntityType="Self.Raspisanie" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="RoleTask" EntityType="Self.RoleTask" />
+          <EntitySet Name="SostavGrupp" EntityType="Self.SostavGrupp" />
+          <EntitySet Name="Spezialnost" EntityType="Self.Spezialnost" />
+          <EntitySet Name="Spezialnost_SpezialnostMeta" EntityType="Self.Spezialnost_SpezialnostMeta" />
+          <EntitySet Name="SpezialRazdeliDisziplini" EntityType="Self.SpezialRazdeliDisziplini" />
+          <EntitySet Name="SpisokGrupp" EntityType="Self.SpisokGrupp" />
+          <EntitySet Name="Student_StudentMeta" EntityType="Self.Student_StudentMeta" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Task" EntityType="Self.Task" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="UserMeta" EntityType="Self.UserMeta" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" />
+          <EntitySet Name="UserTask" EntityType="Self.UserTask" />
+          <EntitySet Name="VidiRabot" EntityType="Self.VidiRabot" />
+          <EntitySet Name="VremyaZanyatia" EntityType="Self.VremyaZanyatia" />
+          <EntitySet Name="ZaniatiaySemestr" EntityType="Self.ZaniatiaySemestr" />
+          <AssociationSet Name="FK_UserMeta_Contact" Association="Self.FK_UserMeta_Contact">
+            <End Role="Contact" EntitySet="Contact" />
+            <End Role="UserMeta" EntitySet="UserMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dictionary_DictionaryType" Association="Self.FK_Dictionary_DictionaryType">
+            <End Role="DictionaryType" EntitySet="DictionaryType" />
+            <End Role="Dictionary" EntitySet="Dictionary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nagruzka_Dictionary" Association="Self.FK_Nagruzka_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Nagruzka" EntitySet="Nagruzka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PrepodMeta_Dictionary1" Association="Self.FK_Prepod_PrepodMeta_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PropodiCafedri_Dictionary" Association="Self.FK_Prepod_PropodiCafedri_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PropodiCafedri_Dictionary1" Association="Self.FK_Prepod_PropodiCafedri_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_Dictionary" Association="Self.FK_Raspisanie_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_Dictionary1" Association="Self.FK_Raspisanie_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Dictionary" Association="Self.FK_Spezialnost_SpezialnostMeta_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Dictionary1" Association="Self.FK_Spezialnost_SpezialnostMeta_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Dictionary2" Association="Self.FK_Spezialnost_SpezialnostMeta_Dictionary2">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Dictionary3" Association="Self.FK_Spezialnost_SpezialnostMeta_Dictionary3">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpezialRazdeliDisziplini_Dictionary" Association="Self.FK_SpezialRazdeliDisziplini_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpisokGrupp_Dictionary" Association="Self.FK_SpisokGrupp_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpisokGrupp_Dictionary1" Association="Self.FK_SpisokGrupp_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary" Association="Self.FK_Student_StudentMeta_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary2" Association="Self.FK_Student_StudentMeta_Dictionary2">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary3" Association="Self.FK_Student_StudentMeta_Dictionary3">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VidiRabot_Dictionary" Association="Self.FK_VidiRabot_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="VidiRabot" EntitySet="VidiRabot" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrepodDiscipline_Discipline" Association="Self.FK_PrepodDiscipline_Discipline">
+            <End Role="Discipline" EntitySet="Discipline" />
+            <End Role="PrepodDiscipline" EntitySet="PrepodDiscipline" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpezialRazdeliDisziplini_Discipline" Association="Self.FK_SpezialRazdeliDisziplini_Discipline">
+            <End Role="Discipline" EntitySet="Discipline" />
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nagruzka_Prepod_PropodiCafedri" Association="Self.FK_Nagruzka_Prepod_PropodiCafedri">
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+            <End Role="Nagruzka" EntitySet="Nagruzka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nagruzka_SpisokGrupp" Association="Self.FK_Nagruzka_SpisokGrupp">
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+            <End Role="Nagruzka" EntitySet="Nagruzka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nagruzka_ZaniatiaySemestr" Association="Self.FK_Nagruzka_ZaniatiaySemestr">
+            <End Role="ZaniatiaySemestr" EntitySet="ZaniatiaySemestr" />
+            <End Role="Nagruzka" EntitySet="Nagruzka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PropodiCafedri_Prepod_PrepodMeta" Association="Self.FK_Prepod_PropodiCafedri_Prepod_PrepodMeta">
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_Prepod_PropodiCafedri" Association="Self.FK_Raspisanie_Prepod_PropodiCafedri">
+            <End Role="Prepod_PrepodiCafedri" EntitySet="Prepod_PrepodiCafedri" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prepod_PrepodMeta_User" Association="Self.FK_Prepod_PrepodMeta_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrepodDiscipline_Prepod_PrepodMeta" Association="Self.FK_PrepodDiscipline_Prepod_PrepodMeta">
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+            <End Role="PrepodDiscipline" EntitySet="PrepodDiscipline" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_SpezialRazdeliDisziplini" Association="Self.FK_Raspisanie_SpezialRazdeliDisziplini">
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_SpisokGrupp" Association="Self.FK_Raspisanie_SpisokGrupp">
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_VidiRabot" Association="Self.FK_Raspisanie_VidiRabot">
+            <End Role="VidiRabot" EntitySet="VidiRabot" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Raspisanie_VremyaZanyatia" Association="Self.FK_Raspisanie_VremyaZanyatia">
+            <End Role="VremyaZanyatia" EntitySet="VremyaZanyatia" />
+            <End Role="Raspisanie" EntitySet="Raspisanie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleTask_Role" Association="Self.FK_RoleTask_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RoleTask" EntitySet="RoleTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleTask_Task" Association="Self.FK_RoleTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="RoleTask" EntitySet="RoleTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SostavGrupp_SpisokGrupp" Association="Self.FK_SostavGrupp_SpisokGrupp">
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+            <End Role="SostavGrupp" EntitySet="SostavGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SostavGrupp_Student_StudentMeta" Association="Self.FK_SostavGrupp_Student_StudentMeta">
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+            <End Role="SostavGrupp" EntitySet="SostavGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spezialnost_SpezialnostMeta_Spezialnost" Association="Self.FK_Spezialnost_SpezialnostMeta_Spezialnost">
+            <End Role="Spezialnost" EntitySet="Spezialnost" />
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpezialRazdeliDisziplini_Spezialnost_SpezialnostMeta" Association="Self.FK_SpezialRazdeliDisziplini_Spezialnost_SpezialnostMeta">
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpisokGrupp_Spezialnost_SpezialnostMeta" Association="Self.FK_SpisokGrupp_Spezialnost_SpezialnostMeta">
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+            <End Role="SpisokGrupp" EntitySet="SpisokGrupp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Spezialnost_SpezialnostMeta" Association="Self.FK_Student_StudentMeta_Spezialnost_SpezialnostMeta">
+            <End Role="Spezialnost_SpezialnostMeta" EntitySet="Spezialnost_SpezialnostMeta" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ZaniatiaySemestr_SpezialRazdeliDisziplini" Association="Self.FK_ZaniatiaySemestr_SpezialRazdeliDisziplini">
+            <End Role="SpezialRazdeliDisziplini" EntitySet="SpezialRazdeliDisziplini" />
+            <End Role="ZaniatiaySemestr" EntitySet="ZaniatiaySemestr" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_User" Association="Self.FK_Student_StudentMeta_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTask_Task" Association="Self.FK_UserTask_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMeta_User" Association="Self.FK_UserMeta_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserMeta" EntitySet="UserMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_User" Association="Self.FK_UserRole_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTask_User" Association="Self.FK_UserTask_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserTask" EntitySet="UserTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ZaniatiaySemestr_VidiRabot" Association="Self.FK_ZaniatiaySemestr_VidiRabot">
+            <End Role="VidiRabot" EntitySet="VidiRabot" />
+            <End Role="ZaniatiaySemestr" EntitySet="ZaniatiaySemestr" />
+          </AssociationSet>
+          <EntitySet Name="Notifications" EntityType="AcademyDBModel.Notification" />
+          <AssociationSet Name="FK_Notifications_Dictionary" Association="AcademyDBModel.FK_Notifications_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_User" Association="AcademyDBModel.FK_Notifications_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_VremyaZanyatia" Association="AcademyDBModel.FK_Notifications_VremyaZanyatia">
+            <End Role="VremyaZanyatia" EntitySet="VremyaZanyatia" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <EntitySet Name="Library_Book" EntityType="AcademyDBModel.Library_Book" />
+          <EntitySet Name="Library_EventType" EntityType="AcademyDBModel.Library_EventType" />
+          <EntitySet Name="Library_History" EntityType="AcademyDBModel.Library_History" />
+          <EntitySet Name="Library_Literature" EntityType="AcademyDBModel.Library_Literature" />
+          <EntitySet Name="Library_ReservateBook" EntityType="AcademyDBModel.Library_ReservateBook" />
+          <AssociationSet Name="FK_Library_Book_Library_Literature" Association="AcademyDBModel.FK_Library_Book_Library_Literature">
+            <End Role="Library_Literature" EntitySet="Library_Literature" />
+            <End Role="Library_Book" EntitySet="Library_Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_History_Library_Book" Association="AcademyDBModel.FK_Library_History_Library_Book">
+            <End Role="Library_Book" EntitySet="Library_Book" />
+            <End Role="Library_History" EntitySet="Library_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_ReservateBook_Library_Book" Association="AcademyDBModel.FK_Library_ReservateBook_Library_Book">
+            <End Role="Library_Book" EntitySet="Library_Book" />
+            <End Role="Library_ReservateBook" EntitySet="Library_ReservateBook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_History_Library_EventType" Association="AcademyDBModel.FK_Library_History_Library_EventType">
+            <End Role="Library_EventType" EntitySet="Library_EventType" />
+            <End Role="Library_History" EntitySet="Library_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_History_User" Association="AcademyDBModel.FK_Library_History_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Library_History" EntitySet="Library_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_ReservateBook_User" Association="AcademyDBModel.FK_Library_ReservateBook_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Library_ReservateBook" EntitySet="Library_ReservateBook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Library_ReservateBook_User1" Association="AcademyDBModel.FK_Library_ReservateBook_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Library_ReservateBook" EntitySet="Library_ReservateBook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary4" Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary4">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary5" Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary5">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary1" Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary1">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
+          <EntitySet Name="Prepod_PrepodLikes" EntityType="AcademyDBModel.Prepod_PrepodLikes" />
+          <AssociationSet Name="FK_Prepod_PrepodLikes_Prepod_PrepodMeta" Association="AcademyDBModel.FK_Prepod_PrepodLikes_Prepod_PrepodMeta">
+            <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
+            <End Role="Prepod_PrepodLikes" EntitySet="Prepod_PrepodLikes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NotificationId" />
+          </Key>
+          <Property Name="NotificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdVremyaZanyatia" Type="Int32" Nullable="false" />
+          <Property Name="NotificationType" Type="Int32" Nullable="false" />
+          <Property Name="NotificationData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Dictionary" Relationship="AcademyDBModel.FK_Notifications_Dictionary" FromRole="Notification" ToRole="Dictionary" />
+          <NavigationProperty Name="User" Relationship="AcademyDBModel.FK_Notifications_User" FromRole="Notification" ToRole="User" />
+          <NavigationProperty Name="VremyaZanyatia" Relationship="AcademyDBModel.FK_Notifications_VremyaZanyatia" FromRole="Notification" ToRole="VremyaZanyatia" />
+        </EntityType>
+        <Association Name="FK_Notifications_Dictionary">
+          <End Type="AcademyDBModel.Dictionary" Role="Dictionary" Multiplicity="1" />
+          <End Type="AcademyDBModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="NotificationType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_User">
+          <End Type="AcademyDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="AcademyDBModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_VremyaZanyatia">
+          <End Type="AcademyDBModel.VremyaZanyatia" Role="VremyaZanyatia" Multiplicity="1" />
+          <End Type="AcademyDBModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VremyaZanyatia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="IdVremyaZanyatia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Library_Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LitaratureId" Type="Int32" Nullable="false" />
+          <Property Name="BookNumber" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Library_Literature" Relationship="AcademyDBModel.FK_Library_Book_Library_Literature" FromRole="Library_Book" ToRole="Library_Literature" />
+          <NavigationProperty Name="Library_History" Relationship="AcademyDBModel.FK_Library_History_Library_Book" FromRole="Library_Book" ToRole="Library_History" />
+          <NavigationProperty Name="Library_ReservateBook" Relationship="AcademyDBModel.FK_Library_ReservateBook_Library_Book" FromRole="Library_Book" ToRole="Library_ReservateBook" />
+        </EntityType>
+        <EntityType Name="Library_EventType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Library_History" Relationship="AcademyDBModel.FK_Library_History_Library_EventType" FromRole="Library_EventType" ToRole="Library_History" />
+        </EntityType>
+        <EntityType Name="Library_History">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="HistoryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EventTypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Library_Book" Relationship="AcademyDBModel.FK_Library_History_Library_Book" FromRole="Library_History" ToRole="Library_Book" />
+          <NavigationProperty Name="Library_EventType" Relationship="AcademyDBModel.FK_Library_History_Library_EventType" FromRole="Library_History" ToRole="Library_EventType" />
+          <NavigationProperty Name="User" Relationship="AcademyDBModel.FK_Library_History_User" FromRole="Library_History" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Library_Literature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShortName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="PublishingHouse" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MainAuthor" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AdditionalAuthors" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Desqription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Library_Book" Relationship="AcademyDBModel.FK_Library_Book_Library_Literature" FromRole="Library_Literature" ToRole="Library_Book" />
+        </EntityType>
+        <EntityType Name="Library_ReservateBook">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="ReservateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ManagerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Library_Book" Relationship="AcademyDBModel.FK_Library_ReservateBook_Library_Book" FromRole="Library_ReservateBook" ToRole="Library_Book" />
+          <NavigationProperty Name="User" Relationship="AcademyDBModel.FK_Library_ReservateBook_User" FromRole="Library_ReservateBook" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="AcademyDBModel.FK_Library_ReservateBook_User1" FromRole="Library_ReservateBook" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Library_Book_Library_Literature">
+          <End Type="AcademyDBModel.Library_Literature" Role="Library_Literature" Multiplicity="1" />
+          <End Type="AcademyDBModel.Library_Book" Role="Library_Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Library_Literature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_Book">
+              <PropertyRef Name="LitaratureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_History_Library_Book">
+          <End Type="AcademyDBModel.Library_Book" Role="Library_Book" Multiplicity="1" />
+          <End Type="AcademyDBModel.Library_History" Role="Library_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Library_Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_History">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_ReservateBook_Library_Book">
+          <End Type="AcademyDBModel.Library_Book" Role="Library_Book" Multiplicity="1" />
+          <End Type="AcademyDBModel.Library_ReservateBook" Role="Library_ReservateBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Library_Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_ReservateBook">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_History_Library_EventType">
+          <End Type="AcademyDBModel.Library_EventType" Role="Library_EventType" Multiplicity="1" />
+          <End Type="AcademyDBModel.Library_History" Role="Library_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Library_EventType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_History">
+              <PropertyRef Name="EventTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_History_User">
+          <End Type="AcademyDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="AcademyDBModel.Library_History" Role="Library_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_History">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_ReservateBook_User">
+          <End Type="AcademyDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="AcademyDBModel.Library_ReservateBook" Role="Library_ReservateBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_ReservateBook">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Library_ReservateBook_User1">
+          <End Type="AcademyDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="AcademyDBModel.Library_ReservateBook" Role="Library_ReservateBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Library_ReservateBook">
+              <PropertyRef Name="ManagerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary4">
+          <End Type="AcademyDBModel.Dictionary" Role="Dictionary" Multiplicity="1" />
+          <End Type="AcademyDBModel.Student_StudentMeta" Role="Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary5">
+          <End Type="AcademyDBModel.Dictionary" Role="Dictionary" Multiplicity="1" />
+          <End Type="AcademyDBModel.Student_StudentMeta" Role="Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary1">
+          <End Type="AcademyDBModel.Dictionary" Role="Dictionary" Multiplicity="1" />
+          <End Type="AcademyDBModel.Student_StudentMeta" Role="Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="FlowId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Prepod_PrepodLikes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdSotr" Type="Int32" Nullable="false" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Prepod_PrepodMeta" Relationship="AcademyDBModel.FK_Prepod_PrepodLikes_Prepod_PrepodMeta" FromRole="Prepod_PrepodLikes" ToRole="Prepod_PrepodMeta" />
+        </EntityType>
+        <Association Name="FK_Prepod_PrepodLikes_Prepod_PrepodMeta">
+          <End Type="AcademyDBModel.Prepod_PrepodMeta" Role="Prepod_PrepodMeta" Multiplicity="1" />
+          <End Type="AcademyDBModel.Prepod_PrepodLikes" Role="Prepod_PrepodLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepod_PrepodMeta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prepod_PrepodLikes">
+              <PropertyRef Name="IdSotr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AcademyDBModelStoreContainer" CdmEntityContainer="AcademyDBEntities">
+          <EntitySetMapping Name="Contact">
+            <EntityTypeMapping TypeName="AcademyDBModel.Contact">
+              <MappingFragment StoreEntitySet="Contact">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="AdditionalPhoneNumber" ColumnName="AdditionalPhoneNumber" />
+                <ScalarProperty Name="Skype" ColumnName="Skype" />
+                <ScalarProperty Name="PhotoPath" ColumnName="PhotoPath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dictionary">
+            <EntityTypeMapping TypeName="AcademyDBModel.Dictionary">
+              <MappingFragment StoreEntitySet="Dictionary">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DictionaryTypeId" ColumnName="DictionaryTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DictionaryType">
+            <EntityTypeMapping TypeName="AcademyDBModel.DictionaryType">
+              <MappingFragment StoreEntitySet="DictionaryType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsSystem" ColumnName="IsSystem" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Discipline">
+            <EntityTypeMapping TypeName="AcademyDBModel.Discipline">
+              <MappingFragment StoreEntitySet="Discipline">
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nagruzka">
+            <EntityTypeMapping TypeName="AcademyDBModel.Nagruzka">
+              <MappingFragment StoreEntitySet="Nagruzka">
+                <ScalarProperty Name="IdNagrz" ColumnName="IdNagrz" />
+                <ScalarProperty Name="IdZanSem" ColumnName="IdZanSem" />
+                <ScalarProperty Name="Pot" ColumnName="Pot" />
+                <ScalarProperty Name="IdSpiskaGrupp" ColumnName="IdSpiskaGrupp" />
+                <ScalarProperty Name="IdPodGrupp" ColumnName="IdPodGrupp" />
+                <ScalarProperty Name="Semestr" ColumnName="Semestr" />
+                <ScalarProperty Name="Chasov" ColumnName="Chasov" />
+                <ScalarProperty Name="Chelovek" ColumnName="Chelovek" />
+                <ScalarProperty Name="IdPrepodaCafedri" ColumnName="IdPrepodaCafedri" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prepod_PrepodiCafedri">
+            <EntityTypeMapping TypeName="AcademyDBModel.Prepod_PrepodiCafedri">
+              <MappingFragment StoreEntitySet="Prepod_PrepodiCafedri">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdSotr" ColumnName="IdSotr" />
+                <ScalarProperty Name="IdCafedri" ColumnName="IdCafedri" />
+                <ScalarProperty Name="Stavka" ColumnName="Stavka" />
+                <ScalarProperty Name="TipZanyatosti" ColumnName="TipZanyatosti" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prepod_PrepodMeta">
+            <EntityTypeMapping TypeName="AcademyDBModel.Prepod_PrepodMeta">
+              <MappingFragment StoreEntitySet="Prepod_PrepodMeta">
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DegreeId" ColumnName="DegreeId" />
+                <ScalarProperty Name="IsDismissed" ColumnName="IsDismissed" />
+                <ScalarProperty Name="Classroom" ColumnName="Classroom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrepodDiscipline">
+            <EntityTypeMapping TypeName="AcademyDBModel.PrepodDiscipline">
+              <MappingFragment StoreEntitySet="PrepodDiscipline">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdSotr" ColumnName="IdSotr" />
+                <ScalarProperty Name="IdDisciplini" ColumnName="IdDisciplini" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Raspisanie">
+            <EntityTypeMapping TypeName="AcademyDBModel.Raspisanie">
+              <MappingFragment StoreEntitySet="Raspisanie">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="IdUchPlanaDisciplini" ColumnName="IdUchPlanaDisciplini" />
+                <ScalarProperty Name="IdVidaRaboti" ColumnName="IdVidaRaboti" />
+                <ScalarProperty Name="IdVremyaZanyatia" ColumnName="IdVremyaZanyatia" />
+                <ScalarProperty Name="Pot" ColumnName="Pot" />
+                <ScalarProperty Name="IdSpiskaGrupp" ColumnName="IdSpiskaGrupp" />
+                <ScalarProperty Name="NomerPodGrupp" ColumnName="NomerPodGrupp" />
+                <ScalarProperty Name="IdPrepodaCafedri" ColumnName="IdPrepodaCafedri" />
+                <ScalarProperty Name="NomerZanyatiaVSemestre" ColumnName="NomerZanyatiaVSemestre" />
+                <ScalarProperty Name="Auditoriya" ColumnName="Auditoriya" />
+                <ScalarProperty Name="TipNagruzki" ColumnName="TipNagruzki" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="AcademyDBModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleTask">
+            <EntityTypeMapping TypeName="AcademyDBModel.RoleTask">
+              <MappingFragment StoreEntitySet="RoleTask">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SostavGrupp">
+            <EntityTypeMapping TypeName="AcademyDBModel.SostavGrupp">
+              <MappingFragment StoreEntitySet="SostavGrupp">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FlagVibil" ColumnName="FlagVibil" />
+                <ScalarProperty Name="IdSpisGroup" ColumnName="IdSpisGroup" />
+                <ScalarProperty Name="IdStud" ColumnName="IdStud" />
+                <ScalarProperty Name="Podgroup" ColumnName="Podgroup" />
+                <ScalarProperty Name="DateEdit" ColumnName="DateEdit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Spezialnost">
+            <EntityTypeMapping TypeName="AcademyDBModel.Spezialnost">
+              <MappingFragment StoreEntitySet="Spezialnost">
+                <ScalarProperty Name="IdSpez" ColumnName="IdSpez" />
+                <ScalarProperty Name="Spezialnost1" ColumnName="Spezialnost" />
+                <ScalarProperty Name="Spez" ColumnName="Spez" />
+                <ScalarProperty Name="Shifr" ColumnName="Shifr" />
+                <ScalarProperty Name="Qualification" ColumnName="Qualification" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Spezialnost_SpezialnostMeta">
+            <EntityTypeMapping TypeName="AcademyDBModel.Spezialnost_SpezialnostMeta">
+              <MappingFragment StoreEntitySet="Spezialnost_SpezialnostMeta">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdSpez" ColumnName="IdSpez" />
+                <ScalarProperty Name="GodPostup" ColumnName="GodPostup" />
+                <ScalarProperty Name="IdFrmObuch" ColumnName="IdFrmObuch" />
+                <ScalarProperty Name="SrokObuch" ColumnName="SrokObuch" />
+                <ScalarProperty Name="IdPodrazd" ColumnName="IdPodrazd" />
+                <ScalarProperty Name="IdFak" ColumnName="IdFak" />
+                <ScalarProperty Name="IdInst" ColumnName="IdInst" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpezialRazdeliDisziplini">
+            <EntityTypeMapping TypeName="AcademyDBModel.SpezialRazdeliDisziplini">
+              <MappingFragment StoreEntitySet="SpezialRazdeliDisziplini">
+                <ScalarProperty Name="IdUpPlanDisciplini" ColumnName="IdUpPlanDisciplini" />
+                <ScalarProperty Name="IdSpezMeta" ColumnName="IdSpezMeta" />
+                <ScalarProperty Name="IdRzdRab" ColumnName="IdRzdRab" />
+                <ScalarProperty Name="IdDisciplini" ColumnName="IdDisciplini" />
+                <ScalarProperty Name="Nm1" ColumnName="Nm1" />
+                <ScalarProperty Name="Nm2" ColumnName="Nm2" />
+                <ScalarProperty Name="Nm3" ColumnName="Nm3" />
+                <ScalarProperty Name="Lekcii" ColumnName="Lekcii" />
+                <ScalarProperty Name="PracticheskieZanyatia" ColumnName="PracticheskieZanyatia" />
+                <ScalarProperty Name="LaboratornieRaboti" ColumnName="LaboratornieRaboti" />
+                <ScalarProperty Name="SeminarskieZanyatia" ColumnName="SeminarskieZanyatia" />
+                <ScalarProperty Name="SamostoyatelnieRaboti" ColumnName="SamostoyatelnieRaboti" />
+                <ScalarProperty Name="Sem1" ColumnName="Sem1" />
+                <ScalarProperty Name="Sem2" ColumnName="Sem2" />
+                <ScalarProperty Name="Sem3" ColumnName="Sem3" />
+                <ScalarProperty Name="Sem4" ColumnName="Sem4" />
+                <ScalarProperty Name="Sem5" ColumnName="Sem5" />
+                <ScalarProperty Name="Sem6" ColumnName="Sem6" />
+                <ScalarProperty Name="Sem7" ColumnName="Sem7" />
+                <ScalarProperty Name="Sem8" ColumnName="Sem8" />
+                <ScalarProperty Name="Sem9" ColumnName="Sem9" />
+                <ScalarProperty Name="Sem10" ColumnName="Sem10" />
+                <ScalarProperty Name="Sem11" ColumnName="Sem11" />
+                <ScalarProperty Name="Sem12" ColumnName="Sem12" />
+                <ScalarProperty Name="ExamSem" ColumnName="ExamSem" />
+                <ScalarProperty Name="DifZachetSem" ColumnName="DifZachetSem" />
+                <ScalarProperty Name="ZachetSem" ColumnName="ZachetSem" />
+                <ScalarProperty Name="KursovayaSem" ColumnName="KursovayaSem" />
+                <ScalarProperty Name="KontrolnayanSem" ColumnName="KontrolnayanSem" />
+                <ScalarProperty Name="KfP" ColumnName="KfP" />
+                <ScalarProperty Name="KfT" ColumnName="KfT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpisokGrupp">
+            <EntityTypeMapping TypeName="AcademyDBModel.SpisokGrupp">
+              <MappingFragment StoreEntitySet="SpisokGrupp">
+                <ScalarProperty Name="IdGroup" ColumnName="IdGroup" />
+                <ScalarProperty Name="Gruppa" ColumnName="Gruppa" />
+                <ScalarProperty Name="Pot" ColumnName="Pot" />
+                <ScalarProperty Name="KolPodGroup" ColumnName="KolPodGroup" />
+                <ScalarProperty Name="KolStud" ColumnName="KolStud" />
+                <ScalarProperty Name="Kurs" ColumnName="Kurs" />
+                <ScalarProperty Name="IdPodrazd" ColumnName="IdPodrazd" />
+                <ScalarProperty Name="IdSpezMeta" ColumnName="IdSpezMeta" />
+                <ScalarProperty Name="FlagVib" ColumnName="FlagVib" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Student_StudentMeta">
+            <EntityTypeMapping TypeName="AcademyDBModel.Student_StudentMeta">
+              <MappingFragment StoreEntitySet="Student_StudentMeta">
+                <ScalarProperty Name="FlowId" ColumnName="FlowId" />
+                <ScalarProperty Name="SpecialtyId" ColumnName="SpecialtyId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
+                <ScalarProperty Name="IdSpecialtyMeta" ColumnName="IdSpecialtyMeta" />
+                <ScalarProperty Name="Pot" ColumnName="Pot" />
+                <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+                <ScalarProperty Name="GraduationDate" ColumnName="GraduationDate" />
+                <ScalarProperty Name="IsDismissed" ColumnName="IsDismissed" />
+                <ScalarProperty Name="MarkBookNumber" ColumnName="MarkBookNumber" />
+                <ScalarProperty Name="StudentCardNumber" ColumnName="StudentCardNumber" />
+                <ScalarProperty Name="FormOfStuduId" ColumnName="FormOfStuduId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="AcademyDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Task">
+            <EntityTypeMapping TypeName="AcademyDBModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="AcademyDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="BlockDate" ColumnName="BlockDate" />
+                <ScalarProperty Name="BlockReason" ColumnName="BlockReason" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ErrorPinCount" ColumnName="ErrorPinCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMeta">
+            <EntityTypeMapping TypeName="AcademyDBModel.UserMeta">
+              <MappingFragment StoreEntitySet="UserMeta">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRole">
+            <EntityTypeMapping TypeName="AcademyDBModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTask">
+            <EntityTypeMapping TypeName="AcademyDBModel.UserTask">
+              <MappingFragment StoreEntitySet="UserTask">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VidiRabot">
+            <EntityTypeMapping TypeName="AcademyDBModel.VidiRabot">
+              <MappingFragment StoreEntitySet="VidiRabot">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRzdRab" ColumnName="IdRzdRab" />
+                <ScalarProperty Name="VidRaboti" ColumnName="VidRaboti" />
+                <ScalarProperty Name="VidRabSokr" ColumnName="VidRabSokr" />
+                <ScalarProperty Name="VidRabAbbreviatura" ColumnName="VidRabAbbreviatura" />
+                <ScalarProperty Name="NormChas" ColumnName="NormChas" />
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="Primech1" ColumnName="Primech1" />
+                <ScalarProperty Name="Primech2" ColumnName="Primech2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VremyaZanyatia">
+            <EntityTypeMapping TypeName="AcademyDBModel.VremyaZanyatia">
+              <MappingFragment StoreEntitySet="VremyaZanyatia">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ZaniatiaySemestr">
+            <EntityTypeMapping TypeName="AcademyDBModel.ZaniatiaySemestr">
+              <MappingFragment StoreEntitySet="ZaniatiaySemestr">
+                <ScalarProperty Name="IdZanSem" ColumnName="IdZanSem" />
+                <ScalarProperty Name="IdUchPDisciplini" ColumnName="IdUchPDisciplini" />
+                <ScalarProperty Name="Sem" ColumnName="Sem" />
+                <ScalarProperty Name="Chs" ColumnName="Chs" />
+                <ScalarProperty Name="IdVidaRabot" ColumnName="IdVidaRabot" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="AcademyDBModel.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="NotificationData" ColumnName="NotificationData" />
+                <ScalarProperty Name="NotificationType" ColumnName="NotificationType" />
+                <ScalarProperty Name="IdVremyaZanyatia" ColumnName="IdVremyaZanyatia" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="NotificationId" ColumnName="NotificationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Library_Book">
+            <EntityTypeMapping TypeName="AcademyDBModel.Library_Book">
+              <MappingFragment StoreEntitySet="Library_Book">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="BookNumber" ColumnName="BookNumber" />
+                <ScalarProperty Name="LitaratureId" ColumnName="LitaratureId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Library_EventType">
+            <EntityTypeMapping TypeName="AcademyDBModel.Library_EventType">
+              <MappingFragment StoreEntitySet="Library_EventType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Library_History">
+            <EntityTypeMapping TypeName="AcademyDBModel.Library_History">
+              <MappingFragment StoreEntitySet="Library_History">
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="HistoryDate" ColumnName="HistoryDate" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Library_Literature">
+            <EntityTypeMapping TypeName="AcademyDBModel.Library_Literature">
+              <MappingFragment StoreEntitySet="Library_Literature">
+                <ScalarProperty Name="Desqription" ColumnName="Desqription" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="AdditionalAuthors" ColumnName="AdditionalAuthors" />
+                <ScalarProperty Name="MainAuthor" ColumnName="MainAuthor" />
+                <ScalarProperty Name="PublishingHouse" ColumnName="PublishingHouse" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Library_ReservateBook">
+            <EntityTypeMapping TypeName="AcademyDBModel.Library_ReservateBook">
+              <MappingFragment StoreEntitySet="Library_ReservateBook">
+                <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+                <ScalarProperty Name="ReservateDate" ColumnName="ReservateDate" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prepod_PrepodLikes">
+            <EntityTypeMapping TypeName="AcademyDBModel.Prepod_PrepodLikes">
+              <MappingFragment StoreEntitySet="Prepod_PrepodLikes">
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="IdSotr" ColumnName="IdSotr" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

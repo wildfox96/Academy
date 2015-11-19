@@ -1,0 +1,89 @@
+﻿@model OutputModel
+@using AUPPRB.Models.ViewModels.ExpertCenterModels
+
+@{
+    ViewBag.Title = "Search";
+}
+
+<span style="align-content: center; font-size: 24px; display: table; margin: 0 auto;" class="label label-info">Результаты поиска <i class="glyphicon glyphicon-search"></i></span>
+<br />
+<div id="searchresults" align="center">
+    @if (Model.Check == "Prepod" || Model.Check == "Discipline")
+    {
+        if (Model.Check == "Prepod")
+        {
+            var count = 0;
+            <div align="left">
+                <b style="font-size:34px;">Все дисциплины преподавателя: <i class="fa fa-user"></i> @Model.Name</b>
+            </div>
+            <hr style="display: block; height: 1px; border: 0; border-top: 3px solid #000000; margin: 1em 0; padding: 0;">
+            <br />
+        <ul>
+                @foreach (var item in Model.List)
+                {
+                    if (item != null)
+                    {
+                        count++;
+                        <div align="left" class="panel" style="color: white; display: inline-table; margin-right: 3%; font-size: 24px; width: 30%; float: left; background-color: deepskyblue">
+                            <i class="fa fa-book"></i>
+                            @item
+                        </div>
+                    }
+                    if (count%3 == 0)
+                       {<div style="clear: both;"></div> }
+                }
+            </ul>
+        }
+        
+        if (Model.Check == "Discipline")
+        {
+           var count = 0;
+            <div align="left">
+                <b style="font-size:34px;">Все преподаватели дисциплины: <i class="fa fa-book"></i> @Model.Name</b>
+            </div>
+            <hr style="display: block; height: 1px; border: 0; border-top: 3px solid #000000; margin: 1em 0; padding: 0;">
+            <br />
+            <ul>
+@foreach (var item in Model.PrepCabinetList)
+{
+    string name = "";
+    if (item.FirstName.Length > 0 && item.MiddleName.Length > 0)
+    { name = item.LastName + " " + item.FirstName + " " + item.MiddleName; }
+    else
+    { name = item.LastName; }
+    if (name != null)
+    {
+        count++;
+        <div align="left" class="panel" style="color: white; display: inline-table; margin-right: 3%; font-size: 24px; width: 30%; float: left; background-color: deepskyblue">
+            <table>
+                <tr>
+                    <td>
+                        <div style="font-size: 22px; align-content: center; color: white"><span class="fa fa-user"></span> @name</div>
+                    </td>
+                </tr>
+@if (item.Cabinet.Length>0)
+{
+    <tr>
+        <td>
+
+            <div style="font-size: 22px; align-content: center; color: white"><span class="glyphicon glyphicon-home"></span> @item.Cabinet</div>
+                        
+        </td>
+    </tr>
+}
+            </table>
+        </div>
+    }
+    if (count % 3 == 0)
+    {<div style="clear: both;"></div> }
+                }
+            </ul>
+    }
+ }
+    else
+    {
+        <div align="left">
+            <b style="font-size:34px;">Ничего не найдено по запросу: @Model.Name</b>
+        </div>
+    }
+</div>

@@ -1,0 +1,428 @@
+﻿@using System.Security.Policy
+@model AUPPRB.Models.ViewModels.jqGridModels.JqGridSettingsModel
+
+
+@if (Model.NeedViewWrappingDialog)
+{
+    if (String.IsNullOrEmpty(Model.CustomViewTemplate))
+    {
+        <div id="modalView" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 id="modalLabel">@Model.ViewDialogTitle</h3>
+                    </div>
+                    <div class="modal-body"></div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        Html.RenderPartial(Model.CustomViewTemplate);
+    }
+}
+
+
+@if (Model.NeedEditWrapingDialog)
+{
+    if (String.IsNullOrEmpty(Model.CustomEditTemplate))
+    {
+        <div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class=" modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 id="modalLabel">@Model.EditDialogTitle</h3>
+                    </div>
+
+                    @using (Ajax.BeginForm("Save", Model.Controller, null,
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Post",
+                            OnBegin = "BeginSaveUser",
+                            OnComplete = "Complete",
+                            OnSuccess = "Success"
+                        },
+                        new { name = "EditForm", id = "EditForm", style = "margin: 0", @class = "form-horizontal" }))
+                    {
+
+                        <div class="modal-body"></div>
+
+
+                        <div class="modal-footer">
+                            <div class="pull-right">
+                                <button type="submit" id="saveButton" class="btn btn-primary" data-loading-text="Пожалуйста, подождите..." onclick="@Model.SubmitClickEventBefore">
+                                    Сохранить
+                                </button>
+                                <button class="btn btn-default" type="button" data-dismiss="modal" aria-hidden="true">Отмена</button>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        Html.RenderPartial(Model.CustomEditTemplate);
+    }
+}
+
+<script>
+    $('body').on('hidden.bs.modal', '.modal', function() {
+        $('.chosen-select').chosen('destroy');
+        $(this).removeData('bs.modal');
+
+    });
+
+    function Begin() {
+        $('#saveButton').button('loading');
+    }
+
+    function Complete() {
+        $('#saveButton').button('reset');
+    }
+
+    function Success(response) {
+        debugger;
+        if (response.hasOwnProperty('isValid') && !response.isValid) {
+            //если не валидно,то заново отрисовывается контент модального окна c валидацией
+            $(".modal-body").html(response.view);
+        } else {
+            if (response.hasOwnProperty('type')) {
+                if ('@Model.NeedCloseEditWindowAfterSave' == 'True') {
+                    $('#modal').modal('hide');
+                } else {
+                    if (response.hasOwnProperty('id')) {
+                        var editUrl = '@Url.Action(Model.EditAction,Model.Controller,new{area=Model.Area})/' + response.id;
+                        $.get(editUrl, {}, function(responce) {
+                            $(".modal-body").html(responce);
+                        });
+                    }
+                }
+                alertify.log(response.message, response.type);
+                reloadGrid();
+            } else {
+                alertify.error("Произошла ошибка при сохранении данных");
+            }
+        }
+    }
+
+
+    @if (Model.NeedInitializedEvent)
+    {
+        <text>
+    function @(Model.InitializationFunctionName) () {
+
+        $("option[value=100000000]").text("Все записи");
+
+        @foreach (var ev in Model.AfterInitializedEvents)
+                {
+                    @:@ev
+                                                                                                                                        }
+    };
+    </text>
+    }
+
+
+    function FormatDetails(cellValue, options, rowObject) {
+
+        var templateHtml = '<div class="btn-group">';
+
+        @if (Model.NeedViewButton)
+        {
+            @:var detailsUrl = '@Url.Action(Model.ViewAction, Model.Controller,new{area=Model.Area})/' + options.rowId;
+
+            if (Model.NeedViewWrappingDialog)
+            {
+                 @:templateHtml += '<a href="' + detailsUrl + '" data-toggle="modal" data-target="#modalView" data-dialog-width="@Model.EditDialogWidth" data-dialog-title="@Model.ViewButtonText" class="btn btn-default @Model.ViewButtonClass" title="@Model.ViewButtonText"><i class="glyphicon glyphicon-search"></i></a>';
+                                                                                                                                    }
+            else
+            {
+                 @:templateHtml += '<a href="' + detailsUrl + '" data-dialog-width="@Model.EditDialogWidth" data-dialog-title="@Model.ViewButtonText" class="btn btn-default @Model.ViewButtonClass" title="@Model.ViewButtonText"><i class="glyphicon glyphicon-search"></i></a>';
+                                                                                                                                    }
+
+
+        }
+
+        @if (Model.NeedEditButton)
+        {
+            @:var editUrl = '@Url.Action(Model.EditAction, Model.Controller)?Id=' + options.rowId;
+                                                                                                                                    if (Model.NeedEditWrapingDialog)
+            {
+                @:templateHtml += '<a href="' + editUrl + '" data-toggle="modal" data-target="#modal" data-dialog-width="@Model.EditDialogWidth" data-dialog-title="@Model.ViewButtonText" class="btn btn-default edit-control @Model.EditButtonClass modal-link" title="@Model.EditButtonText"><i class="glyphicon glyphicon-edit"></i></a>';
+                                                                                                                                    }
+            else
+            {
+              @:templateHtml += '<a href="' + editUrl + '" data-dialog-width="@Model.EditDialogWidth" data-dialog-title="@Model.ViewButtonText" class="btn btn-default edit-control @Model.EditButtonClass" title="@Model.EditButtonText"><i class="fa fa-wrench fa-lg"></i></a>';
+                                                                                                                                    }
+
+        }
+
+        @if (Model.NeedDeleteButton)
+        {
+            @:templateHtml += '<a href="#" class="btn btn-default" title="@Model.DeleteButtonText" onclick="deleteRow(' + options.rowId + ');"><i class="glyphicon glyphicon-trash"></i></a>';
+                                                                                                                                }
+
+        @if (!string.IsNullOrEmpty(Model.AdditionalButtonFormater))
+        {
+            var func = Model.AdditionalButtonFormater+"(";
+            var close = ")";
+
+
+             @:templateHtml +=@func options @close;
+                                                                                                                        }
+
+        templateHtml += '</div>';
+
+        return templateHtml;
+    }
+
+    function BeforeRequest() {
+        var $this = $(this), i, count;
+
+        if (firstLoad) {
+
+            var cm = $grid.jqGrid('getGridParam', 'colModel');
+            if (typeof (cm) !== 'undefined')
+                myColumnsState = restoreColumnState(cm);
+            isColState = typeof (myColumnsState) !== 'undefined' && myColumnsState !== null;
+            idsOfSelectedRows = isColState && typeof (myColumnsState.selectedRows) !== "undefined" ? myColumnsState.selectedRows : [];
+            firstLoad = false;
+
+            if (isColState) {
+                $this.jqGrid("setGridParam", {
+                    search: myColumnsState.search,
+                    page: myColumnsState.page,
+                    sortorder: myColumnsState.sortorder,
+                    sortname: myColumnsState.sortname,
+                    rowNum: myColumnsState.rowNum
+                });
+                if (typeof (myColumnsState.filters) !== 'undefined') {
+                    $this.jqGrid("setGridParam", {
+                        postData: { filters: myColumnsState.filters }
+                    });
+                }
+                $this.parents('.ui-jqgrid').find('.ui-pg-selbox').val(myColumnsState.rowNum); // количество записей на 1 странице
+                $this.jqGrid("sortGrid", myColumnsState.sortname, true); //сортировка
+            }
+        }
+        for (i = 0, count = idsOfSelectedRows.length; i < count; i++) {
+            $this.jqGrid('setSelection', idsOfSelectedRows[i], false);
+        }
+        refreshSerchingToolbar($this);
+        saveColumnState.call($this, this.p.remapColumns);
+    }
+
+    function reloadGrid() {
+        $("#@Model.JqGridName").trigger("reloadGrid", [{ current: true }]);
+
+    }
+
+    function deleteRow(id) {
+        alertify.confirm("Вы действительно хотите удалить этот объект?", function (e) {
+            if (e) {
+                var url = '@Url.Action(Model.DeleteAction, Model.Controller, new { area = Model.Area })';
+                $.post(url, { id: id }, function (json) {
+                    CompleteDelete(json);
+                });
+            }
+        });
+    }
+
+    function CompleteDelete(response) {
+
+        if(response.message)
+            alertify.log(response.message, response.type);
+
+        if (response.messages) {
+            $.each(response.messages, function (i, message) {
+                alertify.log(message, response.type);
+            });
+        }
+
+        reloadGrid();
+    }
+</script>
+
+<script>
+    var $grid = $("#@Model.JqGridName"),
+        myDefaultSearch = 'cn',
+        getColumnIndex = function (grid, columnIndex) {
+            var cm = grid.jqGrid('getGridParam', 'colModel'), i, l = cm.length;
+            for (i = 0; i < l; i++) {
+                if ((cm[i].index || cm[i].name) === columnIndex) {
+                    return i;
+                }
+            }
+            return -1;
+        },
+        refreshSerchingToolbar = function ($grid) {
+            var postData = $grid.jqGrid('getGridParam', 'postData'), filters, i, l,
+                rules, rule, iCol, cm = $grid.jqGrid('getGridParam', 'colModel'),
+                cmi, control, tagName;
+
+            for (i = 0, l = cm.length; i < l; i++) {
+                control = $("#gs_" + $.jgrid.jqID(cm[i].name));
+                if (control.length > 0) {
+                    tagName = control[0].tagName.toUpperCase();
+                    if (tagName === "SELECT") {
+                        control.find("option[value='']")
+                            .attr('selected', 'selected');
+                    } else if (tagName === "INPUT") {
+                        control.val('');
+                    }
+                }
+            }
+
+            if (typeof (postData.filters) === "string" &&
+                typeof ($grid[0].ftoolbar) === "boolean" && $grid[0].ftoolbar) {
+
+                filters = $.parseJSON(postData.filters);
+                if (filters && filters.groupOp === "AND" && typeof (filters.groups) === "undefined") {
+
+                    rules = filters.rules;
+                    for (i = 0, l = rules.length; i < l; i++) {
+                        rule = rules[i];
+                        iCol = getColumnIndex($grid, rule.field);
+                        if (iCol >= 0) {
+                            cmi = cm[iCol];
+                            control = $("#gs_" + $.jgrid.jqID(cmi.name));
+                            if (control.length > 0 &&
+                            (((typeof (cmi.searchoptions) === "undefined" ||
+                                    typeof (cmi.searchoptions.sopt) === "undefined")
+                                && rule.op === myDefaultSearch) ||
+                            (typeof (cmi.searchoptions) === "object" &&
+                                $.isArray(cmi.searchoptions.sopt) &&
+                                cmi.searchoptions.sopt.length > 0 &&
+                                cmi.searchoptions.sopt[0] === rule.op))) {
+                                tagName = control[0].tagName.toUpperCase();
+                                if (tagName === "SELECT") { // && cmi.stype === "select"
+                                    control.find("option[value='" + $.jgrid.jqID(rule.data) + "']")
+                                        .attr('selected', 'selected');
+                                } else if (tagName === "INPUT") {
+                                    control.val(rule.data);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        saveObjectInLocalStorage = function (storageItemName, object) {
+            if (typeof window.localStorage !== 'undefined') {
+                window.localStorage.setItem(storageItemName, JSON.stringify(object));
+            }
+        },
+        removeObjectFromLocalStorage = function (storageItemName) {
+            if (typeof window.localStorage !== 'undefined') {
+                window.localStorage.removeItem(storageItemName);
+            }
+        },
+        getObjectFromLocalStorage = function (storageItemName) {
+            if (typeof window.localStorage !== 'undefined') {
+                return JSON.parse(window.localStorage.getItem(storageItemName));
+            }
+        },
+        myColumnStateName = function (grid) {
+            return window.location.pathname + '#' + grid[0].id;
+        },
+        idsOfSelectedRows = [],
+        saveColumnState = function (perm) {
+            var colModel = this.jqGrid('getGridParam', 'colModel'), i, l = colModel.length, colItem, cmName,
+                postData = this.jqGrid('getGridParam', 'postData'),
+                columnsState = {
+                    search: this.jqGrid('getGridParam', 'search'),
+                    page: this.jqGrid('getGridParam', 'page'),
+                    sortname: this.jqGrid('getGridParam', 'sortname'),
+                    sortorder: this.jqGrid('getGridParam', 'sortorder'),
+                    rowNum: this.jqGrid('getGridParam', 'rowNum'),
+                    permutation: perm,
+                    colStates: {}
+                },
+                colStates = columnsState.colStates;
+
+            if (typeof (postData.filters) !== 'undefined' && postData.filters !== "") {
+                columnsState.filters = postData.filters;
+            }
+
+            for (i = 0; i < l; i++) {
+                colItem = colModel[i];
+                cmName = colItem.name;
+                if (cmName !== 'rn' && cmName !== 'cb' && cmName !== 'subgrid') {
+                    colStates[cmName] = {
+                        width: colItem.width,
+                        hidden: colItem.hidden
+                    };
+                }
+            }
+            saveObjectInLocalStorage(myColumnStateName($grid), columnsState);
+        },
+        myColumnsState,
+        isColState,
+        restoreColumnState = function (colModel) {
+            var colItem, i, l = colModel.length, colStates, cmName,
+                columnsState = getObjectFromLocalStorage(myColumnStateName($grid));
+
+            if (columnsState) {
+                colStates = columnsState.colStates;
+                for (i = 0; i < l; i++) {
+                    colItem = colModel[i];
+                    cmName = colItem.name;
+                    if (cmName !== 'rn' && cmName !== 'cb' && cmName !== 'subgrid') {
+                        colModel[i] = $.extend(true, {}, colModel[i], colStates[cmName]);
+                    }
+                }
+            }
+            return columnsState;
+        },
+        updateIdsOfSelectedRows = function (id, isSelected) {
+            var index = idsOfSelectedRows.indexOf(id);
+            if (!isSelected && index >= 0) {
+                idsOfSelectedRows.splice(index, 1);
+            } else if (index < 0) {
+                idsOfSelectedRows.push(id);
+            }
+        },
+        firstLoad = true;
+
+    $(function () {
+        $("#@Model.JqGridName").setGridParam({
+            beforeSelectRow: function (rowid, e) {
+                //запрещает выбор строк
+                return false;
+            },
+            onSelectRow: function (id, isSelected) {
+                updateIdsOfSelectedRows(id, isSelected);
+                saveColumnState.call($grid, $grid[0].p.remapColumns);
+            },
+            onSelectAll: function (aRowids, isSelected) {
+                var i, count, id;
+                for (i = 0, count = aRowids.length; i < count; i++) {
+                    id = aRowids[i];
+                    updateIdsOfSelectedRows(id, isSelected);
+                }
+                saveColumnState.call($grid, $grid[0].p.remapColumns);
+            },
+            resizeStop: function () {
+                saveColumnState.call($grid, $grid[0].p.remapColumns);
+            }
+        });
+
+        var inputList = $("input[type=checkbox]");
+        for (var i = inputList.length - 1; i >= 0; i--) {
+            $(inputList[i]).prettyCheckable();
+        }
+    });
+
+    function BeginSaveUser() {
+        debugger;
+    }
+</script>

@@ -1,0 +1,22 @@
+﻿@using AUPPRB.Common.Utils.Web
+@model AUPPRB.Models.ViewModels.Literature.BookOfLiteratureViewModel
+
+@{ Layout = null;}
+
+<tr id="@Model.RowId" class="editorRow">
+    @using (Html.BeginCollectionItem("Books"))
+    {
+        <td>
+            @Html.HiddenFor(c => c.RowId)
+            @Html.TextBoxFor(c => c.BookNumber, new { placeholder = "----Введите номер книги----", @class = "form-control" })
+        </td>
+    }
+    <td>
+
+        <div align="center" style="float: left">
+            <a style="float:left;display: block; margin: 0 auto; cursor: pointer" title="Удалить книгу" class="btn btn-default deleteRow"><span class="glyphicon glyphicon-trash"></span></a>
+        </div>
+
+
+    </td>
+</tr>

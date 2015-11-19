@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1B2E40D4-7399-4456-B985-35DE2AE937D3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AUPPRB.SqlEFEntities</RootNamespace>
+    <AssemblyName>AUPPRB.SqlEFEntities</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcademyModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcademyModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AcademyModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AcademyModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcademyModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Contact.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dictionary.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DictionaryType.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Discipline.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library_Book.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library_EventType.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library_History.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library_Literature.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library_ReservateBook.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Nagruzka.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Notification.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PrepodDiscipline.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Prepod_PrepodiCafedri.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Prepod_PrepodLikes.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Prepod_PrepodMeta.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Raspisanie.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Role.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoleTask.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SostavGrupp.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Spezialnost.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Spezialnost_SpezialnostMeta.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpezialRazdeliDisziplini.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpisokGrupp.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Student_StudentMeta.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Task.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserMeta.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserRole.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserTask.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VidiRabot.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VremyaZanyatia.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ZaniatiaySemestr.cs">
+      <DependentUpon>AcademyModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AUPPRB.BLL\AUPPRB.Models\AUPPRB.Models.csproj">
+      <Project>{b6495462-153c-48fa-b1cd-56eb16f7eec9}</Project>
+      <Name>AUPPRB.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="AcademyModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AcademyModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="AcademyModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AcademyModel.edmx</DependentUpon>
+      <LastGenOutput>AcademyModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="AcademyModel.edmx.diagram">
+      <DependentUpon>AcademyModel.edmx</DependentUpon>
+    </None>
+    <None Include="AcademyModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AcademyModel.edmx</DependentUpon>
+      <LastGenOutput>AcademyModel.cs</LastGenOutput>
+    </None>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

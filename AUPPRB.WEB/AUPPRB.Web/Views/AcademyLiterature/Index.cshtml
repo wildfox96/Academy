@@ -1,0 +1,25 @@
+﻿@using AUPPRB.Models.ViewModels.jqGridModels
+@using Trirand.Web.Mvc
+@model AUPPRB.Models.ViewModels.jqGridModels.LiteratureMetaJqGridModel
+
+@{
+    ViewBag.Title = "Литература академии";
+   
+}
+<h2>@ViewBag.Title</h2>
+
+
+<div style="padding-top: 20px;" class="literatureGrid">
+    @Html.Trirand().JQGrid(Model.LiteratureGrid, "LiteratureGrid")
+</div>
+
+
+
+
+
+
+@{ Html.RenderPartial("_GridResources", new JqGridSettingsModel() { JqGridName = "LiteratureGrid", NeedEditButton = false,NeedDeleteButton = false,NeedViewButton = true, NeedViewWrappingDialog = true, ViewDialogTitle = "Основная информация о книге"}); }
+
+
+
+

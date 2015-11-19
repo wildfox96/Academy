@@ -1,0 +1,139 @@
+﻿@model AUPPRB.Models.ViewModels.Literature.LiteratureViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = null;
+}
+<style>
+    .form-control {
+        width: 70%;
+    }
+
+</style>
+
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#grund" role="tab" data-toggle="tab">Основная информация</a></li>
+        <li><a href="#rechts" role="tab" data-toggle="tab">Книги</a></li>
+    </ul>
+   
+    <div class="tab-content">
+        <div class="tab-pane active" id="grund">
+            @Html.ValidationSummary()
+            @Html.HiddenFor(c => c.Id)
+            
+            <div class="container">
+
+                <div class="form-group">
+                    @Html.LabelFor(p => p.FullName)
+                    @Html.TextBoxFor(p => p.FullName, new { @class = "form-control", placeholder = "Полное название" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.ShortName)
+                    @Html.TextBoxFor(p => p.ShortName, new { @class = "form-control", placeholder = "Краткое название" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.Year)
+                    @Html.TextBoxFor(p => p.Year, new { @class = "form-control", placeholder = "Год издания" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.PublishingHouse)
+                    @Html.TextBoxFor(p => p.PublishingHouse, new { @class = "form-control", placeholder = "Издательство" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.MainAuthor)
+                    @Html.TextBoxFor(p => p.MainAuthor, new { @class = "form-control", placeholder = "Автор" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.AdditionalAuthors)
+                    @Html.TextBoxFor(p => p.AdditionalAuthors, new { @class = "form-control", placeholder = "Сооавторы" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.Desqription)
+                    @Html.TextAreaFor(p => p.Desqription, new { @class = "form-control", placeholder = "Описание" })
+                </div>
+
+            </div>
+
+         
+
+
+         
+        </div>
+        <div class="tab-pane " id="rechts">
+          
+            <div class="control-group" style=" margin: 10px">
+                <span c class="btn btn-default" role='button' href="@Url.Action("AddBookItem")" id="addItem">
+                    <i class="glyphicon glyphicon-plus-sign"></i> Добавить книгу
+                </span>
+            </div>
+           
+            <table class="table table-striped">
+                <tbody id="booksOfLiterature">
+                    @foreach (var item in Model.Books)
+                    {
+                        Html.RenderPartial("_BookEditorRow", item);
+                    }
+                </tbody>
+            </table>
+           
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $("#addItem").click(function () {
+            $.ajax({
+                url: $(this).attr("href"),
+                cache: false,
+                success: function (html) {
+
+                    var val = "";
+                    try {
+                        var lastVal = $("#booksOfLiterature").find("input").last().val();
+                         val = parseInt(lastVal.match(/\d+$/)[0]) + 1;
+                        val = lastVal.replace(lastVal.match(/\d+$/)[0], val);
+                    } catch(e)  {
+                        
+                    }
+
+                    $("#booksOfLiterature").append(html);
+                    $("input").last().focus();
+                  
+                    $("input").last().val(val);
+                }
+            });
+            return false;
+        });
+
+        $(document).on("click", "a.deleteRow", function () {
+          
+            debugger 
+            var item = $(this).parents("tr.editorRow:first");
+
+            alertify.confirm("Вы действительно хотите удалить эту книгу?", function (e) {
+                debugger
+                if (e) {
+                    debugger 
+                    var url = '@Url.Action("DeleteBook")';
+                    $.post(url, { id: item.attr("id") }, function (json) {
+
+                        if (json.Success)
+                            item.remove();
+
+                        if(!json.Success && json.Message)
+                            alertify.log(json.Message, "error");
+                    });
+
+                    reloadGrid();
+                }
+            });
+
+          
+           
+
+        });
+
+    })
+</script>

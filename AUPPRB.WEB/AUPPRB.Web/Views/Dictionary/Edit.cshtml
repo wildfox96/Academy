@@ -1,0 +1,85 @@
+﻿@model AUPPRB.Models.ViewModels.Dictionary.DictionaryViewModel
+
+@{
+    Layout = "../Shared/_EmptyLayout.cshtml";
+}
+<style>
+    input[type='text'] {
+        width: 100%;
+    }
+</style>
+@Html.HiddenFor(p=>p.Id)
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h4>@Html.DisplayFor(m => m.Name) </h4>
+    </div>
+</div>
+
+
+<fieldset>
+    <legend>Термины справочника</legend>
+    <table class="table table-bordered">
+        <tr>
+            <th>Термин </th>
+            <th style="width: 15%;">Удалить из справочникa</th>
+        </tr>
+        <tbody id="dictionaryEditorRows">
+            @foreach (var item in Model.DictionaryItems)
+            {
+                Html.RenderPartial("_DictionaryEditorRow", item);
+            }
+        </tbody>
+    </table>
+    <p>
+        <button id="addItem" href="@Url.Action("AddDictionaryItem", new { dictType = Model.Id })" type="button" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-plus"></span>
+            Добавить термин
+        </button>
+       
+    </p>
+</fieldset>
+
+<script>
+
+    $(function () {
+
+        $(document).on("click", "a.deleteRow", function () {
+            debugger 
+            var item = $(this).parents("tr.editorRow:first");
+
+            item.remove();
+                
+        });
+
+        $("#addItem").click(function () {
+            debugger 
+            $.ajax({
+                url: $(this).attr("href"),
+                cache: false,
+                success: function (html) {
+
+                    $("#dictionaryEditorRows").append(html);
+                    $("input").last().focus();
+                }
+            });
+            return false;
+        });
+
+        function Complete(data) {
+            debugger
+            
+        }
+        function Success(data) {
+            debugger
+            
+        }
+
+    });
+</script>
+
+
+
+
+
+

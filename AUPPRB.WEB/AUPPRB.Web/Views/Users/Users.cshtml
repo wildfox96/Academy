@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "Users";
+    Layout = "../Shared/_Layout.cshtml";
+}
+@using AUPPRB.Models.ViewModels.jqGridModels
+@using Trirand.Web.Mvc
+@model AUPPRB.Models.ViewModels.jqGridModels.UserJqGridModel
+<h2>Пользователи</h2>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        @*<div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>*@
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a data-toggle="modal" href="@Url.Action("CreateStudent", "Users")" data-target="#modal">Добавить студента</a></li>
+                <li><a data-toggle="modal" href="@Url.Action("CreatePrepod", "Users")" data-target="#modal">Добавить преподавателя</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+               <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Другое <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Статистика пользователей</a></li>
+                        <li><a href="#">...</a></li>
+                        <li><a href="#">...</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">...</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<table>
+    <tr>
+        @*<td style="vertical-align: middle"> @Html.ActionLink("Добавить пользователя", "Create", "Users", null, new { id = "addingUserLink", data_dialog_width = "1000px", data_dialog_title = "Добавление пользователя", @class = "fm-button ui-state-default ui-corner-all fm-button-icon-left",  style = "margin-bottom: 10px" })</td>*@
+        <td style="vertical-align: middle">
+            Пакетная загрузка
+        </td>
+    </tr>
+</table>
+
+@*<div id="modal" data-backdrop="static" data-keyboard="true" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Добавление пользователя</h4>
+            </div>
+            <div class="modal-body"></div>
+            </div>
+    </div>
+</div>*@
+@Html.Trirand().JQGrid(Model.UserGrid, "JQGridUsers")
+@{Html.RenderPartial("_GridResources", new JqGridSettingsModel() { JqGridName = "JQGridUsers", NeedDeleteButton = false, NeedEditWrapingDialog = true, NeedViewButton = false, ViewAction = "View", DeleteAction = "Delete", EditDialogTitle = "Редактирование пользователя", SubmitClickEventBefore = "collectionRolesAndTasks()" }); }
+
+
+
+@*<script>
+    function formatEdit(cellValue, options, rowObject) {
+
+        var linkPath = "@Url.Action("", "Users")" + "/" + options.rowId;
+        var imageHtml = "<a id='editUserLink' data-dialog-width='1000px' data-dialog-title='Редактирование пользователя' title='Редактировать' href='" + linkPath + "'  class='editLink'><span  class='glyphicon  glyphicon-pencil'></span></a>";
+        // Временно нельзя удалить пользователей
+        //        var imageHtml = "<a id='editUserLink' data-dialog-width='1000px' data-dialog-title='Редактирование пользователя' title='Редактировать' href='" + linkPath + "'  class='editLink'></a>" +
+        //                        "<a href='#' title='Удалить' onclick='deleteRow(" + options.rowId + ");' class='deleteLink'></a>";
+        return imageHtml;
+    }
+
+    function addRow(id) {
+        jQuery("#JQGridUsers").editGridRow("new", { recreateForm: true, reloadOnSubmit: true, closeAfterAdd: true });
+    }
+
+    function edit(id) {
+        jQuery("#JQGridUsers").jqGrid('editGridRow', id, { reloadOnSubmit: true, closeAfterEdit: true });
+    }
+
+    function deleteRow(id) {
+        jQuery("#JQGridUsers").jqGrid('delGridRow', id, { reloadOnSubmit: true });
+    }
+
+    function gridInitialized() {
+        //$(".editLink").each(function (i, id) { dialogWrapper(i, id, false); });
+        //colorGrid();
+    }
+
+    function reloadGrid() {
+        jQuery("#JQGridUsers").trigger("reloadGrid", [{ current: true }]);
+    }
+
+    function completeSaving() {
+        reloadGrid();
+
+    }
+
+    function colorGrid() {
+        var rowIDs = $("#JQGridUsers").getDataIDs();
+        for (var i = 0; i < rowIDs.length; i = i + 1) {
+
+            var rowData = $("#JQGridUsers").getRowData(rowIDs[i]);
+            var trElement = $("#" + rowIDs[i], $('#JQGridUsers'));
+
+            if (rowData.IsBlocked == 'Да') {
+                trElement.removeClass('ui-widget-content');
+                trElement.addClass('rowColorRed');
+            }
+        }
+    }
+</script>*@
+
+

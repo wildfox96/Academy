@@ -1,0 +1,27 @@
+﻿@using AUPPRB.Models.ViewModels.jqGridModels
+@using Trirand.Web.Mvc
+@model DisciplineJqGridModel
+@{
+    ViewBag.Title = "Управление дисциплинами";
+}
+
+
+<div class="ui-widget">
+    <div class="ui-widget-header">
+        @ViewBag.Title
+    </div>
+    <div class="ui-widget-content">
+        <div class="control-group" style=" margin: 10px">
+            <a href="@Url.Action("Create", "Discipline", null)" class="btn btn-default" role='button' data-toggle='modal' data-target='#modal' title='Добавить дисциплину'>
+                <i class="glyphicon glyphicon-plus-sign"></i> Добавить дисциплину
+            </a>
+        </div>
+
+        @Html.Trirand().JQGrid(Model.DisciplineJqGrid,"JqGrid")
+    </div>
+
+</div>
+
+@{Html.RenderPartial("_GridResources", new JqGridSettingsModel { Area = "Parent", NeedDeleteButton = false, NeedEditButton = true, NeedViewButton = false });} 
+
+

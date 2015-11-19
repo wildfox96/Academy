@@ -1,0 +1,118 @@
+﻿@model AUPPRB.Models.ViewModels.Schedule.ParaViewModel
+@{
+    ViewBag.Title = "Edit";
+    int id = (int)ViewBag.Id;
+    string dateOfPara = (string) ViewBag.DataZaniat;
+    string auditoria = (string) ViewBag.Auditoria;
+    
+}
+
+<h2>Редактирование пары</h2>
+
+<div class="form-horizontal">
+    @using (Html.BeginForm("Save", "AdminSchedule", FormMethod.Post))
+    {
+        <input type="hidden" name="Id" value="@id"/>
+        
+        <div class="form-group">
+            <label class="control-label">Дата занятия</label>
+            <div>
+                <input type="text" class="form-control" name="dateOfPara" value="@dateOfPara"/>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label">Аудитория</label>
+            <div>
+                <input type="text" class="form-control" name="Auditory" value="@auditoria" />
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label">Время занятия</label>
+            <div>
+                @Html.DropDownListFor(x => x.TimeOfParaId, ViewBag.VremiaZaniatia as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects"})
+                @*@Html.DropDownList("timeOfParaId", ViewBag.VremiaZaniatia as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })*@
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label">Преподаватель</label>
+            <div>
+                @Html.DropDownList("prepodId", ViewBag.Prepods as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })
+            </div>
+        </div>
+        
+         <div class="form-group">
+            <label class="control-label">Дисциплина</label>
+            <div>
+                @Html.DropDownList("disciplineId", ViewBag.DiszipliniFromSpezialRazdeliDisziplini as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })
+            </div>
+        </div>
+      
+        
+        <div class="form-group">
+            <label class="control-label">Специальность</label>
+            <div>
+                @Html.DropDownList("spezialnostId", ViewBag.Spezialnosti as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Форма обучения</label>
+            <div>
+                @Html.DropDownList("formOfStudyId", ViewBag.FormsOfStudy as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Год поступления</label>
+            <div>
+                @Html.DropDownList("year", ViewBag.GodiPostuplenia as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Поток</label>
+            <div>
+                @Html.DropDownList("potokId", ViewBag.Potoki as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Тип занятия</label>
+            <div>
+                @Html.DropDownList("typeOfParaId", ViewBag.TypesOfZaniatia as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })
+            </div>
+        </div>
+
+        if (ViewBag.Groups != null)
+        {
+            
+             <div class="form-group">
+            <label class="control-label">Группа</label>
+            <div>
+                @Html.DropDownList("groupId", ViewBag.Groups as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Подгруппа</label>
+            <div>
+                @Html.DropDownList("subgroupId", ViewBag.SubGroups as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", @id = "objects" })
+            </div>
+        </div>
+            
+        }
+        
+       
+        @Html.ActionLink("Назад", "SetUpScheduleForADay", "AdminSchedule", new { @class = "btn btn-default" })
+        <input type="submit" class="btn btn-primary" value="Сохранить" />
+    }
+
+</div>
+
+<script>
+
+    $(function() {
+
+        $("input[name='dateOfPara']").datepicker();
+
+    });
+
+</script>
