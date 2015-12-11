@@ -53,6 +53,13 @@ namespace AUPPRB.Domain.Interfaces
         Spezialnost_SpezialnostMeta GetSpezialnostMeta(int spezialnostId, int year);
 
         /// <summary>
+        /// Get Spezialnost_SpezialnostMeta
+        /// </summary>
+        /// <param name="spezialnostId"></param>
+        /// <returns></returns>
+        IEnumerable<Spezialnost_SpezialnostMeta> GetSpezialnostMeta(int spezialnostId);
+
+        /// <summary>
         /// Get SpezialRazdeliDisziplini 
         /// </summary>
         /// <param name="spezMeta"></param>
@@ -68,7 +75,7 @@ namespace AUPPRB.Domain.Interfaces
         /// <returns></returns>
         ScheduleDayViewModel GetRaspisanieForADay(DateTime date, int idSpiskaGrupp, int idUchPlanaDisziplini);
 
-       
+
         /// <summary>
         /// Get расписание для препода на конкретный день
         /// </summary>
@@ -102,7 +109,7 @@ namespace AUPPRB.Domain.Interfaces
         /// Выбрать все дисциплины
         /// </summary>
         /// <returns></returns>
-        Dictionary<int, string>  GetDisziplini();
+        Dictionary<int, string> GetDisziplini();
 
         /// <summary>
         /// Выбрать преподов для дисциплины
@@ -181,6 +188,33 @@ namespace AUPPRB.Domain.Interfaces
         /// <returns></returns>
         Dictionary<int, string> GetAllPrepods();
 
+        /// <summary>
+        /// Выбрать потоки для определенной формы обучения
+        /// </summary>
+        /// <param name="idSpezialnostMeta"></param>
+        /// <returns></returns>
+        List<SpisokGrupp> GetPotokiForSpezMeta(int idSpezialnostMeta);
+
+        /// <summary>
+        /// Выбрать группы с потока для определенной формы обучения
+        /// </summary>
+        /// <param name="idPotok"></param>
+        /// <param name="idSpezMeta"></param>
+        /// <returns></returns>
+        List<SpisokGrupp> GetSpisokGrupp(int idPotok, int idSpezMeta);
+
+        /// <summary>
+        /// Выбрать курсы по факультеты
+        /// </summary>
+        /// <param name="facultyId"></param>
+        /// <returns></returns>
+        List<Spezialnost> GetListOfSpecialities(int facultyId);
+
+        /// <summary>
+        /// Выбрать срок обучения для года
+        /// </summary>
+        /// <param name="spezId"></param>
+        /// <returns></returns>
+        Spezialnost_SpezialnostMeta GetSpezMetaInfo(int spezId);
     }
 }
- 

@@ -92,8 +92,6 @@
             }*/
 </style>
 
-<!-- Nav tabs -->
-
 <div>
     <ul class="nav nav-tabs" role="tablist">
         <li class="active"><a href="#grund" role="tab" data-toggle="tab">Общие сведения</a></li>
@@ -182,45 +180,41 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-5">
                         @{
-
                             if (Model.StudentMeta != null)
                             {
                                 <div class="form-group">
-                                    <div class="input-group">
-                                        @Html.DropDownListFor(m => m.StudentMeta.FacultyId, (IEnumerable<SelectListItem>)ViewBag.Facultaty, "---Укажите факультет---", new { @class = "selectpicker" })
-                                    </div>
-                                    @Html.ValidationMessageFor(m => m.StudentMeta.FacultyId)
+                                    <select class="form-control" id="StudentMeta_FacultyId" name="StudentMeta.FacultyId" style="width:300px;"></select>
                                 </div>
                                 <div class="form-group">
-                                    <div class="input-group">
-                                        @Html.DropDownListFor(m => m.StudentMeta.SpecialityId, (IEnumerable<SelectListItem>)ViewBag.Speciality, "---Укажите специальность---", new { @class = "selectpicker" })
-                                    </div>
-                                    @Html.ValidationMessageFor(m => m.StudentMeta.SpecialityId)
+                                    <select class="form-control" id="StudentMeta_SpecialityId" name="StudentMeta.SpecialityId" style="display: none; width: 300px"></select>
                                 </div>
                                 <div class="form-group">
-                                    <div class="input-group">
-                                        @Html.DropDownListFor(m => m.StudentMeta.AdmissionDate, (IEnumerable<SelectListItem>)ViewBag.Years, "---Укажите год начала обучения---", new { @class = "selectpicker" })
-                                    </div>
-                                    @Html.ValidationMessageFor(m => m.StudentMeta.AdmissionDate)
+                                    <select class="form-control" id="StudentMeta_IdSpecialtyMeta" name="StudentMeta.IdSpecialtyMeta" style="display: none; width: 300px"></select>
                                 </div>
                                 <div class="form-group">
-                                    <div class="input-group">
-                                        @Html.DropDownListFor(m => m.StudentMeta.GraduationDate, (IEnumerable<SelectListItem>)ViewBag.Years, "---Укажите год окончания обучения---", new { @class = "selectpicker" })
-                                    </div>
-                                    @Html.ValidationMessageFor(m => m.StudentMeta.GraduationDate)
+                                    <select class="form-control" id="StudentMeta_FlowId" name="StudentMeta.FlowId" style="display: none; width: 300px"></select>
                                 </div>
                                 <div class="form-group">
-                                    <div class="input-group">
-                                        @Html.DropDownListFor(m => m.StudentMeta.FlowId, (IEnumerable<SelectListItem>)ViewBag.Flows, "---Укажите номер потока---", new { @class = "selectpicker" })
-                                    </div>
-                                    @Html.ValidationMessageFor(m => m.StudentMeta.FlowId)
+                                    <select class="form-control" id="StudentMeta_GroupId" name="StudentMeta.GroupId" style="display: none; width: 300px"></select>
                                 </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        @Html.DropDownListFor(m => m.StudentMeta.GroupId, (IEnumerable<SelectListItem>)ViewBag.Groups, "---Укажите номер группы---", new { @class = "selectpicker" })
-                                    </div>
-                                    @Html.ValidationMessageFor(m => m.StudentMeta.GroupId)
-                                </div>
+
+                                if (Model.StudentMeta.IdSpecialtyMeta == 0)
+                                {
+                                    <input type="hidden" id="IsNewOrEdit" value="new" />
+
+                                }
+                                else
+                                {
+                                    <input type="hidden" id="IsNewOrEdit" value="edit" />
+                                    <input type="hidden" id="editFacultyId" value="@Model.StudentMeta.FacultyId" />
+                                    <input type="hidden" id="editSpecialityId" value="@Model.StudentMeta.SpecialityId" />
+                                    <input type="hidden" id="editIdSpecialtyMeta" value="@Model.StudentMeta.IdSpecialtyMeta" />
+                                    <input type="hidden" id="editFlowId" value="@Model.StudentMeta.FlowId" />
+                                    <input type="hidden" id="editGroupId" value="@Model.StudentMeta.GroupId" />
+
+
+                                }
+
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon"><span>Номер студенческого билета</span></div>
@@ -238,6 +232,7 @@
                             }
                             else if (Model.PrepodMeta != null)
                             {
+                                <input type="hidden" id="IsNewOrEdit" value="prepod" />
                                 @Html.HiddenFor(model => model.PrepodMeta.DepartmentsIdsString)
 
                                 <div class="form-group">
@@ -253,24 +248,24 @@
                                         @*@foreach (var departmentsId in Model.PrepodMeta.DepartmentsIds)
                                             {
 
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-group select-group">
-                                                            <div class="input-group cafedrastandartselect " style="width: 100px !important;">
-                                                                @Html.DropDownList("---Укажите кафедру---", (IEnumerable<SelectListItem>)ViewBag.Dapartments, new { @class = "selectpicker cafedryselect", name = "select" + departmentsId })
-                                                            </div>
-                                                            <br />
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group select-group">
+                                                        <div class="input-group cafedrastandartselect " style="width: 100px !important;">
+                                                            @Html.DropDownList("---Укажите кафедру---", (IEnumerable<selectlistitem>)ViewBag.Dapartments, new { @class = "selectpicker cafedryselect", name = "select" + departmentsId })
                                                         </div>
-                                                        <script>
-                                                            debugger;
-                                                            $('.selectpicker').selectpicker();
-                                                            $("[name=" + select + "@departmentsId" + "]").val("@departmentsId");
-                                                        </script>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class='btn btn-default selectminus'>-</button>
-                                                    </td>
-                                                </tr>
+                                                        <br />
+                                                    </div>
+                                                    <script>
+                                                                            debugger;
+                                                                            $('.selectpicker').selectpicker();
+                                                                            $("[name=" + select + "@departmentsId" + "]").val("@departmentsId");
+                                                    </script>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class='btn btn-default selectminus'>-</button>
+                                                </td>
+                                            </tr>
                                             }*@
                                         @if (Model.PrepodMeta.DepartmentsIds.Count == 0)
                                         {
@@ -339,7 +334,7 @@
                                         @{
                                 foreach (var task in role.RoleTask.Select(c => c.Task))
                                 {
-                                    <li><span><input type="checkbox" id="@String.Format("role_{0}__task_{1}", role.Id, task.Id)" name="@String.Format("role_{0}__task_{1}", role.Id, task.Id)" value="@task.Id" data-label="@task.Name" /></span></li>
+                                    <li><span><input type="checkbox" id="@String.Format(" role_{0}__task_{1}", role.Id, task.Id)" name="@String.Format(" role_{0}__task_{1}", role.Id, task.Id)" value="@task.Id" data-label="@task.Name" /></span></li>
                                 }
                                         }
 
@@ -361,13 +356,11 @@
 
 
 <script type="text/javascript">
+
     function personSavedComplete(result) {
 
     }
 
-    $(document).ready(function () {
-        $('.selectpicker').selectpicker();
-    });
     $(function () {
 
         $(".cafedraAdd").on("click", function () {
@@ -437,12 +430,237 @@
         {
 
                                         @:var tasksmas = "@Model.Tasks";
-                                                                                                                                                                                                                                                @:tasksmas = tasksmas.split(";");
-                                                                                                                                                                                                                                                @: $(tasksmas).each(function (ind, elem) { if (elem != "") { if (!$("input[value=" + elem + "]:first").is(':checked')) { $("input[value=" + elem + "]:first").next().addClass("checked") } } });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @:tasksmas = tasksmas.split(";");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @:$(tasksmas).each(function (ind, elem) { if (elem != "") { if (!$("input[value=" + elem + "]:first").is(':checked')) { $("input[value=" + elem + "]:first").next().addClass("checked") } } });
 
 
         }
     });
+    function GetListOfFaculties(id) {
+        $.ajax({
+            url: '@Url.Action("GetFacultiesList", "Users")',
+            type: "POST",
+            async: true,
+            beforeSend: ShowLoader(),
+            error: HideLoader(),
+            success: function (data) {
+                if (id == "0") {
+                    var items = "<option value='-1' selected='selected'>---Выберите факультет ---</option>";
+                }
+                else
+                    var items = "<option value='-1'>---Выберите факультет ---</option>";
+                $.each(data.Faculty, function (i, item) {
+                    if (item.Id == id)
+                        items += "<option value=\"" + item.Id + "\" selected='selected' >" + item.Name + "</option>";
+                    else items += "<option value=\"" + item.Id + "\">" + item.Name + "</option>";
+                });
+                $("#StudentMeta_FacultyId").html(items);
+                document.getElementById("saveButton").disabled = true;
+            },
+
+        });
+    }
+
+    function GetListOfSpecialities(id) {
+        var elem;
+        if (editFacultyId == -1)
+            elem = $("#StudentMeta_FacultyId").val();
+        else elem = editFacultyId;
+        $.ajax({
+            url: '@Url.Action("GetListOfSpesial", "Users")',
+            type: "POST",
+            async: true,
+            data: { facultyId: elem },
+            beforeSend: ShowLoader(),
+            error: HideLoader(),
+            success: function (data) {
+                if (id == 0) {
+                    var items = "<option value='-1' selected='selected'>---Выберите специальность ---</option>";
+                }
+                else
+                    var items = "<option value='-1' >---Выберите специальность ---</option>";
+                $.each(data.Spec, function (i, item) {
+                    if (item.Id == id)
+                        items += "<option value=\"" + item.Id + "\" selected='selected'>" + item.Name + "</option>";
+                    else
+                        items += "<option value=\"" + item.Id + "\">" + item.Name + "</option>";
+                });
+                $("#StudentMeta_SpecialityId").show();
+                $("#StudentMeta_SpecialityId").html(items);
+                if (id == "0") {
+                    $("#StudentMeta_IdSpecialtyMeta").hide();
+                    $("#StudentMeta_FlowId").hide();
+                    $("#StudentMeta_GroupId").hide();
+                    document.getElementById("saveButton").disabled = true;
+                }
+
+            },
+        })
+    }
+    function GetListOfSpezMeta(id) {
+        var elem;
+        if (editSpecialityId == -1)
+            elem = $("#StudentMeta_SpecialityId").val();
+        else elem = editSpecialityId;
+        $.ajax({
+            url: '@Url.Action("GetSpezMetasForSpes", "Users")',
+            type: "POST",
+            async: true,
+            data: { specialostId: elem },
+            beforeSend: ShowLoader(),
+            error: HideLoader(),
+            success: function (data) {
+                if (id == "0")
+                    var items = "<option value='-1' selected='selected'>---Выберите срок обучения ---</option>";
+                else
+                    var items = "<option value='-1' >---Выберите срок обучения ---</option>";
+                $.each(data.Meta, function (i, item) {
+                    if (item.Id == id)
+                        items += "<option value=\"" + item.Id + "\" selected='selected'>" + item.GodPostup + " - " + item.GodOkonch + ", " + item.FormOfStudy + "</option>";
+                    else
+                        items += "<option value=\"" + item.Id + "\" >" + item.GodPostup + " - " + item.GodOkonch + ", " + item.FormOfStudy + "</option>";
+                });
+
+                $("#StudentMeta_IdSpecialtyMeta").show();
+                $("#StudentMeta_IdSpecialtyMeta").html(items);
+                if (id == "0") {
+                    $("#StudentMeta_FlowId").hide();
+                    $("#StudentMeta_GroupId").hide();
+                    document.getElementById("saveButton").disabled = true;
+                }
+
+            },
+        })
+
+    }
+    function GetListOfFlows(number) {
+        var elem;
+        if (editIdSpecialtyMeta == -1)
+            elem = $("#StudentMeta_IdSpecialtyMeta").val();
+        else elem = editIdSpecialtyMeta;
+        $.ajax({
+            url: '@Url.Action("GetPotokiForSpezialnostMeta", "Users")',
+            type: 'POST',
+            async: true,
+            data: { id: elem },
+            beforeSend: ShowLoader(),
+            error: HideLoader(),
+            success: function (data) {
+                if (number == "0")
+                    var items = "<option value='-1' selected='selected'>----- Выберите поток -----</option>";
+                else var items = "<option value='-1' >----- Выберите поток -----</option>";
+                $.each(data.Potoki, function (i, item) {
+                    if (item.Id == number)
+                        items += "<option value=\"" + item.Id + "\" selected='selected'>" + item.Name + "</option>";
+                    else items += "<option value=\"" + item.Id + "\" >" + item.Name + "</option>";
+                });
+                $("#StudentMeta_FlowId").show();
+                $("#StudentMeta_FlowId").html(items);
+                if (id == 0) {
+                    $("#StudentMeta_GroupId").hide();
+                    document.getElementById("saveButton").disabled = true;
+                }
+
+            },
+        })
+    }
+
+    function GetListOfGroups(id) {
+        var elem;
+        if (editFlowId == -1)
+            elem = $("#StudentMeta_FlowId").val();
+        else elem = editFlowId;
+        var elem1;
+        if (editIdSpecialtyMeta == -1)
+            elem1 = $("#StudentMeta_IdSpecialtyMeta").val();
+        else elem1 = editIdSpecialtyMeta;
+
+        $.ajax({
+            url: '@Url.Action("GetGroupsForPotok", "Users")',
+            type: 'POST',
+            async: true,
+            data: { idPotok: elem, idSpezMeta: elem1 },
+            beforeSend: ShowLoader(),
+            error: HideLoader(),
+            success: function (data) {
+                if (id == "0")
+                    var items = "<option value='-1' selected='selected'>----- Выберите группу -----</option>";
+                else
+                    var items = "<option value='-1' >----- Выберите группу -----</option>";
+                $.each(data.Groups, function (i, item) {
+                    if (id == item.Id)
+                        items += "<option value=\"" + item.Id + "\" selected='selected'>" + item.Name + "</option>";
+                    else items += "<option value=\"" + item.Id + "\">" + item.Name + "</option>";
+                });
+                $("#StudentMeta_GroupId").show();
+                $("#StudentMeta_GroupId").html(items);
+                if (id == 0)
+                    document.getElementById("saveButton").disabled = true;
+                else document.getElementById("saveButton").disabled = false;
+
+            },
+        })
+    }
+
+    function LoadFaculty() {
+        debugger;
+        if ($("#IsNewOrEdit").attr("value") == "new") {
+            GetListOfFaculties("0");
+        }
+        else if ($("#IsNewOrEdit").attr("value") == "edit") {
+
+            editFacultyId = $("#editFacultyId").attr("value");
+            editSpecialityId = $("#editSpecialityId").attr("value");
+            editIdSpecialtyMeta = $("#editIdSpecialtyMeta").attr("value");
+            editFlowId = $("#editFlowId").attr("value");
+            editGroupId = $("#editGroupId").attr("value");
+
+            GetListOfFaculties(editFacultyId);
+            GetListOfSpecialities(editSpecialityId);
+            GetListOfSpezMeta(editIdSpecialtyMeta);
+            GetListOfFlows(editFlowId);
+            GetListOfGroups(editGroupId);
+            document.getElementById("saveButton").disabled = false;
+        } else {
+
+            document.getElementById("saveButton").disabled = false;
+        }
+
+
+    }
+    var editFacultyId = -1;
+    var editSpecialityId = -1;
+    var editIdSpecialtyMeta = -1;
+    var editFlowId = -1;
+    var editGroupId = -1;
+
+    $(document).ready(function () {
+
+        $('.selectpicker').selectpicker();
+
+        LoadFaculty();
+
+        $("#StudentMeta_FacultyId").change(function (e) {
+            GetListOfSpecialities("0");
+        });
+
+        $("#StudentMeta_SpecialityId").change(function () {
+            GetListOfSpezMeta("0")
+        });
+
+        $("#StudentMeta_IdSpecialtyMeta").change(function () {
+            GetListOfFlows("0");
+        });
+
+        $("#StudentMeta_FlowId").change(function () {
+            GetListOfGroups("0");
+        });
+        $("#StudentMeta_GroupId").change(function () {
+            document.getElementById("saveButton").disabled = false;
+        })
+
+    });
+
 
     function collectionRolesAndTasks() {
         alert();

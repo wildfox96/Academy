@@ -17,6 +17,7 @@ namespace AUPPRB.SqlEFEntities
         public Spezialnost()
         {
             this.Spezialnost_SpezialnostMeta = new HashSet<Spezialnost_SpezialnostMeta>();
+            this.Student_StudentMeta = new HashSet<Student_StudentMeta>();
         }
     
         public int IdSpez { get; set; }
@@ -26,5 +27,6 @@ namespace AUPPRB.SqlEFEntities
         public string Qualification { get; set; }
     
         public virtual ICollection<Spezialnost_SpezialnostMeta> Spezialnost_SpezialnostMeta { get; set; }
+        public virtual ICollection<Student_StudentMeta> Student_StudentMeta { get; set; }
     }
 }

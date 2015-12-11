@@ -21,13 +21,14 @@ namespace AUPPRB.Web.Controllers.Base
         protected readonly ICache CacheService;
         protected readonly IAccountService _accountService;
         protected readonly IDictionaryService _dictionaryService;
-
+        protected readonly IAdminScheduleService _adminData;
 
         public BaseController()
         {
             _accountService = DependencyResolver.Current.GetService<IAccountService>();
             _dictionaryService = DependencyResolver.Current.GetService<IDictionaryService>();
             CacheService = CacheProvider.Current.GetCache();
+            _adminData = DependencyResolver.Current.GetService<IAdminScheduleService>();
         }
 
         private void _continueCoockie()

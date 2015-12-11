@@ -97,7 +97,7 @@ namespace AUPPRB.Repository.DB
         /// </summary>
         IGenericRepository<Discipline> Disciplines { get; }
 
-        IGenericRepository<Prepod_PrepodLikes> PrepodLikes { get; }
+   IGenericRepository<Prepod_PrepodLikes> PrepodLikes { get; }
         IGenericRepository<Prepod_PrepodiCafedri> PrepodiCafedri { get; }
         IGenericRepository<PrepodDiscipline> PrepodDiscipline { get; }
         IGenericRepository<Raspisanie> Raspisanie { get; }

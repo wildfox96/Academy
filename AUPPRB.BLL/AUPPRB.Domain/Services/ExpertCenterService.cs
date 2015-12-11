@@ -36,7 +36,8 @@ namespace AUPPRB.Domain.Services
                        FirstName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().FirstName,
                        MiddleName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().MiddleName,
                        Photo = p.Prepod_PrepodMeta.Photo,
-                       Likes = p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count,
+                       // Likes = p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count,
+                       Likes = 0,
                        IdSotr = p.Prepod_PrepodMeta.Id
                    }).ToList()
                };
@@ -67,7 +68,8 @@ namespace AUPPRB.Domain.Services
                Photo = p.Prepod_PrepodMeta.Photo,
                FirstName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().FirstName,
                MiddleName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().MiddleName,
-               Likes = p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count,
+               //p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count
+               Likes =0,
                IdSotr = p.Prepod_PrepodMeta.Id,
            }).ToList(),
             };
@@ -128,7 +130,8 @@ namespace AUPPRB.Domain.Services
                                     FirstName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().FirstName,
                                     MiddleName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().MiddleName,
                                     Cabinet = p.Prepod_PrepodMeta.Classroom,
-                                    Likes = p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count
+                                    //p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count
+                                    Likes = 0
                                 }).ToList();
 
                             viewList = new OutputModel()

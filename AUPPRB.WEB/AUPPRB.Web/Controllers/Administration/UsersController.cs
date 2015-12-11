@@ -17,16 +17,20 @@ using AUPPRB.Models.ViewModels;
 using AUPPRB.Models.ViewModels.jqGridModels;
 using AUPPRB.Models.ViewModels.UsersModels;
 using AUPPRB.Web.Controllers.Base;
+using AUPPRB.Domain.Interfaces;
 using Trirand.Web.Mvc;
+
 
 namespace AUPPRB.Web.Controllers.Administration
 {
 
     public class UsersController : BaseController
     {
+        private IAdminScheduleService _adminData;
 
-        public UsersController()
+        public UsersController(IAdminScheduleService adminData)
         {
+            _adminData = adminData;
 
         }
         //
@@ -162,20 +166,16 @@ namespace AUPPRB.Web.Controllers.Administration
         }
         public ActionResult CreateStudent()
         {
-            ViewBag.Facultaty = new SelectList(GetItemsOfDictionary(DictionaryTypeEnum.Факультеты).ToList(), "Id", "Name");
-            ViewBag.Speciality = new SelectList(GetItemsOfDictionary(DictionaryTypeEnum.Специальности).ToList(), "Id", "Name");
-            ViewBag.Years = new SelectList(Enumerable.Range((DateTime.Now.Year - 6), 15));
-            ViewBag.Number = new SelectList(Enumerable.Range(1, 8));
-            ViewBag.Groups = new SelectList(GetItemsOfDictionary(DictionaryTypeEnum.Группы).ToList(), "Id", "Name");
-            ViewBag.Flows = new SelectList(GetItemsOfDictionary(DictionaryTypeEnum.Потоки).ToList(), "Id", "Name");
-
+          
             var model = new UserCommonViewModel()
                         {
                             StudentMeta = new StudentViewModel(),
                             IsNewUser = true
                         };
             return View("Create", model);
+
         }
+
         public ActionResult CreatePrepod()
         {
             ViewBag.Dapartments = new SelectList(GetItemsOfDictionary(DictionaryTypeEnum.Кафедры).ToList(), "Id", "Name");
@@ -216,7 +216,8 @@ namespace AUPPRB.Web.Controllers.Administration
                         GroupId = studentStudentMeta.GroupId,
                         IsDismissed = studentStudentMeta.IsDismissed,
                         SpecialityId = studentStudentMeta.SpecialtyId,
-                        StudentCardNumber = studentStudentMeta.StudentCardNumber
+                        StudentCardNumber = studentStudentMeta.StudentCardNumber,
+                        IdSpecialtyMeta = studentStudentMeta.IdSpecialtyMeta
                     },
                     Login = user.Login,
                     //Password = user.Password,
@@ -388,20 +389,21 @@ namespace AUPPRB.Web.Controllers.Administration
                 if (userModel.StudentMeta != null)
                 {
                     var studentMeta = newUser.Student_StudentMeta.FirstOrDefault();
+                    Spezialnost_SpezialnostMeta meta = _adminData.GetSpezMetaInfo(userModel.StudentMeta.IdSpecialtyMeta);
                     if (studentMeta != null)
                     {
+
                         studentMeta.FacultyId = userModel.StudentMeta.FacultyId;
                         studentMeta.SpecialtyId = userModel.StudentMeta.SpecialityId;
-                        studentMeta.AdmissionDate = new DateTime(userModel.StudentMeta.AdmissionDate, 1, 1);
-                        studentMeta.GraduationDate = new DateTime(userModel.StudentMeta.GraduationDate, 1, 1);
+                        studentMeta.AdmissionDate = new DateTime(meta.GodPostup, 1, 1);
+                        studentMeta.GraduationDate = new DateTime(meta.GodPostup + meta.SrokObuch, 1, 1);
                         studentMeta.FlowId = userModel.StudentMeta.FlowId;
                         studentMeta.GroupId = userModel.StudentMeta.GroupId;
                         studentMeta.StudentCardNumber = userModel.StudentMeta.StudentCardNumber;
                         studentMeta.MarkBookNumber = userModel.StudentMeta.MarkBookNumber;
                         studentMeta.IsDismissed = false;
-
-                        //ДОБАВИТЬ НА ФОМУ ФОРМУ ОБУЧЕНИЯ!!!!! FormOfStudi..внизу удалить запись
-                        studentMeta.IdSpecialtyMeta = 1;
+                        studentMeta.IdSpecialtyMeta = userModel.StudentMeta.IdSpecialtyMeta;
+                        studentMeta.FormOfStuduId = meta.IdFrmObuch;
                     }
                     else
                     {
@@ -410,22 +412,19 @@ namespace AUPPRB.Web.Controllers.Administration
                                                             FacultyId = userModel.StudentMeta.FacultyId,
                                                             SpecialtyId = userModel.StudentMeta.SpecialityId,
                                                             AdmissionDate =
-                                                                new DateTime(userModel.StudentMeta.AdmissionDate, 1, 1),
+                                                               new DateTime(meta.GodPostup, 1, 1),
                                                             GraduationDate =
-                                                                new DateTime(userModel.StudentMeta.GraduationDate, 1, 1),
+                                                                new DateTime(meta.GodPostup + meta.SrokObuch, 1, 1),
                                                             FlowId = userModel.StudentMeta.FlowId,
                                                             GroupId = userModel.StudentMeta.GroupId,
                                                             StudentCardNumber = userModel.StudentMeta.StudentCardNumber,
                                                             MarkBookNumber = userModel.StudentMeta.MarkBookNumber,
                                                             IsDismissed = false,
-                                                            //ДОБАВИТЬ НА ФОМУ ФОРМУ ОБУЧЕНИЯ!!!!! FormOfStudi..внизу удалить запись
-                                                            IdSpecialtyMeta = 1,
+                                                            IdSpecialtyMeta = userModel.StudentMeta.IdSpecialtyMeta,
+                                                            FormOfStuduId = meta.IdFrmObuch
 
                                                         });
                     }
-
-                    //DELETE IN FUTURE AND FROM BASE!!
-
                 }
 
                 if (userModel.PrepodMeta != null)
@@ -536,14 +535,7 @@ namespace AUPPRB.Web.Controllers.Administration
             #endregion
 
             //Добавила (валидация видимая)
-            ViewBag.Facultaty = new SelectList(GetItemsOfDictionary(DictionaryTypeEnum.Факультеты).ToList(), "Id", "Name");
-            ViewBag.Speciality = new SelectList(GetItemsOfDictionary(DictionaryTypeEnum.Специальности).ToList(), "Id", "Name");
-            ViewBag.Years = new SelectList(Enumerable.Range((DateTime.Now.Year - 6), 15));
-            ViewBag.Number = new SelectList(Enumerable.Range(1, 8));
-            ViewBag.Groups = new SelectList(GetItemsOfDictionary(DictionaryTypeEnum.Группы).ToList(), "Id", "Name");
-            ViewBag.Flows = new SelectList(GetItemsOfDictionary(DictionaryTypeEnum.Потоки).ToList(), "Id", "Name");
-
-
+           
             if (userModel.PrepodMeta != null)
             {
                 List<SelectList> departmentsList = new List<SelectList>();
@@ -566,10 +558,11 @@ namespace AUPPRB.Web.Controllers.Administration
                 type = "error",
                 message = "Проверьте введенные данные!"
             });
+
+
+
         }
         #endregion
-
-
         private bool AddingRolesAndTasks(string login, String rolesAndTasksString)
         {
             var user = GetUserByLogin(login);
@@ -634,6 +627,74 @@ namespace AUPPRB.Web.Controllers.Administration
         {
             return ModelState.SelectMany(x => x.Value.Errors.Select(error => error.ErrorMessage));
         }
+
+        public ActionResult GetFacultiesList()
+        {
+            return Json(new
+            {
+                Faculty = GetItemsOfDictionary(DictionaryTypeEnum.Факультеты)
+                    .ToList()
+                    .Select(p => new { Id = p.Id, Name = p.Name })
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetListOfSpesial(int facultyId)
+        {
+
+
+            return Json(new
+            {
+                Spec = _adminData.GetListOfSpecialities(facultyId).Select(p => new { Id = p.IdSpez, Name = p.Spezialnost1 })
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult GetSpezMetasForSpes(int specialostId)
+        {
+            return Json(
+                new
+                {
+                    Meta = _adminData.GetSpezialnostMeta(specialostId).Select(
+                                                           p => new
+                                                           {
+                                                               Id = p.Id,
+                                                               GodPostup = p.GodPostup,
+                                                               GodOkonch = p.SrokObuch + p.GodPostup,
+                                                               FormOfStudy = GetItemsOfDictionary(DictionaryTypeEnum.ФормаОбучения).ToList().Where(o => o.Id == p.IdFrmObuch).First().Name.ToLower(),
+                                                           }
+                        ).ToArray().OrderBy(p => p.GodPostup).OrderBy(p => p.FormOfStudy)
+                }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult GetPotokiForSpezialnostMeta(int id)
+        {
+
+            return Json(new
+            {
+                Potoki = _adminData.GetPotokiForSpezMeta(id).
+                    Select(x => new { Id = x.Pot, Name = x.PotokDictionary.Name })
+                    .Distinct()
+                    .OrderBy(x => x.Name)
+                    .ToArray()
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult GetGroupsForPotok(int idPotok, int idSpezMeta)
+        {
+
+            return Json(new
+            {
+                Groups = _adminData.GetSpisokGrupp(idPotok, idSpezMeta).
+                       Select(x => new { Id = x.IdGroup, Name = x.Gruppa })
+                       .OrderBy(x => x.Name)
+                       .ToArray()
+
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
     }
 }
 

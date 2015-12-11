@@ -43,5 +43,6 @@ namespace AUPPRB.SqlEFEntities
         public virtual Dictionary Dictionary3 { get; set; }
         public virtual Dictionary Dictionary4 { get; set; }
         public virtual Dictionary Dictionary { get; set; }
+        public virtual Spezialnost Spezialnost { get; set; }
     }
 }

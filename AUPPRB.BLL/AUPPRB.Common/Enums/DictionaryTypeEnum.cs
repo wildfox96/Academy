@@ -26,9 +26,10 @@ namespace AUPPRB.Common.Enums
         Группы,
 
         [EnumValue(21)]
-        ТипыЗаметок
+        ТипыЗаметок,
 
-
+        [EnumValue(13)]
+        ФормаОбучения
 
     }
 }

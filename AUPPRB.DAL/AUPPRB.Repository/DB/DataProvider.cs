@@ -108,7 +108,6 @@ namespace AUPPRB.Repository.DB
         private IGenericRepository<Library_History> _libraryHistorys;
         private IGenericRepository<Library_Literature> _libraryLiteratures;
         private IGenericRepository<Library_ReservateBook> _libraryReservateBook;
-
         private IGenericRepository<Prepod_PrepodLikes> _prepodLikes;
 
 

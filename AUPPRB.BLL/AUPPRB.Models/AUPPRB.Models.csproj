@@ -115,6 +115,16 @@
     <Compile Include="DomainModels\Library_ReservateBook.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DomainModels\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DomainModels\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DomainModels\Nagruzka.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -158,38 +168,43 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\Student_StudentMeta.cs">
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\sysdiagrams.cs">
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\Task.cs">
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\User.cs">
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\UserMeta.cs">
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\UserRole.cs">
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\UserTask.cs">
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\VidiRabot.cs">
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\VremyaZanyatia.cs">
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DomainModels\ZaniatiaySemestr.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DomainModels\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+      <SubType>Code</SubType>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="OtherModels\ServiceModels\RenderView.cs" />
@@ -249,6 +264,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="DomainModels\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </None>
     <None Include="DomainModels\Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.cs</LastGenOutput>

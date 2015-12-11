@@ -943,11 +943,11 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_StudentMeta_Dictionary4">
-          <End Role="Dictionary" Type="Self.Dictionary" Multiplicity="1" />
+          <End Role="Spezialnost" Type="Self.Spezialnost" Multiplicity="1" />
           <End Role="Student_StudentMeta" Type="Self.Student_StudentMeta" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Dictionary">
-              <PropertyRef Name="Id" />
+            <Principal Role="Spezialnost">
+              <PropertyRef Name="IdSpez" />
             </Principal>
             <Dependent Role="Student_StudentMeta">
               <PropertyRef Name="SpecialtyId" />
@@ -1321,7 +1321,7 @@
             <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_StudentMeta_Dictionary4" Association="Self.FK_Student_StudentMeta_Dictionary4">
-            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Spezialnost" EntitySet="Spezialnost" />
             <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_StudentMeta_Dictionary5" Association="Self.FK_Student_StudentMeta_Dictionary5">
@@ -1566,6 +1566,7 @@
           <Property Name="Shifr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Qualification" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Spezialnost_SpezialnostMeta" Relationship="Self.FK_Spezialnost_SpezialnostMeta_Spezialnost" FromRole="Spezialnost" ToRole="Spezialnost_SpezialnostMeta" />
+          <NavigationProperty Name="Student_StudentMeta" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary41" FromRole="Spezialnost" ToRole="Student_StudentMeta" />
         </EntityType>
         <EntityType Name="Spezialnost_SpezialnostMeta">
           <Key>
@@ -1676,6 +1677,7 @@
           <NavigationProperty Name="Dictionary4" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary5" FromRole="Student_StudentMeta" ToRole="Dictionary" />
           <Property Name="FlowId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Dictionary" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary1" FromRole="Student_StudentMeta" ToRole="Dictionary" />
+          <NavigationProperty Name="Spezialnost" Relationship="AcademyDBModel.FK_Student_StudentMeta_Dictionary41" FromRole="Student_StudentMeta" ToRole="Spezialnost" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -2643,6 +2645,10 @@
             <End Role="Dictionary" EntitySet="Dictionary" />
             <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
           </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentMeta_Dictionary41" Association="AcademyDBModel.FK_Student_StudentMeta_Dictionary41">
+            <End Role="Spezialnost" EntitySet="Spezialnost" />
+            <End Role="Student_StudentMeta" EntitySet="Student_StudentMeta" />
+          </AssociationSet>
           <EntitySet Name="Prepod_PrepodLikes" EntityType="AcademyDBModel.Prepod_PrepodLikes" />
           <AssociationSet Name="FK_Prepod_PrepodLikes_Prepod_PrepodMeta" Association="AcademyDBModel.FK_Prepod_PrepodLikes_Prepod_PrepodMeta">
             <End Role="Prepod_PrepodMeta" EntitySet="Prepod_PrepodMeta" />
@@ -2880,11 +2886,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Student_StudentMeta_Dictionary41">
+          <End Type="AcademyDBModel.Spezialnost" Role="Spezialnost" Multiplicity="1" />
+          <End Type="AcademyDBModel.Student_StudentMeta" Role="Student_StudentMeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spezialnost">
+              <PropertyRef Name="IdSpez" />
+            </Principal>
+            <Dependent Role="Student_StudentMeta">
+              <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="Prepod_PrepodLikes">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdSotr" Type="Int32" Nullable="false" />
           <Property Name="IdUser" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Prepod_PrepodMeta" Relationship="AcademyDBModel.FK_Prepod_PrepodLikes_Prepod_PrepodMeta" FromRole="Prepod_PrepodLikes" ToRole="Prepod_PrepodMeta" />

@@ -64,6 +64,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AcademyModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="AcademyModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcademyModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Contact.cs">
       <DependentUpon>AcademyModel.tt</DependentUpon>
     </Compile>
@@ -174,7 +179,7 @@
   <ItemGroup>
     <EntityDeploy Include="AcademyModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AcademyModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>AcademyModel1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="AcademyModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

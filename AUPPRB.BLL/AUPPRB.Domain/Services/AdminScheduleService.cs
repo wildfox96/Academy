@@ -20,11 +20,11 @@ namespace AUPPRB.Domain.Services
 
         public IEnumerable<SelectListItem> GetSpezialnosti()
         {
-          
+
             IEnumerable<SelectListItem> disciplines = _dataProvider.Spezialnost.GetAllNoTracking()
-                .Select(x => new {x.IdSpez, x.Spezialnost1})
+                .Select(x => new { x.IdSpez, x.Spezialnost1 })
                 .AsEnumerable()
-                .Select(x => new SelectListItem() {Text = x.Spezialnost1, Value = x.IdSpez.ToString()});
+                .Select(x => new SelectListItem() { Text = x.Spezialnost1, Value = x.IdSpez.ToString() });
 
             return disciplines;
         }
@@ -34,9 +34,9 @@ namespace AUPPRB.Domain.Services
         {
             IEnumerable<SelectListItem> potoki = _dataProvider.Dictionaries.GetAllNoTracking()
                 .Where(x => x.DictionaryType.Name == "Потоки")
-                .Select(x => new {x.Id, x.Name})
+                .Select(x => new { x.Id, x.Name })
                 .AsEnumerable()
-                .Select(x => new SelectListItem() {Text = x.Name, Value = x.Id.ToString()});
+                .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() });
 
             return potoki;
         }
@@ -52,9 +52,9 @@ namespace AUPPRB.Domain.Services
         public IEnumerable<SelectListItem> GetGodPostuplinia(int spezialnostId)
         {
             IEnumerable<SelectListItem> godiPostuplinia = _dataProvider.SpezialnostMeta.FilterNoTracking(x => x.IdSpez == spezialnostId)
-                .Select(x => new {x.GodPostup})
+                .Select(x => new { x.GodPostup })
                 .AsEnumerable()
-                .Select(x => new SelectListItem() {Value = x.GodPostup.ToString(), Text = x.GodPostup.ToString()});
+                .Select(x => new SelectListItem() { Value = x.GodPostup.ToString(), Text = x.GodPostup.ToString() });
 
             return godiPostuplinia;
         }
@@ -64,7 +64,7 @@ namespace AUPPRB.Domain.Services
         public Spezialnost GetSpezialnostByName(string spezialnost)
         {
             Spezialnost spez = _dataProvider.Spezialnost.FirstOrDefault(x => x.Spezialnost1 == spezialnost);
-            
+
             return spez;
 
         }
@@ -77,7 +77,7 @@ namespace AUPPRB.Domain.Services
             return spezialnostSpezialnostMeta;
         }
 
-        
+
         public SpezialRazdeliDisziplini GetSpezialRazdeliDisziplini(int spezMeta)
         {
             SpezialRazdeliDisziplini spezialRazdeliDisziplini = _dataProvider.SpezialRazdeliDisziplini.FirstOrDefault(x => x.IdSpezMeta == spezMeta);
@@ -97,11 +97,11 @@ namespace AUPPRB.Domain.Services
         {
             SpezialRazdeliDisziplini spezialRazdeliDisziplini = _dataProvider.SpezialRazdeliDisziplini.FirstOrDefault(x => x.IdUpPlanDisciplini == idUchPlanaDisziplini);
 
-           
+
             List<IGrouping<DateTime, Raspisanie>> raspisanie = DataProvider.Raspisanie.Filter(p => p.Data == date &&
                                                             p.SpezialRazdeliDisziplini.IdSpezMeta == spezialRazdeliDisziplini.IdSpezMeta &&
                                                             p.Pot == potokId)
-                                                            .GroupBy(p => p.Data).OrderBy(x=>x.Key).ToList();
+                                                            .GroupBy(p => p.Data).OrderBy(x => x.Key).ToList();
 
 
             var dateOfDay = new DateTime();
@@ -122,10 +122,10 @@ namespace AUPPRB.Domain.Services
 
                 scheduleDay.Lessons = item.OrderBy(p => p.VremyaZanyatia.StartTime)
                                                    .Select(LessonViewModel.ToLessonViewModel)
-                                                   .ToList();  
+                                                   .ToList();
                 #endregion
 
-                scheduleDay.MaxLessonsInSimilarTime= scheduleDay.Lessons.GroupBy(p => p.LessonTime).Select(p => p.Count()).Max(p => p);
+                scheduleDay.MaxLessonsInSimilarTime = scheduleDay.Lessons.GroupBy(p => p.LessonTime).Select(p => p.Count()).Max(p => p);
 
 
                 List<string> vremyaZanyatiu =
@@ -155,7 +155,7 @@ namespace AUPPRB.Domain.Services
 
 
             List<IGrouping<DateTime, Raspisanie>> raspisanie = DataProvider.Raspisanie
-.Filter(p => prepodIds.Contains(p.IdPrepodaCafedri) && p.Data==date)
+.Filter(p => prepodIds.Contains(p.IdPrepodaCafedri) && p.Data == date)
                 .GroupBy(p => p.Data)
                 .OrderBy(p => p.Key)
                 .ToList();
@@ -176,7 +176,7 @@ namespace AUPPRB.Domain.Services
             {
                 dateOfDay = item.Key;
                 scheduleDay.DateOfDay = dateOfDay.ToString("yyyy-MM-dd");
-             
+
 
                 #region Добавляем уроки
 
@@ -188,7 +188,7 @@ namespace AUPPRB.Domain.Services
                 scheduleDay.MaxLessonsInSimilarTime = scheduleDay.Lessons.GroupBy(p => p.LessonTime).Select(p => p.Count()).Max(p => p);
 
 
-               
+
                 lessonsTimes.AddRange(vremyaZanyatiu);
                 scheduleDay.LessonsTime = lessonsTimes;
             }
@@ -206,18 +206,17 @@ namespace AUPPRB.Domain.Services
                    .Distinct().ToList();
 
             Dictionary<int, string> potoki = _dataProvider.SpisokGrupp.FilterNoTracking(x => x.IdSpezMeta == spezialnostSpezialnostMeta.IdSpez)
-                .Select(x=> new{ Id = x.Pot, Name = x.PotokDictionary.Name}).Distinct()
-                .ToDictionary(x=> x.Id, x=>x.Name);
+                .Select(x => new { Id = x.Pot, Name = x.PotokDictionary.Name }).Distinct()
+                .ToDictionary(x => x.Id, x => x.Name);
 
 
             return potoki;
         }
 
-
         public Dictionary<int, string> GetTypesOfPara()
         {
             Dictionary<int, string> typesOfPara = _dataProvider.VidiRabot.GetAllNoTracking()
-                .Select(x => new {Id = x.Id, Name = x.VidRabSokr})
+                .Select(x => new { Id = x.Id, Name = x.VidRabSokr })
                 .ToDictionary(x => x.Id, x => x.Name);
             return typesOfPara;
         }
@@ -228,7 +227,7 @@ namespace AUPPRB.Domain.Services
             Dictionary<int, string> vremiaZanitiu = _dataProvider.VremyaZanyatia.GetAllNoTracking()
                 .ToList()
                 .Select(
-                    x => new {Id = x.Id, Name = x.StartTime.ToShortTimeString() + "-" + x.EndTime.ToShortTimeString()}).ToDictionary(x=>x.Id, x=>x.Name);
+                    x => new { Id = x.Id, Name = x.StartTime.ToShortTimeString() + "-" + x.EndTime.ToShortTimeString() }).ToDictionary(x => x.Id, x => x.Name);
 
             return vremiaZanitiu;
         }
@@ -239,63 +238,63 @@ namespace AUPPRB.Domain.Services
             //TODO доставать дисциплины нуно будет из тб спец раздел дисц
             Dictionary<int, string> disciplines = _dataProvider.Disciplines.FilterNoTracking(x => x.IsActive)
                 .ToList()
-                .Select(x => new {Id = x.Id, Name = x.Name})
+                .Select(x => new { Id = x.Id, Name = x.Name })
                 .ToDictionary(x => x.Id, x => x.Name);
             return disciplines;
         }
 
         //TODO: нужно брать id из prepodKafedri
-       public Dictionary<int, string> GetPrepodiDisciplines(int disciplineId)
-       {
-           List<int> prepodDisciplinesIds
-               = _dataProvider.PrepodDiscipline.FilterNoTracking(x => x.IdDisciplini == disciplineId).Select(x=>x.IdSotr).ToList();
-           List<int> prepodPrepodMetasIds = _dataProvider.PrepodMetadata.FilterNoTracking(x => prepodDisciplinesIds.Any(z => z == x.Id)).ToList().Select(x=> x.UserId).ToList();
+        public Dictionary<int, string> GetPrepodiDisciplines(int disciplineId)
+        {
+            List<int> prepodDisciplinesIds
+                = _dataProvider.PrepodDiscipline.FilterNoTracking(x => x.IdDisciplini == disciplineId).Select(x => x.IdSotr).ToList();
+            List<int> prepodPrepodMetasIds = _dataProvider.PrepodMetadata.FilterNoTracking(x => prepodDisciplinesIds.Any(z => z == x.Id)).ToList().Select(x => x.UserId).ToList();
 
-           Dictionary<int, string> prepods = _dataProvider.UserMetadata.FilterNoTracking(x => prepodPrepodMetasIds.Any(z => z == x.UserId))
-              .ToList()
-              .Select(x => new
-              {
-                  Id = x.User.Prepod_PrepodMeta.Select(z => z.Prepod_PrepodiCafedri.FirstOrDefault(k=>k.IdSotr==z.Id).Id).FirstOrDefault(),
-                  Name = x.FirstName + " " + x.LastName + " " + x.MiddleName
-              }).ToDictionary(x => x.Id, x => x.Name);
-           
-           return prepods;
-       }
+            Dictionary<int, string> prepods = _dataProvider.UserMetadata.FilterNoTracking(x => prepodPrepodMetasIds.Any(z => z == x.UserId))
+               .ToList()
+               .Select(x => new
+               {
+                   Id = x.User.Prepod_PrepodMeta.Select(z => z.Prepod_PrepodiCafedri.FirstOrDefault(k => k.IdSotr == z.Id).Id).FirstOrDefault(),
+                   Name = x.FirstName + " " + x.LastName + " " + x.MiddleName
+               }).ToDictionary(x => x.Id, x => x.Name);
+
+            return prepods;
+        }
 
 
         public Dictionary<int, string> GetDisciplinesOfPrepod(int prepodId)
         {
             Prepod_PrepodMeta prepodPrepodMeta = _dataProvider.PrepodMetadata.FirstOrDefault(x => x.UserId == prepodId);
-            Dictionary<int, string> disziplines = _dataProvider.PrepodDiscipline.FilterNoTracking(x => x.IdSotr == prepodPrepodMeta.Id).ToList().Select(x=> new
+            Dictionary<int, string> disziplines = _dataProvider.PrepodDiscipline.FilterNoTracking(x => x.IdSotr == prepodPrepodMeta.Id).ToList().Select(x => new
             {
                 Id = x.IdDisciplini,
                 Name = x.Discipline.Name
-            }).ToDictionary(x=>x.Id, x=>x.Name);
+            }).ToDictionary(x => x.Id, x => x.Name);
 
             return disziplines;
         }
 
 
         public Dictionary<int, string> GetGroups(int idSpezMeta)
-       {
-           Dictionary<int, string> groups = _dataProvider.SpisokGrupp.FilterNoTracking(x => x.IdSpezMeta == idSpezMeta)
-               .Select(x => new {Id = x.IdGroup, Name = x.Gruppa})
-               .ToDictionary(x => x.Id, x => x.Name);
+        {
+            Dictionary<int, string> groups = _dataProvider.SpisokGrupp.FilterNoTracking(x => x.IdSpezMeta == idSpezMeta)
+                .Select(x => new { Id = x.IdGroup, Name = x.Gruppa })
+                .ToDictionary(x => x.Id, x => x.Name);
 
-           return groups;
-       }
+            return groups;
+        }
 
 
-    
+
         public Dictionary<int, string> GetSubGroups(int idSpezMeta)
         {
             int kolPodGrupp = _dataProvider.SpisokGrupp.FilterNoTracking(x => x.IdSpezMeta == idSpezMeta).ToList().Select(x => x.KolPodGroup).Max();
 
             Dictionary<int, string> subGrups = new Dictionary<int, string>();
 
-            for (int i = 1; i < kolPodGrupp+1; i++)
+            for (int i = 1; i < kolPodGrupp + 1; i++)
             {
-                subGrups.Add(i,string.Format("{0} подгруппа",i));
+                subGrups.Add(i, string.Format("{0} подгруппа", i));
             }
 
             return subGrups;
@@ -315,26 +314,26 @@ namespace AUPPRB.Domain.Services
 
 
         public Raspisanie AddPara(ParaViewModel model)
-       {
-           SpezialRazdeliDisziplini spezialRazdeliDisziplini = _dataProvider.SpezialRazdeliDisziplini.FirstOrDefault(
-               x => x.IdDisciplini == model.DisciplineId && x.IdSpezMeta == model.IdSpezMeta);
+        {
+            SpezialRazdeliDisziplini spezialRazdeliDisziplini = _dataProvider.SpezialRazdeliDisziplini.FirstOrDefault(
+                x => x.IdDisciplini == model.DisciplineId && x.IdSpezMeta == model.IdSpezMeta);
 
-           DateTime dateOfPara = DateTime.Parse(model.DateOfPara);
+            DateTime dateOfPara = DateTime.Parse(model.DateOfPara);
 
-           Raspisanie raspisanie = new Raspisanie()
-           {
-               Data = dateOfPara,
-               IdUchPlanaDisciplini = spezialRazdeliDisziplini.IdUpPlanDisciplini,
-               IdVidaRaboti = model.TypeOfParaId,
-               IdVremyaZanyatia = model.TimeOfParaId,
-               Pot = model.PotokId,
-               IdSpiskaGrupp = model.GroupId!= 0?model.GroupId:(int?) null,
-               NomerPodGrupp = model.SubgroupId != 0 ? model.SubgroupId : (int?)null,
-               IdPrepodaCafedri = model.PrepodiDisziplineId,
-               NomerZanyatiaVSemestre = 0,
-               Auditoriya = model.Auditory,
-               TipNagruzki = 80
-           };
+            Raspisanie raspisanie = new Raspisanie()
+            {
+                Data = dateOfPara,
+                IdUchPlanaDisciplini = spezialRazdeliDisziplini.IdUpPlanDisciplini,
+                IdVidaRaboti = model.TypeOfParaId,
+                IdVremyaZanyatia = model.TimeOfParaId,
+                Pot = model.PotokId,
+                IdSpiskaGrupp = model.GroupId != 0 ? model.GroupId : (int?)null,
+                NomerPodGrupp = model.SubgroupId != 0 ? model.SubgroupId : (int?)null,
+                IdPrepodaCafedri = model.PrepodiDisziplineId,
+                NomerZanyatiaVSemestre = 0,
+                Auditoriya = model.Auditory,
+                TipNagruzki = 80
+            };
 
             bool isParaExist = CheckForParaIdentity(raspisanie);
             bool isGroupHasNakladki = PrivateCheckForNakladkiForGroup(raspisanie);
@@ -355,11 +354,11 @@ namespace AUPPRB.Domain.Services
                 {
                     throw new ArgumentException("У потока накладки, измените время/дату пары");
                 }
-            }           
+            }
 
-          
-           return raspisanie;
-       }
+
+            return raspisanie;
+        }
 
         public Raspisanie AddParaForPrepod(ParaViewModel model)
         {
@@ -402,8 +401,8 @@ namespace AUPPRB.Domain.Services
             else
             {
                 throw new ArgumentException("У преподавателя накладки, измените время/дату пары");
-            }           
-          
+            }
+
 
             return raspisanie;
         }
@@ -411,9 +410,9 @@ namespace AUPPRB.Domain.Services
         public void DeletePara(int paraId)
         {
             Raspisanie raspisanie = _dataProvider.Raspisanie.FirstOrDefault(x => x.Id == paraId);
-        
+
             _dataProvider.Raspisanie.Delete(raspisanie);
-            
+
             _dataProvider.Save();
         }
 
@@ -424,7 +423,7 @@ namespace AUPPRB.Domain.Services
             return raspisanie;
         }
 
-     
+
         public IEnumerable<SelectListItem> GetDiszipliniFromSpezialRazdeliDisziplini(int id)
         {
             Raspisanie raspisanie = _dataProvider.Raspisanie.FirstOrDefault(x => x.Id == id);
@@ -434,25 +433,25 @@ namespace AUPPRB.Domain.Services
                 {
                     Id = x.Discipline.Id,
                     Name = x.Discipline.Name
-                }).AsEnumerable().Select(x=> new SelectListItem()
+                }).AsEnumerable().Select(x => new SelectListItem()
                 {
                     Selected = raspisanie.SpezialRazdeliDisziplini.Discipline.Id == x.Id,
                     Text = x.Name,
                     Value = x.Id.ToString()
                 });
 
-           return disziplini;
+            return disziplini;
         }
 
-        public Dictionary<int,string> GetAllPrepods()
+        public Dictionary<int, string> GetAllPrepods()
         {
             IEnumerable<Prepod_PrepodiCafedri> prepodPrepodiCafedris = _dataProvider.PrepodiCafedri.GetAllNoTracking().AsEnumerable();
-          
+
             Dictionary<int, string> prepodi = prepodPrepodiCafedris.Select(x => new
             {
                 Id = x.Id,
                 Name = x.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault(z => z.UserId == x.Prepod_PrepodMeta.UserId).LastName
-            }).AsEnumerable().ToDictionary(x=>x.Id, x=>x.Name);
+            }).AsEnumerable().ToDictionary(x => x.Id, x => x.Name);
 
 
             return prepodi;
@@ -467,18 +466,18 @@ namespace AUPPRB.Domain.Services
         private bool CheckForParaIdentity(Raspisanie model)
         {
             bool isParaExist = _dataProvider.Raspisanie.FilterNoTracking(x => x.Data == model.Data)
-                .Any(x=>x.Auditoriya==model.Auditoriya && 
-                        x.IdPrepodaCafedri==model.IdPrepodaCafedri && 
-                        x.IdVremyaZanyatia==model.IdVremyaZanyatia && 
-                        x.IdUchPlanaDisciplini==model.IdUchPlanaDisciplini && 
-                        x.IdVidaRaboti==model.IdVidaRaboti && 
-                        x.Pot==model.Pot && 
-                        x.IdSpiskaGrupp==model.IdSpiskaGrupp && 
-                        x.NomerPodGrupp==model.NomerPodGrupp);
+                .Any(x => x.Auditoriya == model.Auditoriya &&
+                        x.IdPrepodaCafedri == model.IdPrepodaCafedri &&
+                        x.IdVremyaZanyatia == model.IdVremyaZanyatia &&
+                        x.IdUchPlanaDisciplini == model.IdUchPlanaDisciplini &&
+                        x.IdVidaRaboti == model.IdVidaRaboti &&
+                        x.Pot == model.Pot &&
+                        x.IdSpiskaGrupp == model.IdSpiskaGrupp &&
+                        x.NomerPodGrupp == model.NomerPodGrupp);
             return isParaExist;
         }
 
-       
+
         /// <summary>
         /// проверка на то чтобы в одно и то же время у препода не было другой пары
         /// </summary>
@@ -486,7 +485,7 @@ namespace AUPPRB.Domain.Services
         /// <returns></returns>
         private bool PrivateCheckForNakladkiForPrepod(Raspisanie model)
         {
-          
+
             bool isPrepodHasNakladki
                 = _dataProvider.Raspisanie.FilterNoTracking(
                 x => x.Data == model.Data && x.IdPrepodaCafedri == model.IdPrepodaCafedri)
@@ -504,22 +503,64 @@ namespace AUPPRB.Domain.Services
         {
             bool isGroupHasAnotherParaInTheSameTime;
 
-                List<Raspisanie> raspisanies = _dataProvider.Raspisanie.FilterNoTracking(
-                    x => x.Data == model.Data && x.Pot == model.Pot && x.IdVremyaZanyatia == model.IdVremyaZanyatia && x.IdVidaRaboti==5).ToList();
-                if (raspisanies.Count > 0)
-                {
-                    isGroupHasAnotherParaInTheSameTime = true;
-                    
-                }
-                else
-                {
-                    isGroupHasAnotherParaInTheSameTime = _dataProvider.Raspisanie.FilterNoTracking(
-                   x => x.Data == model.Data && x.Pot == model.Pot && x.IdSpiskaGrupp == model.IdSpiskaGrupp && x.NomerPodGrupp == model.NomerPodGrupp)
-                   .Any(x => x.IdVremyaZanyatia == model.IdVremyaZanyatia);
-                }
+            List<Raspisanie> raspisanies = _dataProvider.Raspisanie.FilterNoTracking(
+                x => x.Data == model.Data && x.Pot == model.Pot && x.IdVremyaZanyatia == model.IdVremyaZanyatia && x.IdVidaRaboti == 5).ToList();
+            if (raspisanies.Count > 0)
+            {
+                isGroupHasAnotherParaInTheSameTime = true;
+
+            }
+            else
+            {
+                isGroupHasAnotherParaInTheSameTime = _dataProvider.Raspisanie.FilterNoTracking(
+               x => x.Data == model.Data && x.Pot == model.Pot && x.IdSpiskaGrupp == model.IdSpiskaGrupp && x.NomerPodGrupp == model.NomerPodGrupp)
+               .Any(x => x.IdVremyaZanyatia == model.IdVremyaZanyatia);
+            }
 
             return isGroupHasAnotherParaInTheSameTime;
 
         }
+                    //Изменение функциональности на странице Добавление пользователя (инфа о поступлении)
+        public IEnumerable<Spezialnost_SpezialnostMeta> GetSpezialnostMeta(int spezialnostId)
+        {
+
+
+            IEnumerable<Spezialnost_SpezialnostMeta> spezialnostSpezialnostMeta = _dataProvider.SpezialnostMeta.GetAll().Where(x => x.IdSpez == spezialnostId).AsEnumerable<Spezialnost_SpezialnostMeta>();
+
+            return spezialnostSpezialnostMeta;
+        }
+
+        public List<SpisokGrupp> GetPotokiForSpezMeta(int idSpezialnostMeta)
+        {
+
+            List<SpisokGrupp> potoki = _dataProvider.SpisokGrupp.FilterNoTracking(x => x.IdSpezMeta == idSpezialnostMeta).ToList<SpisokGrupp>();
+
+            return potoki;
+        }
+
+        public List<SpisokGrupp> GetSpisokGrupp(int idPotok, int idSpezMeta)
+        {
+            List<SpisokGrupp> groups = _dataProvider.SpisokGrupp
+                .FilterNoTracking(x => x.IdSpezMeta == idSpezMeta & x.Pot == idPotok)
+                .ToList<SpisokGrupp>();
+
+            return groups;
+        }
+
+        public List<Spezialnost> GetListOfSpecialities(int facultyId)
+        {
+            if (facultyId == 7)
+                return DataProvider.Spezialnost.GetAll().Where(p => p.IdSpez == 1).ToList();
+            else if (facultyId == 6)
+                return DataProvider.Spezialnost.GetAll().Where(p => p.IdSpez != 1).ToList();
+            else return DataProvider.Spezialnost.GetAll().ToList();
+        }
+
+        public Spezialnost_SpezialnostMeta GetSpezMetaInfo(int spezId)
+        {
+           return _dataProvider.SpezialnostMeta.GetAll().FirstOrDefault(p => p.Id == spezId);
+        
+        }
+
     }
 }

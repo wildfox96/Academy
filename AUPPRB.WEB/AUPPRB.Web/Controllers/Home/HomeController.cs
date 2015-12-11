@@ -120,6 +120,7 @@ namespace AUPPRB.Web.Controllers.Home
                 var studentStudentMeta = user.Student_StudentMeta.FirstOrDefault();
                 string numberTasks = user.UserTask.Aggregate("", (current, task) => current + (task.TaskId + ";"));
 
+
                 if (studentStudentMeta != null)
                 {
                     model = new UserCommonViewModel()
@@ -129,14 +130,17 @@ namespace AUPPRB.Web.Controllers.Home
                         {
                             AdmissionDate = studentStudentMeta.AdmissionDate.Year,
                             FacultyId = studentStudentMeta.FacultyId,
-                            //FlowId = studentStudentMeta.FlowId,
+                            FlowId = studentStudentMeta.FlowId,
                             GraduationDate = studentStudentMeta.GraduationDate.Year,
                             MarkBookNumber = studentStudentMeta.MarkBookNumber,
-                            //GroupId = studentStudentMeta.GroupId,
+                            GroupId = studentStudentMeta.GroupId,
                             IsDismissed = studentStudentMeta.IsDismissed,
-                            //SpecialityId = studentStudentMeta.SpecialtyId,
-                            StudentCardNumber = studentStudentMeta.StudentCardNumber
+                            SpecialityId = studentStudentMeta.SpecialtyId,
+                            StudentCardNumber = studentStudentMeta.StudentCardNumber,
+                            IdSpecialtyMeta = studentStudentMeta.IdSpecialtyMeta
+
                         },
+
                         Login = user.Login,
                         //Password = user.Password,
                         FirstName = userMeta.FirstName,
@@ -151,10 +155,14 @@ namespace AUPPRB.Web.Controllers.Home
 
 
                     };
+
                     ViewBag.FacultyName =
                         GetItemsOfDictionary(DictionaryTypeEnum.Факультеты)
                             .Find(p => p.Id == studentStudentMeta.FacultyId)
                             .Name;
+                    Spezialnost_SpezialnostMeta meta = _adminData.GetSpezMetaInfo(studentStudentMeta.IdSpecialtyMeta);
+                    ViewBag.StartYear = meta.GodPostup;
+                    ViewBag.FinishYear = (meta.GodPostup + meta.SrokObuch).ToString();
                 }
                 else
                 {
