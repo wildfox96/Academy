@@ -1119,12 +1119,12 @@
             glyphicon = "<span class='glyphicon glyphicon-hdd'/></span>";
         }
 
-        var disciplineStr = "<div class='btn btn-default poper subjectBtn' data-placement='right'>" + glyphicon + "  " + lesson.Discipline.ShortName;
+        var disciplineStr = "<div class='btn btn-default poper subjectBtn' data-placement='left' style='width:100px;margin-right:40px'>" + glyphicon + "  " + lesson.Discipline.ShortName;
 
         //вставляем заголовок
-        disciplineStr += "<div id='popover-head' class='hide'>Информация о занятии</div>";
+        disciplineStr += "<div id='popover-head' class='hide' style='width:450px'>Информация о занятии</div>";
         //таблица для главной инфы
-        disciplineStr += "<div id='popover-content' class='hide'><table class='table'>";
+        disciplineStr += "<div id='popover-content' class='hide' style='width:400px'><table class='table' style='width:450px'>";
 
         //препод
         if (lesson.PropodMeta != null)
@@ -1151,7 +1151,7 @@
             disciplineStr += "<tr><td>Номер подгруппы</td><td>" + lesson.SubGroupName + "</td></tr>";
 
         if (lesson.Id != null) {
-            var setupSection = "<tr><td><span class='btn btn-default glyphicon glyphicon-remove' title='Удалить занятие' id='" + lesson.Id + "'></span></td><td><a href='@Url.Action("Edit","AdminSchedule")/"+lesson.Id+"' class='btn btn-default glyphicon glyphicon-wrench' title='Редактировать занятие'></a></td>";
+            var setupSection = "<tr><td><span class='btn btn-default glyphicon glyphicon-remove' title='Удалить занятие' id='" + lesson.Id + "'></span></td><td><a style='display:none' href='@Url.Action("Edit","AdminSchedule")/"+lesson.Id+"' class='btn btn-default glyphicon glyphicon-wrench' title='Редактировать занятие'></a></td>";
             disciplineStr += setupSection;
         }
         

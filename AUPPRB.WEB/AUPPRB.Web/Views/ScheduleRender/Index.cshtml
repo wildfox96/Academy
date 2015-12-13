@@ -226,29 +226,32 @@
 
 </script>
 
-<div>
-    <h2>Расписание</h2>
-
-    Дата с <input type="text" id="dateFrom" data-date-format="DD-MM-YYYY" class="dateInput" />
-    Дата по <input type="text" id="dateTo" data-date-format="DD-MM-YYYY" class="dateInput" />
-
-    <button href="#" class="btn btn-info" style="width: 200px;margin-left:20px" onclick="GenerateSchedule()"><i class="fa fa-desktop"></i> Построить расписание</button>
-    <button href="#" class="btn btn-info" style="width: 200px; margin-left: 100px" onclick="GetScheduleInExcell()"><i class="fa fa-download"></i> Выгрузить в Excell</button>
+<div class="row-fluid">
+    <div class="col-md-12"><h2>Расписание</h2></div>
+</div>
+<div class="row" style="text-align:left">
+   <div class="col-md-4">Дата с <input type="text" id="dateFrom" data-date-format="DD-MM-YYYY" class="dateInput" /></div>
+    <div class="col-md-4">Дата по <input type="text" id="dateTo" data-date-format="DD-MM-YYYY" class="dateInput" /></div>
+    <div class="col-md-2">
+        <button class="btn btn-info" style="width: 190px; margin:2px 5px" onclick="GenerateSchedule()"><i class="fa fa-desktop"></i> Построить расписание</button>
+    </div>
+    <div class="col-md-2">
+        <button  class="btn btn-info" style="width: 180px; margin: 2px 5px;" onclick="GetScheduleInExcell()"><i class="fa fa-download"></i> Выгрузить в Excell</button>
+    </div>
 </div>
 
-
-<div id="extensionConfiguration" style="margin-top:20px">
-    <label for="schedualFor">Пострить расписание:</label>
-    <select class="form-control" id="schedualFor">
-        <option value="self">Для себя</option>
-        <option value="forPrepod">Для преподователя</option>
-        <option value="forGroup">Для группы</option>
-    </select>
-</div>
-
+   <br />
+ <div id="extensionConfiguration" style="margin-top:20px">
+        <label for="schedualFor">Построить расписание:</label>
+        <select class="form-control" id="schedualFor">
+            <option value="self">Для себя</option>
+            <option value="forPrepod">Для преподователя</option>
+            <option value="forGroup">Для группы</option>
+        </select>
+    </div>
 <div id="configurationData">
     <div style="display: none" id="configurationforPrepod">
-        <label style="margin-top:20px" for="selectPrepod">Пострить расписание:</label>
+        <label style="margin-top:20px" for="selectPrepod">Построить расписание:</label>
         <select class="form-control" id="selectPrepod"></select>
     </div>
     <div style="display: none" id="configurationforGroup">

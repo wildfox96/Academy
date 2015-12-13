@@ -16,31 +16,30 @@ namespace AUPPRB.Domain.Services
         public OutputModel PrepodModel(int page)
         {
             return new OutputModel()
-               {
-                   List = DataProvider.PrepodMetadata.Filter(p => p.Rate != null)
-                   .OrderByDescending(p => p.Rate)
-                   .Select(p => p.User.UserMeta.FirstOrDefault().LastName)
-                   .Skip((page - 1) * 4)
-                   .Take(4)
-                   .ToList(),
-                   PagingInfo = new PagingInfo()
-                   {
-                       CurrentPage = page,
-                       ItemsForPage = 4,
-                       TotalItems = DataProvider.PrepodMetadata.Filter(p => p.Rate != null).OrderByDescending(p => p.Rate).Select(p => p.User.UserMeta.FirstOrDefault().LastName).ToList().Count
-                   },
-                   PrepDispList = DataProvider.PrepodDiscipline.GetAll().OrderByDescending(p => p.Discipline.Rate).Select(p => new ParseDisciplineList
-                   {
-                       Name = p.Discipline.Name,
-                       LastName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().LastName,
-                       FirstName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().FirstName,
-                       MiddleName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().MiddleName,
-                       Photo = p.Prepod_PrepodMeta.Photo,
-                       // Likes = p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count,
-                       Likes = 0,
-                       IdSotr = p.Prepod_PrepodMeta.Id
-                   }).ToList()
-               };
+            {
+                List = DataProvider.PrepodMetadata.Filter(p => p.Rate != null)
+                .OrderByDescending(p => p.Rate)
+                .Select(p => p.User.UserMeta.FirstOrDefault().LastName)
+                .Skip((page - 1) * 4)
+                .Take(4)
+                .ToList(),
+                PagingInfo = new PagingInfo()
+                {
+                    CurrentPage = page,
+                    ItemsForPage = 4,
+                    TotalItems = DataProvider.PrepodMetadata.Filter(p => p.Rate != null).OrderByDescending(p => p.Rate).Select(p => p.User.UserMeta.FirstOrDefault().LastName).ToList().Count
+                },
+                PrepDispList = DataProvider.PrepodDiscipline.GetAll().OrderByDescending(p => p.Discipline.Rate).Select(p => new ParseDisciplineList
+                {
+                    Name = p.Discipline.Name,
+                    LastName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().LastName,
+                    FirstName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().FirstName,
+                    MiddleName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().MiddleName,
+                    Photo = p.Prepod_PrepodMeta.Photo,
+                    Likes = p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count,
+                    IdSotr = p.Prepod_PrepodMeta.Id
+                }).ToList()
+            };
         }
 
         public OutputModel DispModel(int page)
@@ -48,10 +47,10 @@ namespace AUPPRB.Domain.Services
             return new OutputModel()
             {
                 List = DataProvider.Disciplines.Filter(p => p.Rate != null).OrderByDescending(p => p.Rate)
-                 .Select(p => p.Name)
-                 .Skip((page - 1) * 4)
-                 .Take(4)
-                 .ToList(),
+                .Select(p => p.Name)
+                .Skip((page - 1) * 4)
+                .Take(4)
+                .ToList(),
                 PagingInfo = new PagingInfo()
                 {
                     CurrentPage = page,
@@ -60,18 +59,17 @@ namespace AUPPRB.Domain.Services
                 },
 
                 PrepCabinetList = DataProvider.PrepodDiscipline.GetAll().OrderByDescending(p => p.Prepod_PrepodMeta.Rate)
-           .Select(p => new ParsePrepodList
-           {
-               LastName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().LastName,
-               Cabinet = p.Prepod_PrepodMeta.Classroom,
-               Discipline = p.Discipline.Name,
-               Photo = p.Prepod_PrepodMeta.Photo,
-               FirstName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().FirstName,
-               MiddleName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().MiddleName,
-               //p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count
-               Likes =0,
-               IdSotr = p.Prepod_PrepodMeta.Id,
-           }).ToList(),
+                .Select(p => new ParsePrepodList
+                {
+                    LastName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().LastName,
+                    Cabinet = p.Prepod_PrepodMeta.Classroom,
+                    Discipline = p.Discipline.Name,
+                    Photo = p.Prepod_PrepodMeta.Photo,
+                    FirstName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().FirstName,
+                    MiddleName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().MiddleName,
+                    Likes = p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count,
+                    IdSotr = p.Prepod_PrepodMeta.Id,
+                }).ToList(),
             };
         }
         public OutputModel StartPageModel()
@@ -90,7 +88,7 @@ namespace AUPPRB.Domain.Services
             if (!String.IsNullOrWhiteSpace(find))
             {
                 if (DataProvider.PrepodDiscipline.GetAll().Any(p => p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().LastName == find)
-                    || DataProvider.PrepodDiscipline.GetAll().Any(p => p.Discipline.Name == find))
+                || DataProvider.PrepodDiscipline.GetAll().Any(p => p.Discipline.Name == find))
                 {
                     if (DataProvider.PrepodDiscipline.GetAll().Any(p => p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().LastName == find))
                     {
@@ -100,9 +98,9 @@ namespace AUPPRB.Domain.Services
                         if (prepod != null)
                         {
                             var DisciplineNames = DataProvider.PrepodDiscipline
-                                .Filter(p => p.IdSotr == prepod.IdSotr)
-                                .OrderByDescending(p => p.Discipline.Rate)
-                                .Select(p => p.Discipline.Name).ToList();
+                            .Filter(p => p.IdSotr == prepod.IdSotr)
+                            .OrderByDescending(p => p.Discipline.Rate)
+                            .Select(p => p.Discipline.Name).ToList();
 
                             viewList = new OutputModel()
                             {
@@ -114,6 +112,7 @@ namespace AUPPRB.Domain.Services
                     }
                     if (DataProvider.PrepodDiscipline.GetAll().Any(p => p.Discipline.Name == find))
                     {
+
                         Check = "Discipline";
                         Name = find;
 
@@ -122,17 +121,16 @@ namespace AUPPRB.Domain.Services
                         if (discipline != null)
                         {
                             List<ParsePrepodList> PrepCabinetList =
-                                  DataProvider.PrepodDiscipline.Filter(p => p.Discipline.Name == discipline.Discipline.Name)
-                                .OrderByDescending(p => p.Prepod_PrepodMeta.Rate)
-                                .Select(p => new ParsePrepodList
-                                {
-                                    LastName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().LastName,
-                                    FirstName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().FirstName,
-                                    MiddleName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().MiddleName,
-                                    Cabinet = p.Prepod_PrepodMeta.Classroom,
-                                    //p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count
-                                    Likes = 0
-                                }).ToList();
+                            DataProvider.PrepodDiscipline.Filter(p => p.Discipline.Name == discipline.Discipline.Name)
+                            .OrderByDescending(p => p.Prepod_PrepodMeta.Rate)
+                            .Select(p => new ParsePrepodList
+                            {
+                                LastName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().LastName,
+                                FirstName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().FirstName,
+                                MiddleName = p.Prepod_PrepodMeta.User.UserMeta.FirstOrDefault().MiddleName,
+                                Cabinet = p.Prepod_PrepodMeta.Classroom,
+                                Likes = p.Prepod_PrepodMeta.Prepod_PrepodLikes.Count
+                            }).ToList();
 
                             viewList = new OutputModel()
                             {
@@ -156,3 +154,4 @@ namespace AUPPRB.Domain.Services
         }
     }
 }
+

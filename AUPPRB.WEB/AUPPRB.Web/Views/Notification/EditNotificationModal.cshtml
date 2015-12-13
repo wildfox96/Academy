@@ -4,6 +4,11 @@
     Layout = null;
 }
 
+<style>
+    .mainStyle {
+    width:400px;
+    }
+</style>
 
 <div class="modal fade" id="editNotificationModal" tabindex="-1" role="dialog" aria-labelledby="editNotificationLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -12,7 +17,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
                 <h3 class="modal-title" id="editNotificationLabel">Добавление заметки</h3>
             </div>
-@using (Ajax.BeginForm("EditNotification", "Notification",
+            @using (Ajax.BeginForm("EditNotification", "Notification",
                     new AjaxOptions
                     {
                         HttpMethod = "Post",
@@ -21,54 +26,57 @@
                         OnSuccess = "SuccessResult"
                     },
                     new { name = "EditNotificationForm", id = "EditNotificationForm", style = "margin: 0", @class = "form-horizontal" }))
-{
+            {
 
-            <div class="modal-body">
-            
-                    <div style="padding-left: 10px">
+                <div class="modal-body">
+
+                    <table style="padding-left: 10px;">
 
                         @Html.ValidationSummary(false)
 
                         @Html.HiddenFor(p => p.NotificationId)
 
+                        <tr>
+                            <td>
+                                @Html.LabelFor(p => p.NotificationTypeId): 
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(p => p.NotificationTypeId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control mainStyle" })
+                            </td>
+                        </tr>
 
-                        <div class="form-group">
-                            @Html.LabelFor(p => p.NotificationTypeId)
-                            @Html.DropDownListFor(p => p.NotificationTypeId, Enumerable.Empty<SelectListItem>())
-                        </div>
+                        <tr>
+                            <td>@Html.LabelFor(p => p.NotificationDate): </td>
+                            <td>@Html.TextBoxFor(p => p.NotificationDate, new { @class = "dateInput form-control mainStyle" })</td>
+                        </tr>
 
-                        <div class="form-group">
-                            @Html.LabelFor(p => p.NotificationDate)
-                            @Html.TextBoxFor(p => p.NotificationDate, new { @class = "dateInput" })
-                        </div>
+                        <tr>
+                            <td>@Html.LabelFor(p => p.NotificationTimeId): </td>
+                            <td>@Html.DropDownListFor(p => p.NotificationTimeId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control mainStyle" })</td>
+                        </tr>
 
-                        <div class="form-group">
-                            @Html.LabelFor(p => p.NotificationTimeId)
-                            @Html.DropDownListFor(p => p.NotificationTimeId, Enumerable.Empty<SelectListItem>())
-                        </div>
+                        <tr>
+                            <td>    @Html.LabelFor(p => p.NotificationText): </td>
+                            <td>   @Html.TextAreaFor(p => p.NotificationText, new { @class = "form-control mainStyle" })</td>
+                        </tr>
 
-                        <div class="form-group">
-                            @Html.LabelFor(p => p.NotificationText)
-                            @Html.TextAreaFor(p => p.NotificationText)
-                        </div>
+                    </table>
 
-                    </div>
 
-              
-            </div>
-            
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" id="sendData">Сохранить</button>
-                <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Отмена</button>
-            </div>
-                }
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="sendData">Сохранить</button>
+                    <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Отмена</button>
+                </div>
+            }
         </div>
     </div>
 </div>
 <script>
 
-    $(function() {
-     
+    $(function () {
+
         FillDropdownDataAsync('@Url.Action("GetNotificationTypes")', null, $("#NotificationTypeId"), "Выберите тип ", false);
 
         FillDropdownDataAsync('@Url.Action("GetNotificationTimes")', null, $("#NotificationTimeId"), "Выберите время", false);
@@ -83,7 +91,7 @@
     });
 
     function initNotificationWindow(time, date, id) {
-        
+
         //clear form
         $("#EditNotificationForm").trigger('reset');
         clearForm($("#EditNotificationForm"));
@@ -102,7 +110,7 @@
                 url: '@Url.Action("GetNotification")',
                 type: 'post',
                 data: { id: id },
-                success: function(data) {
+                success: function (data) {
 
                     var notification = data.notification;
 
@@ -121,7 +129,7 @@
             $("#NotificationDate").val(date);
 
 
-            $("#NotificationTimeId option").filter(function() {
+            $("#NotificationTimeId option").filter(function () {
                 return this.text == time;
             }).attr('selected', true);
 
@@ -150,12 +158,12 @@
     }
 
     function RemoveNotice(noticeId) {
-        
+
         alertify.confirm("Вы действительно хотите удалить эту заметку?", function (e) {
             if (e) {
                 var url = '@Url.Action("DeleteNotification")';
                 $.post(url, { id: noticeId }, function (response) {
-                  
+
 
                     if (response && response.success) {
                         $('#editNotificationModal').modal('hide');

@@ -85,7 +85,7 @@ namespace AUPPRB.Domain.Services
             #endregion
 
             var daysCount = (dateTo - dateFrom).Days + 1;
-            
+
 
             var scheduleViewModel = new ScheduleViewModel()
             {
@@ -169,8 +169,35 @@ namespace AUPPRB.Domain.Services
 
 
             #endregion
+
+            List<string> lessons = lessonsTimes.Distinct().OrderBy(p => p).ToList();
+            List<string> finalLessons = new List<string>();
+
+            Dictionary<int, string> list = DataProvider.VremyaZanyatia.GetAllNoTracking().AsEnumerable().Select(x => new
+            {
+                Id = x.Id,
+                Name = x.StartTime.ToString("H.mm") + '-' + x.EndTime.ToString("H.mm")
+            }).AsEnumerable().ToDictionary(x => x.Id, x => x.Name);
+
+            bool isExist = false;
+            for (int i = 1; i <= list.Count; i++)
+            {
+                for (int j = 0; j < lessons.Count; j++)
+                {
+                    if (list[i] == lessons[j])
+                    {
+                        isExist = true;
+                        break;
+                    }
+                }
+
+                if (isExist)
+                    finalLessons.Add(list[i]);
+
+                isExist = false;
+            }
             scheduleViewModel.MaxLessonsInSimilarTime = maxLessonsInSimilarTime;
-            scheduleViewModel.LessonsTime = lessonsTimes.Distinct().OrderBy(p => p).ToList();
+            scheduleViewModel.LessonsTime = finalLessons;
 
             return scheduleViewModel;
         }

@@ -85,6 +85,9 @@
             height: 30px;
         }
 
+    .field-validation-error {
+        color: red !important;
+    }
     /*.tree li.parent_li > span:hover, .tree li.parent_li > span:hover + ul li span {
                 background: #eee;
                 border: 1px solid #94a0b4;
@@ -105,7 +108,7 @@
 
             <div style="margin:50px;">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon"><span class="glyphicon  glyphicon-user"></span></div>
@@ -171,13 +174,14 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon"><span class="glyphicon  glyphicon-th-large"></span></div>
-                                @*@Html.CheckBoxFor(m => m.IsBlocked, new { autocomplete = "off", @class = "form-control" })*@
+                                <div class="input-group-addon">
+                                    <span class="glyphicon  glyphicon-th-large"></span>
+                                </div>
                                 <input class="form-control" type="checkbox" id="IsBlocked" name="IsBlocked" data-label="Заблокировать пользователя" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2"></div>
+                    <div class="col-md-1"></div>
                     <div class="col-md-5">
                         @{
                             if (Model.StudentMeta != null)
@@ -303,7 +307,9 @@
                                     </table>
 
                                 }
-                                <input class="btn btn-default cafedraAdd" type="button" value="Добавить кафедру">
+                                <button class="btn btn-default btn-lg cafedraAdd" type="button" style="font-size:14px">
+                                    Добавить<br />кафедру
+                                </button>
                                 <div class="divObmen" style="display:none;"></div>
 
                             }
@@ -430,8 +436,8 @@
         {
 
                                         @:var tasksmas = "@Model.Tasks";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @:tasksmas = tasksmas.split(";");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @:$(tasksmas).each(function (ind, elem) { if (elem != "") { if (!$("input[value=" + elem + "]:first").is(':checked')) { $("input[value=" + elem + "]:first").next().addClass("checked") } } });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @:tasksmas = tasksmas.split(";");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @:$(tasksmas).each(function (ind, elem) { if (elem != "") { if (!$("input[value=" + elem + "]:first").is(':checked')) { $("input[value=" + elem + "]:first").next().addClass("checked") } } });
 
 
         }
